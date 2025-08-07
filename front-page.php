@@ -114,7 +114,7 @@ get_header(); ?>
     </section>
 
     <!-- Services Section -->
-    <section id="services" class="py-20 bg-primary-25 dark:bg-primary-950">
+    <section id="services" class="py-20 bg-accent-25 dark:bg-primary-950">
         <div class="container mx-auto px-4">
             <div class="text-center mb-16">
                 <h2 class="text-4xl font-bold mb-4">Services</h2>

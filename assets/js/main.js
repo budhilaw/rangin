@@ -78,27 +78,25 @@
         });
         
         // Navigation scroll effects
-        let lastScrollTop = 0;
         $(window).on('scroll', function() {
             const scrollTop = $(this).scrollTop();
+            const isDarkMode = $('html').hasClass('dark');
             
-            // Add/remove background on scroll
-            if (scrollTop > 100) {
-                $nav.addClass('bg-white/95 shadow-md').removeClass('bg-transparent');
+            // Add completely solid background and shadow when scrolling, remove when at top
+            if (scrollTop > 50) {
+                // Scrolled down - add SOLID background and shadow (no transparency, no blur)
+                $nav.removeClass('bg-transparent backdrop-blur-none bg-white bg-neutral-900');
+                
+                if (isDarkMode) {
+                    $nav.addClass('bg-neutral-900 shadow-lg');
+                } else {
+                    $nav.addClass('bg-white shadow-lg');
+                }
             } else {
-                $nav.removeClass('bg-white/95 shadow-md').addClass('bg-transparent');
+                // At top - transparent background, no shadow
+                $nav.removeClass('bg-white bg-neutral-900 shadow-lg');
+                $nav.addClass('bg-transparent backdrop-blur-none');
             }
-            
-            // Hide/show navigation on scroll (optional)
-            if (scrollTop > lastScrollTop && scrollTop > 200) {
-                // Scrolling down
-                $nav.css('transform', 'translateY(-100%)');
-            } else {
-                // Scrolling up
-                $nav.css('transform', 'translateY(0)');
-            }
-            
-            lastScrollTop = scrollTop;
         });
     }
     
@@ -315,12 +313,32 @@
             $html.addClass('dark');
         }
         
+        // Function to update navigation background based on current theme
+        function updateNavBackground() {
+            const $nav = $('#main-nav');
+            const scrollTop = $(window).scrollTop();
+            const isDarkMode = $html.hasClass('dark');
+            
+            // Only update if navigation should have solid background (scrolled down)
+            if (scrollTop > 50) {
+                $nav.removeClass('bg-white bg-neutral-900');
+                if (isDarkMode) {
+                    $nav.addClass('bg-neutral-900');
+                } else {
+                    $nav.addClass('bg-white');
+                }
+            }
+        }
+        
         // Theme toggle handlers
         $themeToggle.on('click', function() {
             const isDark = $html.hasClass('dark');
             
             $html.toggleClass('dark', !isDark);
             localStorage.setItem('theme', !isDark ? 'dark' : 'light');
+            
+            // Update navigation background for new theme
+            setTimeout(updateNavBackground, 50);
             
             // Add a subtle animation effect
             $('body').addClass('theme-transitioning');
@@ -333,6 +351,8 @@
         window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function(e) {
             if (!localStorage.getItem('theme')) {
                 $html.toggleClass('dark', e.matches);
+                // Update navigation background for system theme change
+                setTimeout(updateNavBackground, 50);
             }
         });
     }

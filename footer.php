@@ -1,5 +1,5 @@
     <!-- Footer -->
-    <footer class="bg-neutral-900 dark:bg-neutral-950 text-neutral-200 py-16">
+    <footer class="bg-neutral-800 dark:bg-neutral-900 text-neutral-200 py-16">
         <div class="container mx-auto px-4">
             <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
                 <!-- Brand -->

@@ -78,7 +78,7 @@
     </a>
     
     <!-- Navigation -->
-    <nav class="fixed top-0 left-0 right-0 z-50 bg-white/95 dark:bg-neutral-900/95 backdrop-blur-sm shadow-sm transition-all duration-300" id="main-nav">
+    <nav class="fixed top-0 left-0 right-0 z-50 bg-transparent backdrop-blur-none transition-all duration-300" id="main-nav">
         <div class="container mx-auto px-4">
             <div class="flex items-center justify-between h-16">
                 <!-- Logo -->
