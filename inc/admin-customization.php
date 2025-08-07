@@ -96,3 +96,5 @@ function personal_website_remove_admin_bar_margin() {
     remove_action('wp_head', '_admin_bar_bump_cb');
 }
 add_action('get_header', 'personal_website_remove_admin_bar_margin');
+
+

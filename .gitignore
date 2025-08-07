@@ -4,7 +4,11 @@
 node_modules/
 vendor/
 
-# Compiled CSS (generated from TailwindCSS)
+# Compiled CSS files (generated from TailwindCSS in ./src/)
+assets/css/style.css
+*.css.map
+
+# Legacy compiled CSS (if exists)
 style.css
 style.css.map
 

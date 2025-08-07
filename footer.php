@@ -16,7 +16,7 @@
                         <a href="<?php echo esc_url(get_social_linkedin()); ?>" 
                            target="_blank" 
                            rel="noopener noreferrer" 
-                           class="w-10 h-10 bg-neutral-800 hover:bg-primary-600 rounded-lg flex items-center justify-center transition-all duration-300 transform hover:scale-110" 
+                           class="w-10 h-10 bg-neutral-700 hover:bg-primary-600 rounded-lg flex items-center justify-center transition-all duration-300 transform hover:scale-110" 
                            aria-label="LinkedIn">
                             <i class="fab fa-linkedin-in text-lg"></i>
                         </a>
@@ -26,7 +26,7 @@
                         <a href="<?php echo esc_url(get_social_github()); ?>" 
                            target="_blank" 
                            rel="noopener noreferrer" 
-                           class="w-10 h-10 bg-neutral-800 hover:bg-neutral-700 rounded-lg flex items-center justify-center transition-all duration-300 transform hover:scale-110" 
+                           class="w-10 h-10 bg-neutral-700 hover:bg-primary-600 rounded-lg flex items-center justify-center transition-all duration-300 transform hover:scale-110" 
                            aria-label="GitHub">
                             <i class="fab fa-github text-lg"></i>
                         </a>
@@ -36,7 +36,7 @@
                         <a href="<?php echo esc_url(get_social_twitter()); ?>" 
                            target="_blank" 
                            rel="noopener noreferrer" 
-                           class="w-10 h-10 bg-neutral-800 hover:bg-blue-600 rounded-lg flex items-center justify-center transition-all duration-300 transform hover:scale-110" 
+                           class="w-10 h-10 bg-neutral-700 hover:bg-blue-600 rounded-lg flex items-center justify-center transition-all duration-300 transform hover:scale-110" 
                            aria-label="Twitter">
                             <i class="fab fa-twitter text-lg"></i>
                         </a>

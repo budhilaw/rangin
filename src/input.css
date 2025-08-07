@@ -81,6 +81,160 @@ Author: Ericsson Budhilaw
     @apply border border-neutral-100 dark:border-neutral-700;
   }
   
+  /* WordPress Widget Styling for Sidebar */
+  .widget {
+    @apply bg-white dark:bg-neutral-800 rounded-xl shadow-sm p-6 mb-8;
+    @apply border border-neutral-100 dark:border-neutral-700;
+    @apply transition-all duration-300 hover:shadow-lg;
+  }
+  
+  /* Beautiful Widget Titles with Icons */
+  .widget .widget-title,
+  .widget h1, .widget h2, .widget h3, .widget h4, .widget h5, .widget h6 {
+    @apply text-lg font-bold mb-6 text-neutral-900 dark:text-neutral-100;
+    @apply flex items-center gap-3 pb-3 border-b border-neutral-200 dark:border-neutral-700;
+    position: relative;
+  }
+  
+  .widget .widget-title::before,
+  .widget h3::before {
+    content: '';
+    @apply w-1 h-6 bg-gradient-to-b from-primary-500 to-secondary-500 rounded-full;
+  }
+  
+  /* Search Widget Specific Styling */
+  .widget_search .widget-title,
+  .sidebar .card h3:first-child {
+    display: none; /* Hide the "Search" label */
+  }
+  
+  /* Custom Search Form Styling */
+  .search-widget-wrapper {
+    position: relative;
+  }
+  
+  .widget ul {
+    @apply space-y-2 list-none p-0 m-0;
+  }
+  
+  .widget ul li {
+    @apply text-sm text-neutral-700 dark:text-neutral-300;
+  }
+  
+  .widget ul li a {
+    @apply hover:text-primary-600 dark:hover:text-primary-400 transition-colors;
+  }
+  
+  .widget select,
+  .widget input[type="text"],
+  .widget input[type="email"],
+  .widget input[type="search"],
+  .widget textarea {
+    @apply w-full px-4 py-3 bg-neutral-50 dark:bg-neutral-700 border border-neutral-200 dark:border-neutral-600;
+    @apply rounded-lg focus:ring-2 focus:ring-primary-400 focus:border-transparent;
+    @apply text-neutral-900 dark:text-neutral-100 placeholder-neutral-500 dark:placeholder-neutral-400;
+  }
+  
+  .widget input[type="submit"],
+  .widget button {
+    @apply px-4 py-2 border-0 bg-primary-600 hover:bg-primary-700 text-white rounded-lg transition-colors;
+    @apply focus:ring-2 focus:ring-primary-400 focus:ring-offset-2;
+  }
+  
+  /* Fix for WordPress default widgets in dark mode */
+  .sidebar .widget_search .search-field,
+  .sidebar .widget_categories select,
+  .sidebar .widget_archive select,
+  .sidebar .widget_meta ul li a,
+  .sidebar .widget_recent_entries ul li a,
+  .sidebar .widget_recent_comments ul li {
+    @apply text-neutral-700 dark:text-neutral-300;
+  }
+  
+  .sidebar .widget_tag_cloud .tagcloud a {
+    @apply px-3 py-1 bg-primary-100 dark:bg-primary-900 text-primary-700 dark:text-primary-300;
+    @apply rounded-full text-sm hover:bg-primary-200 dark:hover:bg-primary-800 transition-colors;
+    @apply no-underline;
+  }
+  
+  /* Specific Widget Type Styling with Icons */
+  
+  /* Recent Posts Widget */
+  .widget h3:contains("Recent Posts")::before,
+  .sidebar .card:nth-child(2) h3::before {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%236366f1'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253'/%3E%3C/svg%3E");
+    background-size: 16px;
+    background-repeat: no-repeat;
+    background-position: center;
+    @apply w-6 h-6 bg-secondary-100 dark:bg-secondary-900 rounded-lg;
+  }
+
+  h4.recent-post-title {
+    @apply mb-0 border-none;
+  }
+
+  li.recent-post-item article {
+    @apply my-6 pb-6 border-b border-neutral-200 dark:border-neutral-700;
+  }
+  
+  /* Categories Widget */
+  .widget h3:contains("Categories")::before,
+  .sidebar .card:nth-child(3) h3::before {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%236366f1'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z'/%3E%3C/svg%3E");
+    background-size: 16px;
+    background-repeat: no-repeat;
+    background-position: center;
+    @apply w-6 h-6 bg-accent-100 dark:bg-accent-900 rounded-lg;
+  }
+  
+  /* Tags Widget */
+  .widget_tag_cloud h3::before,
+  .sidebar .card:nth-child(4) h3::before {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%236366f1'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z'/%3E%3C/svg%3E");
+    background-size: 16px;
+    background-repeat: no-repeat;
+    background-position: center;
+    @apply w-6 h-6 bg-rose-100 dark:bg-rose-900 rounded-lg;
+  }
+  
+  /* Recent Posts Links Styling */
+  .sidebar .card h4 a,
+  .widget_recent_entries ul li a {
+    @apply text-neutral-800 dark:text-neutral-200 hover:text-primary-600 dark:hover:text-primary-400;
+    @apply font-medium text-sm leading-relaxed transition-colors;
+  }
+  
+  /* Category Links with Better Spacing */
+  .sidebar .card ul li a,
+  .widget_categories ul li a {
+    @apply flex items-center justify-between py-2 px-3 rounded-md;
+    @apply hover:bg-neutral-50 dark:hover:bg-neutral-700 transition-colors;
+  }
+  
+  /* Category Count Badges */
+  .sidebar .card ul li a span:last-child {
+    @apply bg-primary-100 dark:bg-primary-900 text-primary-700 dark:text-primary-300;
+    @apply px-2 py-1 rounded-full text-xs font-medium;
+  }
+  
+  /* Sidebar specific overrides */
+  .sidebar .card,
+  .sidebar .widget {
+    @apply bg-white dark:bg-neutral-800 relative overflow-visible;
+  }
+  
+  .sidebar h3,
+  .sidebar .widget-title {
+    @apply text-neutral-900 dark:text-neutral-100;
+  }
+  
+  /* Add subtle gradient to widget backgrounds */
+  .sidebar .widget::before {
+    content: '';
+    @apply absolute inset-0 bg-gradient-to-br from-transparent to-primary-25 dark:to-primary-950;
+    @apply rounded-xl opacity-30 pointer-events-none;
+  }
+  
   .section-padding {
     @apply py-16 lg:py-20;
   }

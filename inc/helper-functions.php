@@ -27,27 +27,6 @@ function reading_time($post_id = null) {
 }
 
 /**
- * Custom search form
- */
-function personal_website_search_form() {
-    $form = '<form role="search" method="get" action="' . home_url('/') . '" class="relative">
-        <input type="search" 
-               placeholder="Search posts..." 
-               value="' . get_search_query() . '" 
-               name="s" 
-               class="w-full px-4 py-3 pr-12 bg-neutral-50 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 rounded-lg focus:ring-2 focus:ring-primary-400 focus:border-transparent text-neutral-900 dark:text-neutral-100">
-        <button type="submit" class="absolute right-3 top-1/2 transform -translate-y-1/2 text-neutral-500 hover:text-primary-600 dark:text-neutral-400 dark:hover:text-primary-400">
-            <i class="fas fa-search"></i>
-        </button>
-    </form>';
-    
-    return $form;
-}
-
-// Override WordPress default search form
-add_filter('get_search_form', 'personal_website_search_form');
-
-/**
  * Custom excerpt length
  */
 function personal_website_custom_excerpt_length($length) {

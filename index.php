@@ -144,7 +144,6 @@
                             
                             <!-- Search Widget -->
                             <div class="card p-6 animate-on-scroll">
-                                <h3 class="text-xl font-semibold mb-4">Search</h3>
                                 <?php get_search_form(); ?>
                             </div>
                             

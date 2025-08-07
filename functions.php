@@ -25,6 +25,7 @@ require_once THEME_DIR . '/inc/seo-optimization.php';
 require_once THEME_DIR . '/inc/performance.php';
 require_once THEME_DIR . '/inc/nav-walker.php';
 require_once THEME_DIR . '/inc/helper-functions.php';
+require_once THEME_DIR . '/inc/custom-widgets.php';
 require_once THEME_DIR . '/inc/customizer.php';
 require_once THEME_DIR . '/inc/widgets.php';
 require_once THEME_DIR . '/inc/admin-customization.php';
