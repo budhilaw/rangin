@@ -63,12 +63,21 @@
                                             </time>
                                             <span>
                                                 <i class="fas fa-user mr-2"></i>
-                                                <?php echo get_the_author(); ?>
+                                                <?php echo get_the_author_meta('display_name'); ?>
                                             </span>
                                             <?php if (has_category()): ?>
-                                                <span>
+                                                <span class="flex items-center">
                                                     <i class="fas fa-folder mr-2"></i>
-                                                    <?php the_category(', '); ?>
+                                                    <?php
+                                                    $categories = get_the_category();
+                                                    if ($categories) {
+                                                        $category_links = array();
+                                                        foreach ($categories as $category) {
+                                                            $category_links[] = '<a href="' . esc_url(get_category_link($category->term_id)) . '" class="inline-flex items-center px-2 py-1 rounded text-xs hover:bg-secondary-200 dark:hover:bg-secondary-800 transition-colors duration-200 font-medium">' . esc_html($category->name) . '</a>';
+                                                        }
+                                                        echo implode(' ', $category_links);
+                                                    }
+                                                    ?>
                                                 </span>
                                             <?php endif; ?>
                                             <span>
@@ -99,7 +108,7 @@
                                             
                                             <?php if (has_tag()): ?>
                                                 <div class="flex flex-wrap gap-2">
-                                                    <?php the_tags('<span class="px-2 py-1 bg-primary-100 dark:bg-primary-900 text-primary-700 dark:text-primary-300 rounded text-xs">', '</span><span class="px-2 py-1 bg-primary-100 dark:bg-primary-900 text-primary-700 dark:text-primary-300 rounded text-xs">', '</span>'); ?>
+                                                    <?php the_tags('<span class="px-2 py-1 bg-primary-100 dark:bg-primary-900 text-primary-700 dark:text-primary-300 rounded text-xs hover:bg-primary-200 dark:hover:bg-primary-800 transition-colors">', '</span><span class="px-2 py-1 bg-primary-100 dark:bg-primary-900 text-primary-700 dark:text-primary-300 rounded text-xs hover:bg-primary-200 dark:hover:bg-primary-800 transition-colors">', '</span>'); ?>
                                                 </div>
                                             <?php endif; ?>
                                         </div>

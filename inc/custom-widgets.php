@@ -267,10 +267,180 @@ class EBTW_Recent_Posts_Widget extends WP_Widget {
 }
 
 /**
+ * EBTW Categories Widget
+ */
+class EBTW_Categories_Widget extends WP_Widget {
+    
+    /**
+     * Constructor
+     */
+    public function __construct() {
+        parent::__construct(
+            'ebtw_categories_widget',
+            __('EBTW - Categories', 'personal-website'),
+            array(
+                'description' => __('Display a list of categories with modern styling.', 'personal-website')
+            )
+        );
+    }
+    
+    /**
+     * Widget frontend output
+     */
+    public function widget($args, $instance) {
+        $title = !empty($instance['title']) ? $instance['title'] : __('Categories', 'personal-website');
+        $show_count = !empty($instance['show_count']) ? $instance['show_count'] : false;
+        
+        echo $args['before_widget'];
+        
+        // Widget title with gradient bar
+        if ($title) {
+            echo '<div class="widget-title-wrapper mb-4">';
+            echo '<h3 class="widget-title text-lg font-semibold text-neutral-900 dark:text-neutral-100 mb-2 flex items-center">';
+            echo esc_html($title);
+            echo '</h3>';
+            echo '</div>';
+        }
+        
+        // Get categories
+        $categories = get_categories(array(
+            'hide_empty' => true,
+            'orderby' => 'name',
+            'order' => 'ASC'
+        ));
+        
+        if (!empty($categories)) {
+            echo '<ul class="categories-list space-y-2">';
+            
+            foreach ($categories as $category) {
+                $category_link = get_category_link($category->term_id);
+                $category_name = esc_html($category->name);
+                $post_count = $category->count;
+                
+                echo '<li class="category-item group">';
+                echo '<div class="flex items-center justify-between py-2 px-3 rounded-lg bg-neutral-50 dark:bg-neutral-800 hover:bg-primary-50 dark:hover:bg-primary-900/20 transition-colors duration-200">';
+                echo '<a href="' . esc_url($category_link) . '" class="category-link flex items-center text-neutral-700 dark:text-neutral-300 hover:text-primary-600 dark:hover:text-primary-400 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors duration-200">';
+                echo '<i class="fas fa-folder mr-2 text-primary-500 dark:text-primary-400 text-sm" aria-hidden="true"></i>';
+                echo '<span class="font-medium text-sm">' . $category_name . '</span>';
+                echo '</a>';
+                
+                if ($show_count) {
+                    echo '<span class="category-count inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-primary-100 dark:bg-primary-900 text-primary-800 dark:text-primary-200 ml-2">';
+                    echo $post_count;
+                    echo '</span>';
+                }
+                
+                echo '</div>';
+                echo '</li>';
+            }
+            
+            echo '</ul>';
+        } else {
+            echo '<p class="text-neutral-600 dark:text-neutral-400 italic text-sm">' . __('No categories found.', 'personal-website') . '</p>';
+        }
+        
+        echo $args['after_widget'];
+    }
+    
+    /**
+     * Widget backend form
+     */
+    public function form($instance) {
+        $title = !empty($instance['title']) ? $instance['title'] : __('Categories', 'personal-website');
+        $show_count = !empty($instance['show_count']) ? $instance['show_count'] : false;
+        ?>
+        <div style="padding: 15px; background: #f9f9f9; border: 1px solid #ddd; border-radius: 8px; margin: 10px 0;">
+            <div style="margin-bottom: 15px;">
+                <label for="<?php echo esc_attr($this->get_field_id('title')); ?>" 
+                       style="display: block; font-weight: 600; margin-bottom: 5px; color: #23282d;">
+                    <?php _e('Title:', 'personal-website'); ?>
+                </label>
+                <input type="text" 
+                       id="<?php echo esc_attr($this->get_field_id('title')); ?>" 
+                       name="<?php echo esc_attr($this->get_field_name('title')); ?>" 
+                       value="<?php echo esc_attr($title); ?>" 
+                       style="width: 100%; padding: 8px 12px; border: 2px solid #ddd; border-radius: 4px; font-size: 14px;" />
+            </div>
+            
+            <div style="margin-bottom: 15px;">
+                <label style="display: flex; align-items: center; font-size: 14px; color: #23282d;">
+                    <input type="checkbox" 
+                           id="<?php echo esc_attr($this->get_field_id('show_count')); ?>" 
+                           name="<?php echo esc_attr($this->get_field_name('show_count')); ?>" 
+                           value="1" 
+                           <?php checked($show_count, true); ?>
+                           style="margin-right: 8px;" />
+                    <?php _e('Show post count', 'personal-website'); ?>
+                </label>
+            </div>
+            
+            <!-- Preview -->
+            <div style="margin-bottom: 15px;">
+                <h5 style="margin: 0 0 10px 0; font-size: 13px; font-weight: 600; color: #23282d;">
+                    <?php _e('Preview:', 'personal-website'); ?>
+                </h5>
+                <div style="background: #fff; padding: 15px; border-radius: 6px; border: 1px solid #e0e0e0;">
+                    <div style="margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid #e0e0e0;">
+                        <h4 style="margin: 0; font-size: 15px; font-weight: 600; color: #23282d; display: flex; align-items: center;">
+                            <span class="dashicons dashicons-category" style="margin-right: 6px; color: #0073aa;"></span>
+                            Categories
+                        </h4>
+                    </div>
+                    <div style="margin-bottom: 8px;">
+                        <div style="display: flex; align-items: center; justify-content: space-between; padding: 8px 12px; background: #f8f9fa; border-radius: 4px;">
+                            <a href="#" style="color: #0073aa; text-decoration: none; font-weight: 500; font-size: 13px; display: flex; align-items: center;">
+                                <span class="dashicons dashicons-portfolio" style="font-size: 14px; margin-right: 6px;"></span>
+                                Technology
+                            </a>
+                            <span style="background: #0073aa; color: white; padding: 2px 8px; border-radius: 12px; font-size: 11px; font-weight: 500;">5</span>
+                        </div>
+                    </div>
+                    <div style="margin-bottom: 8px;">
+                        <div style="display: flex; align-items: center; justify-content: space-between; padding: 8px 12px; background: #f8f9fa; border-radius: 4px;">
+                            <a href="#" style="color: #0073aa; text-decoration: none; font-weight: 500; font-size: 13px; display: flex; align-items: center;">
+                                <span class="dashicons dashicons-portfolio" style="font-size: 14px; margin-right: 6px;"></span>
+                                Web Development
+                            </a>
+                            <span style="background: #0073aa; color: white; padding: 2px 8px; border-radius: 12px; font-size: 11px; font-weight: 500;">3</span>
+                        </div>
+                    </div>
+                    <div>
+                        <div style="display: flex; align-items: center; justify-content: space-between; padding: 8px 12px; background: #f8f9fa; border-radius: 4px;">
+                            <a href="#" style="color: #0073aa; text-decoration: none; font-weight: 500; font-size: 13px; display: flex; align-items: center;">
+                                <span class="dashicons dashicons-portfolio" style="font-size: 14px; margin-right: 6px;"></span>
+                                Tutorials
+                            </a>
+                            <span style="background: #0073aa; color: white; padding: 2px 8px; border-radius: 12px; font-size: 11px; font-weight: 500;">8</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <p style="margin: 0; font-size: 12px; color: #666; background: #fff; padding: 10px; border-radius: 4px; border-left: 4px solid #0073aa;">
+                <strong>💡 Tip:</strong> This widget will display all categories that have posts. You can choose to show or hide the post count for each category.
+            </p>
+        </div>
+        <?php
+    }
+    
+    /**
+     * Update widget settings
+     */
+    public function update($new_instance, $old_instance) {
+        $instance = array();
+        $instance['title'] = (!empty($new_instance['title'])) ? sanitize_text_field($new_instance['title']) : '';
+        $instance['show_count'] = (!empty($new_instance['show_count'])) ? 1 : 0;
+        
+        return $instance;
+    }
+}
+
+/**
  * Register the custom widgets
  */
 function ebtw_register_custom_widgets() {
     register_widget('EBTW_Search_Widget');
     register_widget('EBTW_Recent_Posts_Widget');
+    register_widget('EBTW_Categories_Widget');
 }
 add_action('widgets_init', 'ebtw_register_custom_widgets');
