@@ -1,0 +1,154 @@
+# WordPress Theme .gitignore
+
+# Dependencies
+node_modules/
+vendor/
+
+# Compiled CSS (generated from TailwindCSS)
+style.css
+style.css.map
+
+# Build directories
+dist/
+build/
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Coverage directory used by tools like istanbul
+coverage/
+*.lcov
+
+# Dependency directories
+jspm_packages/
+
+# Optional npm cache directory
+.npm
+
+# Optional eslint cache
+.eslintcache
+
+# Optional stylelint cache
+.stylelintcache
+
+# Microbundle cache
+.rpt2_cache/
+.rts2_cache_cjs/
+.rts2_cache_es/
+.rts2_cache_umd/
+
+# Optional REPL history
+.node_repl_history
+
+# Output of 'npm pack'
+*.tgz
+
+# Yarn Integrity file
+.yarn-integrity
+
+# parcel-bundler cache (https://parceljs.org/)
+.cache
+.parcel-cache
+
+# Next.js build output
+.next
+
+# Nuxt.js build / generate output
+.nuxt
+
+# Storybook build outputs
+.out
+.storybook-out
+
+# Temporary folders
+tmp/
+temp/
+
+# Editor directories and files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Sass
+.sass-cache/
+*.css.map
+
+# Compass
+.compass/
+
+# Grunt
+.grunt/
+
+# Bower
+bower_components/
+
+# Image optimization cache
+assets/images/.cache/
+
+# Backup files
+*.bak
+*.backup
+*.old
+
+# Archive files (if any are accidentally added)
+*.zip
+*.tar.gz
+*.rar
+
+# WordPress specific
+wp-config-local.php
+wp-config-staging.php
+wp-config-production.php
+
+# Theme specific generated files
+screenshot-*.png
+
+# Development and testing files
+.phpunit.result.cache
+phpunit.xml
+.env
+.env.local
+.env.*.local
+
+# IDE specific files
+*.sublime-project
+*.sublime-workspace
+.project
+.settings/
+.buildpath
+
+# Mac specific
+.AppleDouble
+.LSOverride
+
+# Windows specific
+desktop.ini
+$RECYCLE.BIN/
+
+# Linux specific
+*~
+.fuse_hidden*
+.directory
+.Trash-*
+.nfs*

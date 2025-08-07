@@ -1,0 +1,26 @@
+{
+  "name": "personal-website-theme",
+  "version": "1.0.0",
+  "description": "A modern WordPress theme for Software Engineers with TailwindCSS",
+  "main": "index.js",
+  "scripts": {
+    "build-css": "tailwindcss -i ./assets/css/input.css -o ./style.css --watch",
+    "build-css-production": "tailwindcss -i ./assets/css/input.css -o ./style.css --minify",
+    "dev": "npm run build-css"
+  },
+  "keywords": [
+    "wordpress",
+    "theme",
+    "tailwindcss",
+    "software-engineer",
+    "portfolio"
+  ],
+  "author": "Ericsson Budhilaw",
+  "license": "MIT",
+  "devDependencies": {
+    "tailwindcss": "^3.4.0",
+    "@tailwindcss/forms": "^0.5.7",
+    "@tailwindcss/typography": "^0.5.10",
+    "@tailwindcss/aspect-ratio": "^0.4.2"
+  }
+}
