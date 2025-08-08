@@ -118,12 +118,31 @@
                     </div>
                 </div>
 
-                <!-- Comments -->
-                <?php if (comments_open() || get_comments_number()): ?>
-                    <div class="mt-16 animate-on-scroll">
-                        <?php comments_template(); ?>
-                    </div>
-                <?php endif; ?>
+                        <!-- Comments -->
+        <?php if (comments_open() || get_comments_number()): ?>
+            <div class="mt-16 animate-on-scroll" id="comments-wrapper">
+                <!-- Comments Toggle Button -->
+                <div class="text-center py-8">
+                    <button id="comments-toggle" class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-primary-500 to-accent-500 text-white rounded-lg hover:from-primary-600 hover:to-accent-600 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5">
+                        <i class="fas fa-comments mr-3 text-lg"></i>
+                        <span class="font-medium">
+                            <span id="comments-toggle-text">Show Comments</span>
+                            <?php if (get_comments_number() > 0): ?>
+                                <span class="ml-2 px-2 py-1 bg-white/20 rounded-full text-sm">
+                                    <?php echo get_comments_number(); ?>
+                                </span>
+                            <?php endif; ?>
+                        </span>
+                        <i class="fas fa-chevron-down ml-3 transition-transform duration-200" id="comments-toggle-icon"></i>
+                    </button>
+                </div>
+
+                <!-- Comments Content (hidden by default) -->
+                <div id="comments-content" class="comments-content">
+                    <?php comments_template(); ?>
+                </div>
+            </div>
+        <?php endif; ?>
             </article>
         <?php endwhile; ?>
     </div>

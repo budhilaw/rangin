@@ -536,6 +536,178 @@ function personal_website_customize_register($wp_customize) {
         'section' => 'social_media',
         'type'    => 'url',
     ));
+    
+    // =======================
+    // Footer - Brand Section
+    // =======================
+    $wp_customize->add_section('footer_brand', array(
+        'title'    => __('Footer - Brand', 'personal-website'),
+        'priority' => 40,
+    ));
+    
+    // Footer Brand Title
+    $wp_customize->add_setting('footer_brand_title', array(
+        'default'           => get_bloginfo('name'),
+        'sanitize_callback' => 'sanitize_text_field',
+    ));
+    $wp_customize->add_control('footer_brand_title', array(
+        'label'       => __('Brand Title', 'personal-website'),
+        'description' => __('Footer brand title', 'personal-website'),
+        'section'     => 'footer_brand',
+        'type'        => 'text',
+    ));
+    
+    // Footer Brand Description
+    $wp_customize->add_setting('footer_brand_description', array(
+        'default'           => 'Full-Stack Software Engineer specializing in creating innovative digital solutions. Let\'s build something amazing together.',
+        'sanitize_callback' => 'sanitize_textarea_field',
+    ));
+    $wp_customize->add_control('footer_brand_description', array(
+        'label'       => __('Brand Description', 'personal-website'),
+        'description' => __('Footer brand description text', 'personal-website'),
+        'section'     => 'footer_brand',
+        'type'        => 'textarea',
+    ));
+    
+    // Footer Social Media - X (Twitter)
+    $wp_customize->add_setting('footer_social_x', array(
+        'default'           => '',
+        'sanitize_callback' => 'esc_url_raw',
+    ));
+    $wp_customize->add_control('footer_social_x', array(
+        'label'       => __('X (Twitter) URL', 'personal-website'),
+        'description' => __('Your X (Twitter) profile URL. Leave empty to hide.', 'personal-website'),
+        'section'     => 'footer_brand',
+        'type'        => 'url',
+    ));
+    
+    // Footer Social Media - Instagram
+    $wp_customize->add_setting('footer_social_instagram', array(
+        'default'           => '',
+        'sanitize_callback' => 'esc_url_raw',
+    ));
+    $wp_customize->add_control('footer_social_instagram', array(
+        'label'       => __('Instagram URL', 'personal-website'),
+        'description' => __('Your Instagram profile URL. Leave empty to hide.', 'personal-website'),
+        'section'     => 'footer_brand',
+        'type'        => 'url',
+    ));
+    
+    // Footer Social Media - LinkedIn
+    $wp_customize->add_setting('footer_social_linkedin', array(
+        'default'           => '',
+        'sanitize_callback' => 'esc_url_raw',
+    ));
+    $wp_customize->add_control('footer_social_linkedin', array(
+        'label'       => __('LinkedIn URL', 'personal-website'),
+        'description' => __('Your LinkedIn profile URL. Leave empty to hide.', 'personal-website'),
+        'section'     => 'footer_brand',
+        'type'        => 'url',
+    ));
+    
+    // Footer Social Media - GitHub
+    $wp_customize->add_setting('footer_social_github', array(
+        'default'           => '',
+        'sanitize_callback' => 'esc_url_raw',
+    ));
+    $wp_customize->add_control('footer_social_github', array(
+        'label'       => __('GitHub URL', 'personal-website'),
+        'description' => __('Your GitHub profile URL. Leave empty to hide.', 'personal-website'),
+        'section'     => 'footer_brand',
+        'type'        => 'url',
+    ));
+    
+    // Footer Social Media - Facebook
+    $wp_customize->add_setting('footer_social_facebook', array(
+        'default'           => '',
+        'sanitize_callback' => 'esc_url_raw',
+    ));
+    $wp_customize->add_control('footer_social_facebook', array(
+        'label'       => __('Facebook URL', 'personal-website'),
+        'description' => __('Your Facebook profile URL. Leave empty to hide.', 'personal-website'),
+        'section'     => 'footer_brand',
+        'type'        => 'url',
+    ));
+    
+    // =======================
+    // Footer - Bottom Section
+    // =======================
+    $wp_customize->add_section('footer_bottom', array(
+        'title'    => __('Footer - Bottom', 'personal-website'),
+        'priority' => 41,
+    ));
+    
+    // Footer Copyright
+    $wp_customize->add_setting('footer_copyright', array(
+        'default'           => '&copy; ' . date('Y') . ' ' . get_bloginfo('name') . '. All rights reserved.',
+        'sanitize_callback' => 'wp_kses_post',
+    ));
+    $wp_customize->add_control('footer_copyright', array(
+        'label'       => __('Copyright Message', 'personal-website'),
+        'description' => __('Copyright message displayed on the left', 'personal-website'),
+        'section'     => 'footer_bottom',
+        'type'        => 'text',
+    ));
+    
+    // Footer Link 1 Text
+    $wp_customize->add_setting('footer_link_1_text', array(
+        'default'           => 'Privacy Policy',
+        'sanitize_callback' => 'sanitize_text_field',
+    ));
+    $wp_customize->add_control('footer_link_1_text', array(
+        'label'       => __('Link 1 Text', 'personal-website'),
+        'description' => __('Text for first footer link', 'personal-website'),
+        'section'     => 'footer_bottom',
+        'type'        => 'text',
+    ));
+    
+    // Footer Link 1 URL
+    $wp_customize->add_setting('footer_link_1_url', array(
+        'default'           => '',
+        'sanitize_callback' => 'esc_url_raw',
+    ));
+    $wp_customize->add_control('footer_link_1_url', array(
+        'label'       => __('Link 1 URL', 'personal-website'),
+        'description' => __('URL for first footer link. Leave empty to hide.', 'personal-website'),
+        'section'     => 'footer_bottom',
+        'type'        => 'url',
+    ));
+    
+    // Footer Link 2 Text
+    $wp_customize->add_setting('footer_link_2_text', array(
+        'default'           => 'Terms of Service',
+        'sanitize_callback' => 'sanitize_text_field',
+    ));
+    $wp_customize->add_control('footer_link_2_text', array(
+        'label'       => __('Link 2 Text', 'personal-website'),
+        'description' => __('Text for second footer link', 'personal-website'),
+        'section'     => 'footer_bottom',
+        'type'        => 'text',
+    ));
+    
+    // Footer Link 2 URL
+    $wp_customize->add_setting('footer_link_2_url', array(
+        'default'           => '',
+        'sanitize_callback' => 'esc_url_raw',
+    ));
+    $wp_customize->add_control('footer_link_2_url', array(
+        'label'       => __('Link 2 URL', 'personal-website'),
+        'description' => __('URL for second footer link. Leave empty to hide.', 'personal-website'),
+        'section'     => 'footer_bottom',
+        'type'        => 'url',
+    ));
+    
+    // Footer Made With Text
+    $wp_customize->add_setting('footer_made_with_text', array(
+        'default'           => 'Made with ❤️ by Ericsson Budhilaw',
+        'sanitize_callback' => 'sanitize_text_field',
+    ));
+    $wp_customize->add_control('footer_made_with_text', array(
+        'label'       => __('Made With Text', 'personal-website'),
+        'description' => __('Text like "Made with ❤️ by Your Name"', 'personal-website'),
+        'section'     => 'footer_bottom',
+        'type'        => 'text',
+    ));
 }
 add_action('customize_register', 'personal_website_customize_register');
 
@@ -742,4 +914,64 @@ function get_featured_posts() {
     }
     
     return $featured_posts;
+}
+
+// =======================
+// Footer Brand Functions
+// =======================
+
+function get_footer_brand_title() {
+    return get_theme_mod('footer_brand_title', get_bloginfo('name'));
+}
+
+function get_footer_brand_description() {
+    return get_theme_mod('footer_brand_description', 'Full-Stack Software Engineer specializing in creating innovative digital solutions. Let\'s build something amazing together.');
+}
+
+function get_footer_social_x() {
+    return get_theme_mod('footer_social_x', '');
+}
+
+function get_footer_social_instagram() {
+    return get_theme_mod('footer_social_instagram', '');
+}
+
+function get_footer_social_linkedin() {
+    return get_theme_mod('footer_social_linkedin', '');
+}
+
+function get_footer_social_github() {
+    return get_theme_mod('footer_social_github', '');
+}
+
+function get_footer_social_facebook() {
+    return get_theme_mod('footer_social_facebook', '');
+}
+
+// =======================
+// Footer Bottom Functions
+// =======================
+
+function get_footer_copyright() {
+    return get_theme_mod('footer_copyright', '&copy; ' . date('Y') . ' ' . get_bloginfo('name') . '. All rights reserved.');
+}
+
+function get_footer_link_1_text() {
+    return get_theme_mod('footer_link_1_text', 'Privacy Policy');
+}
+
+function get_footer_link_1_url() {
+    return get_theme_mod('footer_link_1_url', '');
+}
+
+function get_footer_link_2_text() {
+    return get_theme_mod('footer_link_2_text', 'Terms of Service');
+}
+
+function get_footer_link_2_url() {
+    return get_theme_mod('footer_link_2_url', '');
+}
+
+function get_footer_made_with_text() {
+    return get_theme_mod('footer_made_with_text', 'Made with ❤️ by Ericsson Budhilaw');
 }

@@ -24,10 +24,11 @@ function personal_website_widgets_init() {
         'after_title'   => '</h3>',
     ));
     
+    // Footer Widget Area - Maximum 2 widgets
     register_sidebar(array(
-        'name'          => esc_html__('Footer Area', 'personal-website'),
+        'name'          => esc_html__('Footer', 'personal-website'),
         'id'            => 'footer-1',
-        'description'   => esc_html__('Add widgets here to appear in footer.', 'personal-website'),
+        'description'   => esc_html__('Add up to 2 widgets here for footer. Recommended: EBTW - Quick Links and EBTW - Contact Info.', 'personal-website'),
         'before_widget' => '<div id="%1$s" class="widget %2$s">',
         'after_widget'  => '</div>',
         'before_title'  => '<h4 class="widget-title text-lg font-semibold mb-4 text-white">',

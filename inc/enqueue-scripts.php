@@ -56,9 +56,6 @@ function personal_website_preload_resources() {
     // Preload main stylesheet
     echo '<link rel="preload" href="' . get_stylesheet_uri() . '" as="style" onload="this.onload=null;this.rel=\'stylesheet\'">' . "\n";
     
-    // Preload main JavaScript
-    echo '<link rel="preload" href="' . THEME_URL . '/assets/js/main.js" as="script">' . "\n";
-    
     // Preload Font Awesome
     echo '<link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>' . "\n";
     

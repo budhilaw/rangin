@@ -18,6 +18,7 @@
         initAnimations();
         initSkillBars();
         initThemeToggle();
+        initCommentsToggle();
         
     });
     
@@ -379,5 +380,106 @@
             }, 3000);
         }, 2000);
     });
+    
+    /**
+     * Initialize comments toggle functionality
+     */
+    function initCommentsToggle() {
+        const $commentsToggle = $('#comments-toggle');
+        const $commentsContent = $('#comments-content');
+        const $toggleText = $('#comments-toggle-text');
+        const $toggleIcon = $('#comments-toggle-icon');
+        
+        if (!$commentsToggle.length || !$commentsContent.length) {
+            return;
+        }
+        
+        let commentsVisible = false;
+        
+        // Handle button click
+        $commentsToggle.on('click', function() {
+            if (commentsVisible) {
+                // Hide comments
+                $commentsContent.removeClass('visible').addClass('opacity-0');
+                setTimeout(() => {
+                    $commentsContent.hide();
+                }, 300);
+                
+                // Update button
+                $toggleText.text('Show Comments');
+                $toggleIcon.removeClass('fa-chevron-up').addClass('fa-chevron-down');
+                commentsVisible = false;
+            } else {
+                // Show comments
+                $commentsContent.show();
+                setTimeout(() => {
+                    $commentsContent.addClass('visible').removeClass('opacity-0');
+                    
+                    // Initialize animations for comment elements
+                    initCommentsAnimations();
+                }, 50);
+                
+                // Update button
+                $toggleText.text('Hide Comments');
+                $toggleIcon.removeClass('fa-chevron-down').addClass('fa-chevron-up');
+                commentsVisible = true;
+                
+                // Scroll to comments if they're not in view
+                const commentsOffset = $commentsContent.offset().top - 100;
+                $('html, body').animate({
+                    scrollTop: commentsOffset
+                }, 500);
+            }
+        });
+        
+        // Handle direct comment links (e.g., from notifications)
+        if (window.location.hash && (window.location.hash.indexOf('#comment') !== -1 || window.location.hash === '#comments')) {
+            // Auto-open comments if user navigated directly to a comment
+            $commentsToggle.trigger('click');
+            
+            // Focus on specific comment if hash is present
+            setTimeout(() => {
+                const target = $(window.location.hash);
+                if (target.length) {
+                    $('html, body').animate({
+                        scrollTop: target.offset().top - 100
+                    }, 500);
+                }
+            }, 600);
+        }
+    }
+    
+    /**
+     * Initialize animations for comment elements
+     */
+    function initCommentsAnimations() {
+        const commentElements = $('.comment-item, .comment-respond');
+        
+        if ('IntersectionObserver' in window) {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        $(entry.target).addClass('animate-fade-in-up');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            });
+            
+            commentElements.each(function() {
+                observer.observe(this);
+            });
+        } else {
+            // Fallback for older browsers
+            commentElements.each(function(index) {
+                const $element = $(this);
+                setTimeout(() => {
+                    $element.addClass('animate-fade-in-up');
+                }, index * 100);
+            });
+        }
+    }
     
 })(jQuery);

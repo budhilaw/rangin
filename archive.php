@@ -61,14 +61,29 @@
                                 <?php echo get_the_excerpt(); ?>
                             </p>
                             
+                            <!-- Tags (shown first on mobile, after read more on desktop) -->
+                            <?php if (has_category()): ?>
+                                <div class="flex flex-wrap gap-1 mb-4 md:hidden">
+                                    <?php
+                                    $categories = get_the_category();
+                                    foreach ($categories as $category):
+                                    ?>
+                                        <span class="px-2 py-1 bg-primary-100 dark:bg-primary-900 text-primary-700 dark:text-primary-300 rounded text-xs">
+                                            <?php echo $category->name; ?>
+                                        </span>
+                                    <?php endforeach; ?>
+                                </div>
+                            <?php endif; ?>
+                            
                             <div class="flex items-center justify-between">
                                 <a href="<?php the_permalink(); ?>" class="text-primary-600 hover:text-primary-800 dark:text-primary-400 dark:hover:text-primary-300 font-medium inline-flex items-center">
                                     Read More
                                     <i class="fas fa-arrow-right ml-2"></i>
                                 </a>
                                 
+                                <!-- Tags (hidden on mobile, shown on desktop) -->
                                 <?php if (has_category()): ?>
-                                    <div class="flex flex-wrap gap-1">
+                                    <div class="hidden md:flex flex-wrap gap-1">
                                         <?php
                                         $categories = get_the_category();
                                         foreach ($categories as $category):

@@ -436,11 +436,297 @@ class EBTW_Categories_Widget extends WP_Widget {
 }
 
 /**
+ * EBTW Quick Links Widget
+ * Displays navigation menu links in footer
+ */
+class EBTW_Quick_Links_Widget extends WP_Widget {
+    
+    public function __construct() {
+        parent::__construct(
+            'ebtw_quick_links',
+            __('EBTW - Quick Links', 'personal-website'),
+            array(
+                'description' => __('Display navigation menu links in footer.', 'personal-website'),
+                'classname' => 'ebtw-quick-links-widget',
+            )
+        );
+    }
+    
+    /**
+     * Display the widget
+     */
+    public function widget($args, $instance) {
+        $title = !empty($instance['title']) ? $instance['title'] : __('Quick Links', 'personal-website');
+        $menu_id = !empty($instance['menu']) ? $instance['menu'] : '';
+        
+        echo $args['before_widget'];
+        
+        if (!empty($title)) {
+            echo '<h4 class="text-lg font-semibold text-white mb-4">' . esc_html($title) . '</h4>';
+        }
+        
+        if (!empty($menu_id)) {
+            wp_nav_menu(array(
+                'menu' => $menu_id,
+                'container' => false,
+                'menu_class' => 'space-y-2',
+                'fallback_cb' => false,
+                'items_wrap' => '<ul class="%2$s">%3$s</ul>',
+                'link_before' => '',
+                'link_after' => '',
+                'depth' => 1,
+                'walker' => new EBTW_Footer_Nav_Walker(),
+            ));
+        } else {
+            echo '<p class="text-neutral-400 text-sm">' . __('Please select a menu in widget settings.', 'personal-website') . '</p>';
+        }
+        
+        echo $args['after_widget'];
+    }
+    
+    /**
+     * Widget form in admin
+     */
+    public function form($instance) {
+        $title = !empty($instance['title']) ? $instance['title'] : __('Quick Links', 'personal-website');
+        $menu_id = !empty($instance['menu']) ? $instance['menu'] : '';
+        
+        $menus = wp_get_nav_menus();
+        ?>
+        <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; margin-bottom: 15px; border-left: 4px solid #007cba;">
+            <h4 style="margin: 0 0 10px 0; color: #1d2327; font-size: 14px;">
+                🔗 EBTW Quick Links Widget
+            </h4>
+            <p style="margin: 0; color: #646970; font-size: 12px; line-height: 1.4;">
+                <strong>📍 Features:</strong> Display navigation menu links in footer with custom styling
+            </p>
+            <p style="margin: 8px 0 0 0; color: #646970; font-size: 12px; line-height: 1.4;">
+                <strong>💡 Setup:</strong> Choose a menu from Appearance > Menus, then select it here
+            </p>
+        </div>
+        
+        <p>
+            <label for="<?php echo esc_attr($this->get_field_id('title')); ?>"><?php _e('Title:', 'personal-website'); ?></label>
+            <input class="widefat" id="<?php echo esc_attr($this->get_field_id('title')); ?>" name="<?php echo esc_attr($this->get_field_name('title')); ?>" type="text" value="<?php echo esc_attr($title); ?>">
+        </p>
+        
+        <p>
+            <label for="<?php echo esc_attr($this->get_field_id('menu')); ?>"><?php _e('Select Menu:', 'personal-website'); ?></label>
+            <select class="widefat" id="<?php echo esc_attr($this->get_field_id('menu')); ?>" name="<?php echo esc_attr($this->get_field_name('menu')); ?>">
+                <option value=""><?php _e('— Select Menu —', 'personal-website'); ?></option>
+                <?php foreach ($menus as $menu): ?>
+                    <option value="<?php echo esc_attr($menu->term_id); ?>" <?php selected($menu_id, $menu->term_id); ?>>
+                        <?php echo esc_html($menu->name); ?>
+                    </option>
+                <?php endforeach; ?>
+            </select>
+            <small><?php _e('Create and manage menus in Appearance > Menus', 'personal-website'); ?></small>
+        </p>
+        <?php
+    }
+    
+    /**
+     * Update widget settings
+     */
+    public function update($new_instance, $old_instance) {
+        $instance = array();
+        $instance['title'] = (!empty($new_instance['title'])) ? sanitize_text_field($new_instance['title']) : '';
+        $instance['menu'] = (!empty($new_instance['menu'])) ? absint($new_instance['menu']) : '';
+        
+        return $instance;
+    }
+}
+
+/**
+ * EBTW Contact Info Widget
+ * Displays contact information in footer
+ */
+class EBTW_Contact_Info_Widget extends WP_Widget {
+    
+    public function __construct() {
+        parent::__construct(
+            'ebtw_contact_info',
+            __('EBTW - Contact Info', 'personal-website'),
+            array(
+                'description' => __('Display contact information with icons in footer.', 'personal-website'),
+                'classname' => 'ebtw-contact-info-widget',
+            )
+        );
+    }
+    
+    /**
+     * Display the widget
+     */
+    public function widget($args, $instance) {
+        $title = !empty($instance['title']) ? $instance['title'] : __('Get in Touch', 'personal-website');
+        $email = !empty($instance['email']) ? $instance['email'] : '';
+        $phone = !empty($instance['phone']) ? $instance['phone'] : '';
+        $address = !empty($instance['address']) ? $instance['address'] : '';
+        
+        echo $args['before_widget'];
+        
+        if (!empty($title)) {
+            echo '<h4 class="text-lg font-semibold text-white mb-4">' . esc_html($title) . '</h4>';
+        }
+        
+        echo '<ul class="space-y-3">';
+        
+        if (!empty($email)) {
+            echo '<li class="flex items-center">';
+            echo '<i class="fas fa-envelope text-primary-400 w-4 mr-3"></i>';
+            echo '<a href="mailto:' . esc_attr($email) . '" class="text-neutral-400 hover:text-primary-400 transition-colors">';
+            echo esc_html($email);
+            echo '</a>';
+            echo '</li>';
+        }
+        
+        if (!empty($phone)) {
+            echo '<li class="flex items-center">';
+            echo '<i class="fas fa-phone text-primary-400 w-4 mr-3"></i>';
+            echo '<a href="tel:' . esc_attr(str_replace(' ', '', $phone)) . '" class="text-neutral-400 hover:text-primary-400 transition-colors">';
+            echo esc_html($phone);
+            echo '</a>';
+            echo '</li>';
+        }
+        
+        if (!empty($address)) {
+            echo '<li class="flex items-center">';
+            echo '<i class="fas fa-map-marker-alt text-primary-400 w-4 mr-3"></i>';
+            echo '<span class="text-neutral-400">' . esc_html($address) . '</span>';
+            echo '</li>';
+        }
+        
+        echo '</ul>';
+        
+        echo $args['after_widget'];
+    }
+    
+    /**
+     * Widget form in admin
+     */
+    public function form($instance) {
+        $title = !empty($instance['title']) ? $instance['title'] : __('Get in Touch', 'personal-website');
+        $email = !empty($instance['email']) ? $instance['email'] : '';
+        $phone = !empty($instance['phone']) ? $instance['phone'] : '';
+        $address = !empty($instance['address']) ? $instance['address'] : '';
+        ?>
+        <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; margin-bottom: 15px; border-left: 4px solid #007cba;">
+            <h4 style="margin: 0 0 10px 0; color: #1d2327; font-size: 14px;">
+                📞 EBTW Contact Info Widget
+            </h4>
+            <p style="margin: 0; color: #646970; font-size: 12px; line-height: 1.4;">
+                <strong>📍 Features:</strong> Display contact information with Font Awesome icons
+            </p>
+            <p style="margin: 8px 0 0 0; color: #646970; font-size: 12px; line-height: 1.4;">
+                <strong>💡 Setup:</strong> Fill in the contact details you want to display. Leave empty to hide.
+            </p>
+        </div>
+        
+        <p>
+            <label for="<?php echo esc_attr($this->get_field_id('title')); ?>"><?php _e('Title:', 'personal-website'); ?></label>
+            <input class="widefat" id="<?php echo esc_attr($this->get_field_id('title')); ?>" name="<?php echo esc_attr($this->get_field_name('title')); ?>" type="text" value="<?php echo esc_attr($title); ?>">
+        </p>
+        
+        <p>
+            <label for="<?php echo esc_attr($this->get_field_id('email')); ?>"><?php _e('Email Address:', 'personal-website'); ?></label>
+            <input class="widefat" id="<?php echo esc_attr($this->get_field_id('email')); ?>" name="<?php echo esc_attr($this->get_field_name('email')); ?>" type="email" value="<?php echo esc_attr($email); ?>" placeholder="hello@example.com">
+        </p>
+        
+        <p>
+            <label for="<?php echo esc_attr($this->get_field_id('phone')); ?>"><?php _e('Phone Number:', 'personal-website'); ?></label>
+            <input class="widefat" id="<?php echo esc_attr($this->get_field_id('phone')); ?>" name="<?php echo esc_attr($this->get_field_name('phone')); ?>" type="tel" value="<?php echo esc_attr($phone); ?>" placeholder="+1 (555) 123-4567">
+        </p>
+        
+        <p>
+            <label for="<?php echo esc_attr($this->get_field_id('address')); ?>"><?php _e('Location/Address:', 'personal-website'); ?></label>
+            <input class="widefat" id="<?php echo esc_attr($this->get_field_id('address')); ?>" name="<?php echo esc_attr($this->get_field_name('address')); ?>" type="text" value="<?php echo esc_attr($address); ?>" placeholder="City, Country">
+        </p>
+        <?php
+    }
+    
+    /**
+     * Update widget settings
+     */
+    public function update($new_instance, $old_instance) {
+        $instance = array();
+        $instance['title'] = (!empty($new_instance['title'])) ? sanitize_text_field($new_instance['title']) : '';
+        
+        // Fix email sanitization - sanitize_email can return false for valid emails in some cases
+        if (!empty($new_instance['email'])) {
+            $sanitized_email = sanitize_email($new_instance['email']);
+            $instance['email'] = $sanitized_email ? $sanitized_email : sanitize_text_field($new_instance['email']);
+        } else {
+            $instance['email'] = '';
+        }
+        
+        $instance['phone'] = (!empty($new_instance['phone'])) ? sanitize_text_field($new_instance['phone']) : '';
+        $instance['address'] = (!empty($new_instance['address'])) ? sanitize_text_field($new_instance['address']) : '';
+        
+        return $instance;
+    }
+}
+
+/**
+ * Custom Footer Navigation Walker
+ * For formatting footer menu links
+ */
+class EBTW_Footer_Nav_Walker extends Walker_Nav_Menu {
+    
+    // Start Level
+    function start_lvl(&$output, $depth = 0, $args = null) {
+        $indent = str_repeat("\t", $depth);
+        $output .= "\n$indent<ul class=\"sub-menu\">\n";
+    }
+    
+    // End Level
+    function end_lvl(&$output, $depth = 0, $args = null) {
+        $indent = str_repeat("\t", $depth);
+        $output .= "$indent</ul>\n";
+    }
+    
+    // Start Element
+    function start_el(&$output, $item, $depth = 0, $args = null, $id = 0) {
+        $indent = ($depth) ? str_repeat("\t", $depth) : '';
+        
+        $classes = empty($item->classes) ? array() : (array) $item->classes;
+        $classes[] = 'menu-item-' . $item->ID;
+        
+        $class_names = join(' ', apply_filters('nav_menu_css_class', array_filter($classes), $item, $args));
+        $class_names = $class_names ? ' class="' . esc_attr($class_names) . '"' : '';
+        
+        $id = apply_filters('nav_menu_item_id', 'menu-item-' . $item->ID, $item, $args);
+        $id = $id ? ' id="' . esc_attr($id) . '"' : '';
+        
+        $output .= $indent . '<li' . $id . $class_names .'>';
+        
+        $attributes = ! empty($item->attr_title) ? ' title="'  . esc_attr($item->attr_title) .'"' : '';
+        $attributes .= ! empty($item->target) ? ' target="' . esc_attr($item->target) .'"' : '';
+        $attributes .= ! empty($item->xfn) ? ' rel="'    . esc_attr($item->xfn) .'"' : '';
+        $attributes .= ! empty($item->url) ? ' href="'   . esc_attr($item->url) .'"' : '';
+        
+        $item_output = isset($args->before) ? $args->before : '';
+        $item_output .= '<a' . $attributes . ' class="text-neutral-400 hover:text-primary-400 transition-colors">';
+        $item_output .= (isset($args->link_before) ? $args->link_before : '') . apply_filters('the_title', $item->title, $item->ID) . (isset($args->link_after) ? $args->link_after : '');
+        $item_output .= '</a>';
+        $item_output .= isset($args->after) ? $args->after : '';
+        
+        $output .= apply_filters('walker_nav_menu_start_el', $item_output, $item, $depth, $args);
+    }
+    
+    // End Element
+    function end_el(&$output, $item, $depth = 0, $args = null) {
+        $output .= "</li>\n";
+    }
+}
+
+/**
  * Register the custom widgets
  */
 function ebtw_register_custom_widgets() {
     register_widget('EBTW_Search_Widget');
     register_widget('EBTW_Recent_Posts_Widget');
     register_widget('EBTW_Categories_Widget');
+    register_widget('EBTW_Quick_Links_Widget');
+    register_widget('EBTW_Contact_Info_Widget');
 }
 add_action('widgets_init', 'ebtw_register_custom_widgets');

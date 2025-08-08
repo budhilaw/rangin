@@ -98,6 +98,13 @@
                                             <?php the_excerpt(); ?>
                                         </div>
                                         
+                                        <!-- Tags (shown first on mobile, after read more on desktop) -->
+                                        <?php if (has_tag()): ?>
+                                            <div class="flex flex-wrap gap-2 mb-4 md:hidden">
+                                                <?php the_tags('<span class="px-2 py-1 bg-primary-100 dark:bg-primary-900 text-primary-700 dark:text-primary-300 rounded text-xs hover:bg-primary-200 dark:hover:bg-primary-800 transition-colors">', '</span><span class="px-2 py-1 bg-primary-100 dark:bg-primary-900 text-primary-700 dark:text-primary-300 rounded text-xs hover:bg-primary-200 dark:hover:bg-primary-800 transition-colors">', '</span>'); ?>
+                                            </div>
+                                        <?php endif; ?>
+                                        
                                         <!-- Post Footer -->
                                         <div class="flex items-center justify-between">
                                             <a href="<?php the_permalink(); ?>" 
@@ -106,8 +113,9 @@
                                                 <i class="fas fa-arrow-right ml-2"></i>
                                             </a>
                                             
+                                            <!-- Tags (hidden on mobile, shown on desktop) -->
                                             <?php if (has_tag()): ?>
-                                                <div class="flex flex-wrap gap-2">
+                                                <div class="hidden md:flex flex-wrap gap-2">
                                                     <?php the_tags('<span class="px-2 py-1 bg-primary-100 dark:bg-primary-900 text-primary-700 dark:text-primary-300 rounded text-xs hover:bg-primary-200 dark:hover:bg-primary-800 transition-colors">', '</span><span class="px-2 py-1 bg-primary-100 dark:bg-primary-900 text-primary-700 dark:text-primary-300 rounded text-xs hover:bg-primary-200 dark:hover:bg-primary-800 transition-colors">', '</span>'); ?>
                                                 </div>
                                             <?php endif; ?>
