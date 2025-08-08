@@ -231,7 +231,50 @@ function personal_website_customize_register($wp_customize) {
         ),
     ));
     
-    // Front Page Contact Section
+    // Front Page Services Section
+    // Front Page - Services Section
+    $wp_customize->add_section('front_page_services', array(
+        'title'    => __('Front Page - Services', 'personal-website'),
+        'priority' => 32.5,
+    ));
+
+    // Services Section Title
+    $wp_customize->add_setting('services_section_title', array(
+        'default'           => 'Services',
+        'sanitize_callback' => 'sanitize_text_field',
+    ));
+    $wp_customize->add_control('services_section_title', array(
+        'label'   => __('Services Section Title', 'personal-website'),
+        'section' => 'front_page_services',
+        'type'    => 'text',
+    ));
+
+    // Services Section Subtitle
+    $wp_customize->add_setting('services_section_subtitle', array(
+        'default'           => 'I offer a range of software development services to help bring your ideas to life',
+        'sanitize_callback' => 'sanitize_textarea_field',
+    ));
+    $wp_customize->add_control('services_section_subtitle', array(
+        'label'   => __('Services Section Subtitle', 'personal-website'),
+        'section' => 'front_page_services',
+        'type'    => 'textarea',
+    ));
+
+    // Services List (JSON)
+    $wp_customize->add_setting('services_list', array(
+        'default'           => '',
+        'sanitize_callback' => 'wp_kses_post',
+    ));
+    $wp_customize->add_control('services_list', array(
+        'label'       => __('Services List (JSON Format)', 'personal-website'),
+        'description' => __('Enter services in JSON format. Max 3 services. Example: [{"title":"Web Development","description":"Custom web applications using modern technologies","icon":"fas fa-code","background":"#7c3aed","features":["Responsive Design","SEO Optimization","Performance Focused"]}]', 'personal-website'),
+        'section'     => 'front_page_services',
+        'type'        => 'textarea',
+        'input_attrs' => array(
+            'rows' => 8,
+        ),
+    ));
+
     $wp_customize->add_section('front_page_contact', array(
         'title'    => __('Front Page - Contact', 'personal-website'),
         'priority' => 33,
@@ -974,4 +1017,33 @@ function get_footer_link_2_url() {
 
 function get_footer_made_with_text() {
     return get_theme_mod('footer_made_with_text', 'Made with ❤️ by Ericsson Budhilaw');
+}
+
+// Services Section Functions
+function get_services_section_title() {
+    return get_theme_mod('services_section_title', 'Services');
+}
+
+function get_services_section_subtitle() {
+    return get_theme_mod('services_section_subtitle', 'I offer a range of software development services to help bring your ideas to life');
+}
+
+function get_services_list() {
+    $services_json = get_theme_mod('services_list', '');
+    if (empty($services_json)) {
+        return array();
+    }
+    
+    $services = json_decode($services_json, true);
+    if (json_last_error() !== JSON_ERROR_NONE || !is_array($services)) {
+        return array();
+    }
+    
+    // Limit to maximum 3 services
+    return array_slice($services, 0, 3);
+}
+
+function has_services() {
+    $services = get_services_list();
+    return !empty($services);
 }

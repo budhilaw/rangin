@@ -150,61 +150,52 @@ get_header(); ?>
     </section>
 
     <!-- Services Section -->
+    <?php if (has_services()): ?>
     <section id="services" class="py-20 bg-accent-25 dark:bg-primary-950">
         <div class="container mx-auto px-4">
             <div class="text-center mb-16">
-                <h2 class="text-4xl font-bold mb-4">Services</h2>
+                <h2 class="text-4xl font-bold mb-4"><?php echo esc_html(get_services_section_title()); ?></h2>
                 <p class="text-neutral-600 dark:text-neutral-400 max-w-2xl mx-auto">
-                    I offer a range of software development services to help bring your ideas to life
+                    <?php echo esc_html(get_services_section_subtitle()); ?>
                 </p>
                 <div class="w-24 h-1 bg-gradient-to-r from-primary-500 to-secondary-500 mx-auto mt-4"></div>
             </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <?php 
+            $services = get_services_list();
+            $service_count = count($services);
+            $grid_class = '';
+            
+            if ($service_count == 1) {
+                $grid_class = 'grid grid-cols-1 gap-8 max-w-lg mx-auto';
+            } elseif ($service_count == 2) {
+                $grid_class = 'grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto';
+            } else {
+                $grid_class = 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8';
+            }
+            ?>
+            <div class="<?php echo esc_attr($grid_class); ?>">
+                <?php foreach ($services as $service): ?>
                 <div class="service-card card p-8 animate-on-scroll">
-                    <div class="w-16 h-16 bg-primary-100 dark:bg-primary-900 rounded-lg flex items-center justify-center mb-6">
-                        <i class="fas fa-code text-2xl text-primary-600 dark:text-primary-400"></i>
+                    <div class="w-16 h-16 rounded-lg flex items-center justify-center mb-6" style="background-color: <?php echo esc_attr($service['background'] ?? '#7c3aed'); ?>20;">
+                        <i class="<?php echo esc_attr($service['icon'] ?? 'fas fa-cog'); ?> text-2xl" style="color: <?php echo esc_attr($service['background'] ?? '#7c3aed'); ?>;"></i>
                     </div>
-                    <h3 class="text-xl font-semibold mb-4">Web Development</h3>
+                    <h3 class="text-xl font-semibold mb-4"><?php echo esc_html($service['title'] ?? ''); ?></h3>
                     <p class="text-neutral-600 dark:text-neutral-400 mb-4">
-                        Custom web applications using modern technologies like React, Next.js, and Node.js
+                        <?php echo esc_html($service['description'] ?? ''); ?>
                     </p>
+                    <?php if (!empty($service['features']) && is_array($service['features'])): ?>
                     <ul class="text-sm text-neutral-500 dark:text-neutral-400 space-y-1">
-                        <li><i class="fas fa-check text-accent-500 mr-2"></i>Responsive Design</li>
-                        <li><i class="fas fa-check text-accent-500 mr-2"></i>SEO Optimization</li>
-                        <li><i class="fas fa-check text-accent-500 mr-2"></i>Performance Focused</li>
+                        <?php foreach ($service['features'] as $feature): ?>
+                        <li><i class="fas fa-check text-accent-500 mr-2"></i><?php echo esc_html($feature); ?></li>
+                        <?php endforeach; ?>
                     </ul>
+                    <?php endif; ?>
                 </div>
-                <div class="service-card card p-8 animate-on-scroll">
-                    <div class="w-16 h-16 bg-accent-100 dark:bg-accent-900 rounded-lg flex items-center justify-center mb-6">
-                        <i class="fas fa-mobile-alt text-2xl text-accent-600 dark:text-accent-400"></i>
-                    </div>
-                    <h3 class="text-xl font-semibold mb-4">Mobile Apps</h3>
-                    <p class="text-neutral-600 dark:text-neutral-400 mb-4">
-                        Cross-platform mobile applications using React Native and Flutter
-                    </p>
-                    <ul class="text-sm text-neutral-500 dark:text-neutral-400 space-y-1">
-                        <li><i class="fas fa-check text-accent-500 mr-2"></i>iOS & Android</li>
-                        <li><i class="fas fa-check text-accent-500 mr-2"></i>Native Performance</li>
-                        <li><i class="fas fa-check text-accent-500 mr-2"></i>App Store Ready</li>
-                    </ul>
-                </div>
-                <div class="service-card card p-8 animate-on-scroll">
-                    <div class="w-16 h-16 bg-secondary-100 dark:bg-secondary-900 rounded-lg flex items-center justify-center mb-6">
-                        <i class="fas fa-server text-2xl text-secondary-600 dark:text-secondary-400"></i>
-                    </div>
-                    <h3 class="text-xl font-semibold mb-4">Backend Development</h3>
-                    <p class="text-neutral-600 dark:text-neutral-400 mb-4">
-                        Scalable backend solutions with APIs, databases, and cloud infrastructure
-                    </p>
-                    <ul class="text-sm text-neutral-500 dark:text-neutral-400 space-y-1">
-                        <li><i class="fas fa-check text-accent-500 mr-2"></i>RESTful APIs</li>
-                        <li><i class="fas fa-check text-accent-500 mr-2"></i>Database Design</li>
-                        <li><i class="fas fa-check text-accent-500 mr-2"></i>Cloud Deployment</li>
-                    </ul>
-                </div>
+                <?php endforeach; ?>
             </div>
         </div>
     </section>
+    <?php endif; ?>
 
     <!-- Portfolio Section -->
     <section id="portfolio" class="py-20 bg-neutral-50 dark:bg-neutral-850">
