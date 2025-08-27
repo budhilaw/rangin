@@ -443,6 +443,38 @@ function personal_website_customize_register($wp_customize) {
         'type'        => 'textarea',
     ));
 
+    // Portfolio Settings Section
+    $wp_customize->add_section('portfolio_settings', array(
+        'title'    => __('Portfolio Settings', 'personal-website'),
+        'priority' => 32.65,
+    ));
+
+    // Portfolio Categories
+    $wp_customize->add_setting('portfolio_categories', array(
+        'default'           => '',
+        'sanitize_callback' => 'wp_kses_post',
+    ));
+    $wp_customize->add_control('portfolio_categories', array(
+        'label'       => __('Portfolio Categories (JSON Format)', 'personal-website'),
+        'description' => __('Define custom categories for your portfolio items. Example: [{"slug":"mobile","name":"Mobile","color":"green"},{"slug":"backend","name":"Backend","color":"blue"},{"slug":"frontend","name":"Frontend","color":"purple"}]. Available colors: green, blue, purple, orange, red, teal, indigo, pink, gray', 'personal-website'),
+        'section'     => 'portfolio_settings',
+        'type'        => 'textarea',
+        'input_attrs' => array(
+            'rows' => 6,
+        ),
+    ));
+
+    // Help Text for Portfolio Categories
+    $wp_customize->add_setting('portfolio_categories_help', array(
+        'sanitize_callback' => 'sanitize_text_field',
+    ));
+    $wp_customize->add_control('portfolio_categories_help', array(
+        'label'       => __('💡 How to Configure Categories', 'personal-website'),
+        'description' => __('<strong>JSON Format Example:</strong><br><code>[{"slug":"mobile","name":"Mobile Apps","color":"green"},{"slug":"web","name":"Web Development","color":"blue"},{"slug":"api","name":"API Development","color":"purple"},{"slug":"fullstack","name":"Full Stack","color":"orange"}]</code><br><br><strong>Fields:</strong><br>• <strong>slug</strong>: Unique identifier (lowercase, no spaces)<br>• <strong>name</strong>: Display name for the category<br>• <strong>color</strong>: Badge color (green, blue, purple, orange, red, teal, indigo, pink, gray)<br><br><strong>Note:</strong> Leave empty to use default categories (Mobile, Backend, Frontend, Full Stack)', 'personal-website'),
+        'section'     => 'portfolio_settings',
+        'type'        => 'hidden',
+    ));
+
     // About Page - Skills & Expertise Section
     $wp_customize->add_section('about_page_skills', array(
         'title'    => __('About Page - Skills & Expertise', 'personal-website'),
@@ -1214,4 +1246,50 @@ function get_about_page_subtitle() {
 function has_about_page_subtitle() {
     $custom_subtitle = get_theme_mod('about_page_subtitle', '');
     return !empty($custom_subtitle) || !empty(get_the_excerpt());
+}
+
+// Portfolio Categories Functions
+function get_portfolio_categories() {
+    $categories_json = get_theme_mod('portfolio_categories', '');
+    
+    // Default categories if none are configured
+    $default_categories = array(
+        array('slug' => 'mobile', 'name' => 'Mobile', 'color' => 'green'),
+        array('slug' => 'backend', 'name' => 'Backend', 'color' => 'blue'),
+        array('slug' => 'frontend', 'name' => 'Frontend', 'color' => 'purple'),
+        array('slug' => 'fullstack', 'name' => 'Full Stack', 'color' => 'orange')
+    );
+    
+    if (empty($categories_json)) {
+        return $default_categories;
+    }
+    
+    $categories = json_decode($categories_json, true);
+    if (json_last_error() !== JSON_ERROR_NONE || !is_array($categories)) {
+        return $default_categories;
+    }
+    
+    // Validate each category has required fields
+    $valid_categories = array();
+    foreach ($categories as $category) {
+        if (isset($category['slug']) && isset($category['name'])) {
+            $valid_categories[] = array(
+                'slug' => sanitize_title($category['slug']),
+                'name' => sanitize_text_field($category['name']),
+                'color' => sanitize_text_field($category['color'] ?? 'blue')
+            );
+        }
+    }
+    
+    return !empty($valid_categories) ? $valid_categories : $default_categories;
+}
+
+function get_portfolio_category_by_slug($slug) {
+    $categories = get_portfolio_categories();
+    foreach ($categories as $category) {
+        if ($category['slug'] === $slug) {
+            return $category;
+        }
+    }
+    return null;
 }

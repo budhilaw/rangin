@@ -30,3 +30,4 @@ require_once THEME_DIR . '/inc/customizer.php';
 require_once THEME_DIR . '/inc/widgets.php';
 require_once THEME_DIR . '/inc/admin-customization.php';
 require_once THEME_DIR . '/inc/comment-walker.php';
+require_once THEME_DIR . '/inc/portfolio-post-type.php';
