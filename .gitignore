@@ -8,7 +8,6 @@ vendor/
 *.css.map
 
 # Legacy compiled CSS (if exists)
-style.css
 style.css.map
 
 # Build directories
