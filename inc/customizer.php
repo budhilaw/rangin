@@ -475,6 +475,122 @@ function personal_website_customize_register($wp_customize) {
         'type'        => 'hidden',
     ));
 
+    // Front Page - Portfolio Section
+    $wp_customize->add_section('front_page_portfolio', array(
+        'title'    => __('Front Page - Portfolio', 'personal-website'),
+        'priority' => 32.65,
+    ));
+
+    // Portfolio Section Title
+    $wp_customize->add_setting('portfolio_section_title', array(
+        'default'           => 'Featured Projects',
+        'sanitize_callback' => 'sanitize_text_field',
+    ));
+    $wp_customize->add_control('portfolio_section_title', array(
+        'label'       => __('Portfolio Section Title', 'personal-website'),
+        'description' => __('Title for the portfolio section on front page', 'personal-website'),
+        'section'     => 'front_page_portfolio',
+        'type'        => 'text',
+    ));
+
+    // Portfolio Section Description
+    $wp_customize->add_setting('portfolio_section_description', array(
+        'default'           => 'Here are some of the projects I\'ve worked on recently',
+        'sanitize_callback' => 'sanitize_textarea_field',
+    ));
+    $wp_customize->add_control('portfolio_section_description', array(
+        'label'       => __('Portfolio Section Description', 'personal-website'),
+        'description' => __('Description under the portfolio section title', 'personal-website'),
+        'section'     => 'front_page_portfolio',
+        'type'        => 'textarea',
+    ));
+
+    // Number of Portfolio Items to Show
+    $wp_customize->add_setting('portfolio_posts_count', array(
+        'default'           => 6,
+        'sanitize_callback' => 'absint',
+    ));
+    $wp_customize->add_control('portfolio_posts_count', array(
+        'label'       => __('Number of Portfolio Items', 'personal-website'),
+        'description' => __('How many portfolio items to display (1-12)', 'personal-website'),
+        'section'     => 'front_page_portfolio',
+        'type'        => 'number',
+        'input_attrs' => array(
+            'min' => 1,
+            'max' => 12,
+            'step' => 1,
+        ),
+    ));
+
+    // Portfolio Section Show/Hide
+    $wp_customize->add_setting('portfolio_section_show', array(
+        'default'           => true,
+        'sanitize_callback' => 'wp_validate_boolean',
+    ));
+    $wp_customize->add_control('portfolio_section_show', array(
+        'label'       => __('Show Portfolio Section', 'personal-website'),
+        'description' => __('Display the portfolio section on the front page', 'personal-website'),
+        'section'     => 'front_page_portfolio',
+        'type'        => 'checkbox',
+    ));
+
+    // Featured Portfolio Items (specific post IDs)
+    $wp_customize->add_setting('featured_portfolio_1', array(
+        'default'           => '',
+        'sanitize_callback' => 'absint',
+    ));
+    $wp_customize->add_control('featured_portfolio_1', array(
+        'label'       => __('Featured Portfolio Item 1 (ID)', 'personal-website'),
+        'description' => __('Enter portfolio post ID for first featured item. Leave empty for automatic selection.', 'personal-website'),
+        'section'     => 'front_page_portfolio',
+        'type'        => 'number',
+        'input_attrs' => array(
+            'min' => 1,
+            'step' => 1,
+        ),
+    ));
+
+    $wp_customize->add_setting('featured_portfolio_2', array(
+        'default'           => '',
+        'sanitize_callback' => 'absint',
+    ));
+    $wp_customize->add_control('featured_portfolio_2', array(
+        'label'       => __('Featured Portfolio Item 2 (ID)', 'personal-website'),
+        'description' => __('Enter portfolio post ID for second featured item. Leave empty for automatic selection.', 'personal-website'),
+        'section'     => 'front_page_portfolio',
+        'type'        => 'number',
+        'input_attrs' => array(
+            'min' => 1,
+            'step' => 1,
+        ),
+    ));
+
+    $wp_customize->add_setting('featured_portfolio_3', array(
+        'default'           => '',
+        'sanitize_callback' => 'absint',
+    ));
+    $wp_customize->add_control('featured_portfolio_3', array(
+        'label'       => __('Featured Portfolio Item 3 (ID)', 'personal-website'),
+        'description' => __('Enter portfolio post ID for third featured item. Leave empty for automatic selection.', 'personal-website'),
+        'section'     => 'front_page_portfolio',
+        'type'        => 'number',
+        'input_attrs' => array(
+            'min' => 1,
+            'step' => 1,
+        ),
+    ));
+
+    // Help Text for Portfolio
+    $wp_customize->add_setting('portfolio_help', array(
+        'sanitize_callback' => 'sanitize_text_field',
+    ));
+    $wp_customize->add_control('portfolio_help', array(
+        'label'       => __('💡 How It Works', 'personal-website'),
+        'description' => __('<strong>Automatic Mode:</strong> Leave featured item IDs empty to show recent portfolio items.<br><strong>Manual Mode:</strong> Enter specific portfolio post IDs to feature those items.<br><br><strong>Finding Portfolio IDs:</strong> Go to Portfolio → All Portfolio Items, hover over an item title and look at the URL. The number after "post=" is the portfolio ID.', 'personal-website'),
+        'section'     => 'front_page_portfolio',
+        'type'        => 'hidden',
+    ));
+
     // About Page - Skills & Expertise Section
     $wp_customize->add_section('about_page_skills', array(
         'title'    => __('About Page - Skills & Expertise', 'personal-website'),
@@ -1292,4 +1408,90 @@ function get_portfolio_category_by_slug($slug) {
         }
     }
     return null;
+}
+
+// Portfolio Section Functions for Front Page
+function get_portfolio_section_show() {
+    return get_theme_mod('portfolio_section_show', true);
+}
+
+function get_portfolio_section_title() {
+    return get_theme_mod('portfolio_section_title', 'Featured Projects');
+}
+
+function get_portfolio_section_description() {
+    return get_theme_mod('portfolio_section_description', 'Here are some of the projects I\'ve worked on recently');
+}
+
+function get_portfolio_posts_count() {
+    return get_theme_mod('portfolio_posts_count', 6);
+}
+
+function get_featured_portfolio_1() {
+    return get_theme_mod('featured_portfolio_1', '');
+}
+
+function get_featured_portfolio_2() {
+    return get_theme_mod('featured_portfolio_2', '');
+}
+
+function get_featured_portfolio_3() {
+    return get_theme_mod('featured_portfolio_3', '');
+}
+
+function get_front_page_portfolio_posts() {
+    // Get custom portfolio IDs
+    $portfolio_1_id = get_featured_portfolio_1();
+    $portfolio_2_id = get_featured_portfolio_2();
+    $portfolio_3_id = get_featured_portfolio_3();
+    
+    // Get the maximum number of posts to show
+    $posts_count = get_portfolio_posts_count();
+    
+    $portfolio_posts = array();
+    
+    // If ANY portfolio ID is provided, use manual selection mode
+    if ($portfolio_1_id || $portfolio_2_id || $portfolio_3_id) {
+        // Process each portfolio ID individually, maintaining order
+        $portfolio_ids_ordered = array($portfolio_1_id, $portfolio_2_id, $portfolio_3_id);
+        
+        foreach ($portfolio_ids_ordered as $portfolio_id) {
+            if ($portfolio_id && count($portfolio_posts) < $posts_count) {
+                $post = get_post($portfolio_id);
+                if ($post && $post->post_status === 'publish' && $post->post_type === 'portfolio') {
+                    $portfolio_posts[] = $post;
+                }
+            }
+        }
+        
+        // If we still need more posts and haven't reached the limit, fill with recent posts
+        if (count($portfolio_posts) < $posts_count) {
+            $excluded_ids = wp_list_pluck($portfolio_posts, 'ID');
+            $additional_posts = get_posts(array(
+                'post_type' => 'portfolio',
+                'posts_per_page' => $posts_count - count($portfolio_posts),
+                'post_status' => 'publish',
+                'exclude' => $excluded_ids,
+                'orderby' => 'date',
+                'order' => 'DESC'
+            ));
+            $portfolio_posts = array_merge($portfolio_posts, $additional_posts);
+        }
+    } else {
+        // Automatic mode: get recent portfolio posts
+        $portfolio_posts = get_posts(array(
+            'post_type' => 'portfolio',
+            'posts_per_page' => $posts_count,
+            'post_status' => 'publish',
+            'orderby' => 'date',
+            'order' => 'DESC'
+        ));
+    }
+    
+    return $portfolio_posts;
+}
+
+function has_portfolio_posts() {
+    $posts = get_front_page_portfolio_posts();
+    return !empty($posts);
 }
