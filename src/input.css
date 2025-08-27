@@ -1,10 +1,3 @@
-/*
-Theme Name: Personal Website
-Description: A modern, SEO-optimized WordPress theme for Software Engineers showcasing skills, portfolio, and blog with TailwindCSS
-Version: 1.0
-Author: Ericsson Budhilaw
-*/
-
 /* TailwindCSS Base */
 @tailwind base;
 @tailwind components;
@@ -545,7 +538,7 @@ Author: Ericsson Budhilaw
 }
 
 .comment-respond {
-  @apply bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-700;
+  @apply bg-white dark:bg-neutral-900 dark:border-neutral-700;
 }
 
 .comment-form .form-group label {

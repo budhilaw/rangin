@@ -413,6 +413,102 @@ function personal_website_customize_register($wp_customize) {
         'type'        => 'textarea',
     ));
     
+    // About Page - General Settings
+    $wp_customize->add_section('about_page_general', array(
+        'title'    => __('About Page - General', 'personal-website'),
+        'priority' => 32.6,
+    ));
+
+    // About Page Title
+    $wp_customize->add_setting('about_page_title', array(
+        'default'           => '',
+        'sanitize_callback' => 'sanitize_text_field',
+    ));
+    $wp_customize->add_control('about_page_title', array(
+        'label'       => __('About Page Title', 'personal-website'),
+        'description' => __('Custom title for the About page. Leave empty to use the page title.', 'personal-website'),
+        'section'     => 'about_page_general',
+        'type'        => 'text',
+    ));
+
+    // About Page Subtitle
+    $wp_customize->add_setting('about_page_subtitle', array(
+        'default'           => '',
+        'sanitize_callback' => 'sanitize_textarea_field',
+    ));
+    $wp_customize->add_control('about_page_subtitle', array(
+        'label'       => __('About Page Subtitle', 'personal-website'),
+        'description' => __('Custom subtitle/description for the About page. Leave empty to use the page excerpt.', 'personal-website'),
+        'section'     => 'about_page_general',
+        'type'        => 'textarea',
+    ));
+
+    // About Page - Skills & Expertise Section
+    $wp_customize->add_section('about_page_skills', array(
+        'title'    => __('About Page - Skills & Expertise', 'personal-website'),
+        'priority' => 32.7,
+    ));
+
+    // Show/Hide Skills Section
+    $wp_customize->add_setting('about_skills_show', array(
+        'default'           => true,
+        'sanitize_callback' => 'wp_validate_boolean',
+    ));
+    $wp_customize->add_control('about_skills_show', array(
+        'label'       => __('Show Skills & Expertise Section', 'personal-website'),
+        'description' => __('Display the skills section on the About page', 'personal-website'),
+        'section'     => 'about_page_skills',
+        'type'        => 'checkbox',
+    ));
+
+    // Skills Section Title
+    $wp_customize->add_setting('about_skills_title', array(
+        'default'           => 'Skills & Expertise',
+        'sanitize_callback' => 'sanitize_text_field',
+    ));
+    $wp_customize->add_control('about_skills_title', array(
+        'label'   => __('Skills Section Title', 'personal-website'),
+        'section' => 'about_page_skills',
+        'type'    => 'text',
+    ));
+
+    // Skills Section Subtitle
+    $wp_customize->add_setting('about_skills_subtitle', array(
+        'default'           => 'Technologies and tools I work with to bring ideas to life',
+        'sanitize_callback' => 'sanitize_textarea_field',
+    ));
+    $wp_customize->add_control('about_skills_subtitle', array(
+        'label'   => __('Skills Section Subtitle', 'personal-website'),
+        'section' => 'about_page_skills',
+        'type'    => 'textarea',
+    ));
+
+    // Skills List (JSON)
+    $wp_customize->add_setting('about_skills_list', array(
+        'default'           => '',
+        'sanitize_callback' => 'wp_kses_post',
+    ));
+    $wp_customize->add_control('about_skills_list', array(
+        'label'       => __('Skills List (JSON Format)', 'personal-website'),
+        'description' => __('Enter skills in JSON format. Max 8 skills. Example: [{"name":"React","icon":"fab fa-react","color":"blue"},{"name":"Node.js","icon":"fab fa-node-js","color":"green"}]. Available colors: blue, green, purple, orange, yellow, red, teal, indigo, pink, gray', 'personal-website'),
+        'section'     => 'about_page_skills',
+        'type'        => 'textarea',
+        'input_attrs' => array(
+            'rows' => 8,
+        ),
+    ));
+
+    // Help Text for Skills
+    $wp_customize->add_setting('about_skills_help', array(
+        'sanitize_callback' => 'sanitize_text_field',
+    ));
+    $wp_customize->add_control('about_skills_help', array(
+        'label'       => __('💡 How to Add Skills', 'personal-website'),
+        'description' => __('<strong>JSON Format Example:</strong><br><code>[{"name":"React","icon":"fab fa-react","color":"blue"},{"name":"PHP","icon":"fab fa-php","color":"purple"},{"name":"JavaScript","icon":"fab fa-js-square","color":"yellow"}]</code><br><br><strong>Icon Classes:</strong> Use Font Awesome classes like "fab fa-react", "fas fa-database", "fab fa-node-js"<br><br><strong>Colors:</strong> blue, green, purple, orange, yellow, red, teal, indigo, pink, gray<br><br><strong>Max Skills:</strong> 8 skills recommended for best layout', 'personal-website'),
+        'section'     => 'about_page_skills',
+        'type'        => 'hidden',
+    ));
+    
     // Front Page Latest Posts Section
     $wp_customize->add_section('front_page_latest_posts', array(
         'title'    => __('Front Page - Latest Posts', 'personal-website'),
@@ -1046,4 +1142,76 @@ function get_services_list() {
 function has_services() {
     $services = get_services_list();
     return !empty($services);
+}
+
+// About Page Skills Functions
+function get_about_skills_show() {
+    return get_theme_mod('about_skills_show', true);
+}
+
+function get_about_skills_title() {
+    return get_theme_mod('about_skills_title', 'Skills & Expertise');
+}
+
+function get_about_skills_subtitle() {
+    return get_theme_mod('about_skills_subtitle', 'Technologies and tools I work with to bring ideas to life');
+}
+
+function get_about_skills_list() {
+    $skills_json = get_theme_mod('about_skills_list', '');
+    if (empty($skills_json)) {
+        // Return default skills if none are configured
+        return array(
+            array('name' => 'React', 'icon' => 'fab fa-react', 'color' => 'blue'),
+            array('name' => 'Node.js', 'icon' => 'fab fa-node-js', 'color' => 'green'),
+            array('name' => 'PHP', 'icon' => 'fab fa-php', 'color' => 'purple'),
+            array('name' => 'Database', 'icon' => 'fas fa-database', 'color' => 'orange'),
+            array('name' => 'JavaScript', 'icon' => 'fab fa-js-square', 'color' => 'yellow'),
+            array('name' => 'Laravel', 'icon' => 'fab fa-laravel', 'color' => 'red'),
+            array('name' => 'Docker', 'icon' => 'fab fa-docker', 'color' => 'teal'),
+            array('name' => 'AWS', 'icon' => 'fab fa-aws', 'color' => 'indigo')
+        );
+    }
+    
+    $skills = json_decode($skills_json, true);
+    if (json_last_error() !== JSON_ERROR_NONE || !is_array($skills)) {
+        // Return default skills if JSON is invalid
+        return array(
+            array('name' => 'React', 'icon' => 'fab fa-react', 'color' => 'blue'),
+            array('name' => 'Node.js', 'icon' => 'fab fa-node-js', 'color' => 'green'),
+            array('name' => 'PHP', 'icon' => 'fab fa-php', 'color' => 'purple'),
+            array('name' => 'JavaScript', 'icon' => 'fab fa-js-square', 'color' => 'yellow')
+        );
+    }
+    
+    // Limit to maximum 8 skills
+    return array_slice($skills, 0, 8);
+}
+
+function has_about_skills() {
+    return get_about_skills_show() && !empty(get_about_skills_list());
+}
+
+// About Page General Functions
+function get_about_page_title() {
+    $custom_title = get_theme_mod('about_page_title', '');
+    if (!empty($custom_title)) {
+        return $custom_title;
+    }
+    // Fallback to page title if no custom title is set
+    return get_the_title();
+}
+
+function get_about_page_subtitle() {
+    $custom_subtitle = get_theme_mod('about_page_subtitle', '');
+    if (!empty($custom_subtitle)) {
+        return $custom_subtitle;
+    }
+    // Fallback to page excerpt if no custom subtitle is set
+    return get_the_excerpt();
+}
+
+function has_about_page_subtitle() {
+    $custom_subtitle = get_theme_mod('about_page_subtitle', '');
+    return !empty($custom_subtitle) || !empty(get_the_excerpt());
 }
