@@ -209,6 +209,13 @@ get_header(); ?>
     </section>
 
     <!-- Related Projects -->
+    <?php
+    // Check total number of portfolio posts
+    $total_portfolio_count = wp_count_posts('portfolio')->publish;
+    
+    // Only show "More Projects" section if there's more than 1 portfolio post
+    if ($total_portfolio_count > 1):
+    ?>
     <section class="py-20 bg-white dark:bg-neutral-900">
         <div class="container mx-auto px-4">
             <div class="max-w-6xl mx-auto">
@@ -307,6 +314,7 @@ get_header(); ?>
             </div>
         </div>
     </section>
+    <?php endif; ?>
     
     <?php endwhile; ?>
 </main>
