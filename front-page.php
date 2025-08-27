@@ -71,7 +71,7 @@ get_header(); ?>
                                          alt="<?php echo esc_attr(get_personal_name()); ?>" 
                                          class="w-full max-w-sm mx-auto lg:mx-0 rounded-2xl shadow-2xl object-cover aspect-[3/4]">
                                     <!-- Decorative elements -->
-                                    <div class="absolute -inset-4 bg-gradient-to-r from-primary-500/20 to-accent-500/20 rounded-2xl -z-10 blur-xl"></div>
+                                    <div class="absolute -inset-2 bg-gradient-to-r from-primary-500/20 to-accent-500/20 rounded-2xl -z-10 blur-xl"></div>
                                 </div>
                             </div>
                             
@@ -287,7 +287,7 @@ get_header(); ?>
                     <!-- Fallback gradient when no featured image -->
                     <div class="relative h-48 bg-gradient-to-r from-primary-400 to-secondary-500 flex items-center justify-center">
                         <a href="<?php echo esc_url($permalink); ?>" class="block w-full h-full flex items-center justify-center text-white text-lg font-semibold hover:bg-black/10 transition-colors">
-                            <i class="fas fa-eye mr-2"></i>
+                            <i class="fas fa-epy-20 bg-white dark:bg-neutral-900ye mr-2"></i>
                             View Project
                         </a>
                         <?php if ($category_name): ?>
