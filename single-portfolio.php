@@ -123,7 +123,7 @@ get_header(); ?>
                         <div class="card p-6">
                             <h3 class="text-xl font-bold mb-4 text-neutral-900 dark:text-neutral-100">
                                 <i class="fas fa-tools mr-2 text-primary-600"></i>
-                                Technologies Used
+                                Technologies
                             </h3>
                             <div class="flex flex-wrap gap-2">
                                 <?php foreach ($tech_array as $tech): ?>
@@ -140,7 +140,7 @@ get_header(); ?>
                         <div class="card p-6">
                             <h3 class="text-xl font-bold mb-4 text-neutral-900 dark:text-neutral-100">
                                 <i class="fas fa-link mr-2 text-primary-600"></i>
-                                Project Links
+                                Links
                             </h3>
                             <div class="space-y-3">
                                 <?php if ($demo_link): ?>
@@ -172,7 +172,7 @@ get_header(); ?>
                         <div class="card p-6">
                             <h3 class="text-xl font-bold mb-4 text-neutral-900 dark:text-neutral-100">
                                 <i class="fas fa-info-circle mr-2 text-primary-600"></i>
-                                Project Details
+                                Details
                             </h3>
                             <div class="space-y-3">
                                 <?php if ($category): ?>
