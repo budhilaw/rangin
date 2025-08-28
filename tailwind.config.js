@@ -26,7 +26,12 @@ module.exports = {
     'grid-cols-1',
     'grid-cols-2',
     'md:grid-cols-2',
-    'gap-8'
+    'gap-8',
+    // Overscroll prevention
+    'overscroll-none',
+    'overscroll-y-none',
+    'touch-pan-x',
+    'touch-pan-y'
   ],
   darkMode: 'class',
   theme: {

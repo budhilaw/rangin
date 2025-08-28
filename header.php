@@ -15,9 +15,54 @@
                 document.documentElement.classList.add('dark');
             }
         })();
+        
+        // Prevent overscroll/bounce behavior - Simple approach
+        (function() {
+            function applyOverscrollPrevention() {
+                // Apply CSS properties via JavaScript to ensure they take effect
+                const html = document.documentElement;
+                const body = document.body;
+                
+                html.style.overscrollBehavior = 'none';
+                html.style.overscrollBehaviorY = 'none';
+                html.style.webkitOverscrollBehavior = 'none';
+                
+                body.style.overscrollBehavior = 'none';
+                body.style.overscrollBehaviorY = 'none';
+                body.style.webkitOverscrollBehavior = 'none';
+                body.style.touchAction = 'pan-x pan-y';
+                
+                // Prevent pull-to-refresh on touch devices
+                let preventPullToRefresh = false;
+                let startY = 0;
+                
+                body.addEventListener('touchstart', function(e) {
+                    startY = e.touches[0].clientY;
+                    preventPullToRefresh = (window.pageYOffset === 0);
+                }, { passive: false });
+                
+                body.addEventListener('touchmove', function(e) {
+                    const currentY = e.touches[0].clientY;
+                    if (preventPullToRefresh && currentY > startY) {
+                        e.preventDefault();
+                    }
+                }, { passive: false });
+            }
+            
+            // Apply immediately if DOM is ready, otherwise wait
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', applyOverscrollPrevention);
+            } else {
+                applyOverscrollPrevention();
+            }
+        })();
     </script>
     <meta charset="<?php bloginfo('charset'); ?>">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
     
     <!-- Preconnect to external domains for better performance -->
     <link rel="preconnect" href="https://fonts.googleapis.com">

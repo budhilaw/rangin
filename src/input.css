@@ -10,12 +10,20 @@
 @layer base {
   html {
     scroll-behavior: smooth;
+    overscroll-behavior: none;
+    -webkit-overflow-scrolling: touch;
+    -webkit-tap-highlight-color: transparent;
   }
   
   body {
     @apply font-sans text-neutral-800 dark:text-neutral-100 leading-relaxed;
     @apply bg-neutral-25 dark:bg-neutral-850;
     transition: background-color 0.3s ease, color 0.3s ease;
+    /* Prevent overscroll bounce on body */
+    overscroll-behavior: none;
+    overscroll-behavior-y: none;
+    /* Prevent pull-to-refresh on mobile */
+    touch-action: pan-x pan-y;
   }
   
   h1, h2, h3, h4, h5, h6 {
@@ -648,6 +656,24 @@
 /* Ensure single widget takes full width on mobile */
 .footer-widget-area .widget:only-child {
   @apply md:col-span-2;
+}
+
+/* Prevent Overscroll/Bounce - Clean Approach */
+html {
+  overscroll-behavior: none;
+  overscroll-behavior-y: none;
+  overflow-x: hidden;
+}
+
+body {
+  overscroll-behavior: none;
+  overscroll-behavior-y: none;
+  overflow-x: hidden;
+  
+  /* Browser specific overscroll prevention */
+  -webkit-overscroll-behavior: none;
+  -moz-overscroll-behavior: none;
+  -ms-overscroll-behavior: none;
 }
 
 /* Accessibility */

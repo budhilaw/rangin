@@ -49,7 +49,12 @@ function register_portfolio_post_type() {
         'show_ui'            => true,
         'show_in_menu'       => true,
         'query_var'          => true,
-        'rewrite'            => array('slug' => 'portfolio-item'),
+        'rewrite'            => array(
+            'slug' => 'portfolio-item',
+            'with_front' => false,
+            'feeds' => true,
+            'pages' => true
+        ),
         'capability_type'    => 'post',
         'has_archive'        => true,
         'hierarchical'       => false,
@@ -296,10 +301,70 @@ function get_portfolio_category_color($category_slug) {
 }
 
 /**
- * Flush rewrite rules on theme activation
+ * Flush rewrite rules on theme activation and when needed
  */
 function portfolio_flush_rewrite_rules() {
     register_portfolio_post_type();
     flush_rewrite_rules();
 }
-register_activation_hook(__FILE__, 'portfolio_flush_rewrite_rules');
+
+// Hook into theme activation and switching
+add_action('after_switch_theme', 'portfolio_flush_rewrite_rules');
+
+// Flush rewrite rules if portfolio post type is not registered properly
+function check_portfolio_rewrite_rules() {
+    if (get_option('portfolio_rewrite_rules_flushed') !== 'yes') {
+        register_portfolio_post_type();
+        flush_rewrite_rules();
+        update_option('portfolio_rewrite_rules_flushed', 'yes');
+    }
+}
+add_action('init', 'check_portfolio_rewrite_rules', 20);
+
+// Force flush rewrite rules once to fix the current issue
+function force_initial_portfolio_flush() {
+    if (get_option('portfolio_links_fixed_v2') !== 'yes') {
+        register_portfolio_post_type();
+        flush_rewrite_rules();
+        update_option('portfolio_links_fixed_v2', 'yes');
+    }
+}
+add_action('wp_loaded', 'force_initial_portfolio_flush');
+
+/**
+ * Force flush rewrite rules - can be called from admin
+ */
+function force_portfolio_rewrite_flush() {
+    delete_option('portfolio_rewrite_rules_flushed');
+    register_portfolio_post_type();
+    flush_rewrite_rules();
+    update_option('portfolio_rewrite_rules_flushed', 'yes');
+}
+
+/**
+ * Add admin notice to flush rewrite rules if needed
+ */
+function portfolio_admin_notices() {
+    global $pagenow;
+    
+    if ($pagenow === 'edit.php' && isset($_GET['post_type']) && $_GET['post_type'] === 'portfolio') {
+        // Check if we have portfolio posts but rewrite rules might not be working
+        $portfolio_posts = get_posts(array(
+            'post_type' => 'portfolio',
+            'numberposts' => 1,
+            'post_status' => 'publish'
+        ));
+        
+        if (!empty($portfolio_posts)) {
+            $test_permalink = get_permalink($portfolio_posts[0]->ID);
+            // If permalink contains '?p=' it means rewrite rules aren't working
+            if (strpos($test_permalink, '?p=') !== false) {
+                echo '<div class="notice notice-warning is-dismissible">';
+                echo '<p><strong>Portfolio permalinks may not be working correctly.</strong> ';
+                echo '<a href="' . admin_url('options-permalink.php') . '">Visit Permalinks settings</a> and click "Save Changes" to refresh them.</p>';
+                echo '</div>';
+            }
+        }
+    }
+}
+add_action('admin_notices', 'portfolio_admin_notices');
