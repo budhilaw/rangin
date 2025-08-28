@@ -574,7 +574,7 @@ class EBTW_Contact_Info_Widget extends WP_Widget {
         if (!empty($email)) {
             echo '<li class="flex items-center">';
             echo '<i class="fas fa-envelope text-primary-400 w-4 mr-3"></i>';
-            echo '<a href="mailto:' . esc_attr($email) . '" class="text-neutral-400 hover:text-primary-400 transition-colors">';
+            echo '<a href="mailto:' . esc_attr($email) . '" class="text-neutral-700 dark:text-neutral-300 hover:text-primary-400 dark:hover:text-primary-300 transition-colors">';
             echo esc_html($email);
             echo '</a>';
             echo '</li>';
@@ -583,7 +583,7 @@ class EBTW_Contact_Info_Widget extends WP_Widget {
         if (!empty($phone)) {
             echo '<li class="flex items-center">';
             echo '<i class="fas fa-phone text-primary-400 w-4 mr-3"></i>';
-            echo '<a href="tel:' . esc_attr(str_replace(' ', '', $phone)) . '" class="text-neutral-400 hover:text-primary-400 transition-colors">';
+            echo '<a href="tel:' . esc_attr(str_replace(' ', '', $phone)) . '" class="text-neutral-700 dark:text-neutral-300 hover:text-primary-400 dark:hover:text-primary-300 transition-colors">';
             echo esc_html($phone);
             echo '</a>';
             echo '</li>';
@@ -592,7 +592,7 @@ class EBTW_Contact_Info_Widget extends WP_Widget {
         if (!empty($address)) {
             echo '<li class="flex items-center">';
             echo '<i class="fas fa-map-marker-alt text-primary-400 w-4 mr-3"></i>';
-            echo '<span class="text-neutral-400">' . esc_html($address) . '</span>';
+            echo '<span class="text-neutral-700 dark:text-neutral-300">' . esc_html($address) . '</span>';
             echo '</li>';
         }
         
@@ -705,7 +705,7 @@ class EBTW_Footer_Nav_Walker extends Walker_Nav_Menu {
         $attributes .= ! empty($item->url) ? ' href="'   . esc_attr($item->url) .'"' : '';
         
         $item_output = isset($args->before) ? $args->before : '';
-        $item_output .= '<a' . $attributes . ' class="text-neutral-400 hover:text-primary-400 transition-colors">';
+        $item_output .= '<a' . $attributes . ' class="text-neutral-700 dark:text-neutral-300 hover:text-primary-400 dark:hover:text-primary-300 transition-colors">';
         $item_output .= (isset($args->link_before) ? $args->link_before : '') . apply_filters('the_title', $item->title, $item->ID) . (isset($args->link_after) ? $args->link_after : '');
         $item_output .= '</a>';
         $item_output .= isset($args->after) ? $args->after : '';

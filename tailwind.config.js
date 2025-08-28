@@ -5,6 +5,29 @@ module.exports = {
     './assets/**/*.js',
     './src/**/*.css'
   ],
+  safelist: [
+    // Footer widget area classes
+    'text-neutral-300',
+    'text-neutral-400', 
+    'text-neutral-700',
+    'dark:text-neutral-300',
+    'dark:text-neutral-400',
+    'hover:text-primary-600',
+    'hover:text-primary-400',
+    'dark:hover:text-primary-400',
+    'dark:hover:text-primary-300',
+    'transition-colors',
+    // Essential neutral colors for widgets
+    'text-neutral-200',
+    'text-neutral-500',
+    'text-neutral-600',
+    'text-neutral-800',
+    'grid',
+    'grid-cols-1',
+    'grid-cols-2',
+    'md:grid-cols-2',
+    'gap-8'
+  ],
   darkMode: 'class',
   theme: {
     extend: {

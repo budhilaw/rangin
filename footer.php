@@ -65,7 +65,7 @@
                 
                 <!-- Footer Widget Area - Maximum 2 widgets -->
                 <?php if (is_active_sidebar('footer-1')): ?>
-                    <div class="col-span-1 md:col-span-2 footer-widget-area">
+                    <div class="col-span-1 md:col-span-2 footer-widget-area grid grid-cols-1 md:grid-cols-2 gap-8 text-neutral-700 dark:text-neutral-300">
                         <?php dynamic_sidebar('footer-1'); ?>
                     </div>
                 <?php else: ?>
@@ -93,7 +93,7 @@
             </div>
             
             <!-- Footer Bottom -->
-            <div class="pt-8 border-t border-neutral-800">
+            <div class="pt-8 border-t border-neutral-400 dark:border-neutral-700">
                 <div class="flex flex-col items-center text-center space-y-3">
                     <p class="text-neutral-400 text-sm">
                         <?php echo wp_kses_post(get_footer_copyright()); ?>
