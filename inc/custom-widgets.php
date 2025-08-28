@@ -462,7 +462,7 @@ class EBTW_Quick_Links_Widget extends WP_Widget {
         echo $args['before_widget'];
         
         if (!empty($title)) {
-            echo '<h4 class="text-lg font-semibold text-white mb-4">' . esc_html($title) . '</h4>';
+            echo '<h4 class="text-lg font-semibold mb-4 text-neutral-700 dark:text-neutral-300">' . esc_html($title) . '</h4>';
         }
         
         if (!empty($menu_id)) {
@@ -566,7 +566,7 @@ class EBTW_Contact_Info_Widget extends WP_Widget {
         echo $args['before_widget'];
         
         if (!empty($title)) {
-            echo '<h4 class="text-lg font-semibold text-white mb-4">' . esc_html($title) . '</h4>';
+            echo '<h4 class="text-lg font-semibold mb-4 text-neutral-700 dark:text-neutral-300">' . esc_html($title) . '</h4>';
         }
         
         echo '<ul class="space-y-3">';
