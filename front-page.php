@@ -512,40 +512,7 @@ get_header(); ?>
                             </div>
                         </div>
                     </div>
-                    <div class="mt-8">
-                        <h4 class="text-lg font-semibold mb-4 text-white">Connect With Me</h4>
-                        <div class="flex space-x-4">
-                            <?php if (get_front_social_twitter()): ?>
-                            <a href="<?php echo esc_url(get_front_social_twitter()); ?>" target="_blank" rel="noopener noreferrer" class="w-10 h-10 bg-neutral-800 hover:bg-blue-600 rounded-lg flex items-center justify-center transition-colors" aria-label="X (Twitter)">
-                                <i class="fab fa-x-twitter text-lg text-white"></i>
-                            </a>
-                            <?php endif; ?>
-                            
-                            <?php if (get_front_social_linkedin()): ?>
-                            <a href="<?php echo esc_url(get_front_social_linkedin()); ?>" target="_blank" rel="noopener noreferrer" class="w-10 h-10 bg-neutral-800 hover:bg-blue-600 rounded-lg flex items-center justify-center transition-colors" aria-label="LinkedIn">
-                                <i class="fab fa-linkedin-in text-lg text-white"></i>
-                            </a>
-                            <?php endif; ?>
-                            
-                            <?php if (get_front_social_github()): ?>
-                            <a href="<?php echo esc_url(get_front_social_github()); ?>" target="_blank" rel="noopener noreferrer" class="w-10 h-10 bg-neutral-800 hover:bg-neutral-600 rounded-lg flex items-center justify-center transition-colors" aria-label="GitHub">
-                                <i class="fab fa-github text-lg text-white"></i>
-                            </a>
-                            <?php endif; ?>
-                            
-                            <?php if (get_front_social_facebook()): ?>
-                            <a href="<?php echo esc_url(get_front_social_facebook()); ?>" target="_blank" rel="noopener noreferrer" class="w-10 h-10 bg-neutral-800 hover:bg-blue-600 rounded-lg flex items-center justify-center transition-colors" aria-label="Facebook">
-                                <i class="fab fa-facebook-f text-lg text-white"></i>
-                            </a>
-                            <?php endif; ?>
-                            
-                            <?php if (get_front_social_instagram()): ?>
-                            <a href="<?php echo esc_url(get_front_social_instagram()); ?>" target="_blank" rel="noopener noreferrer" class="w-10 h-10 bg-neutral-800 hover:bg-pink-600 rounded-lg flex items-center justify-center transition-colors" aria-label="Instagram">
-                                <i class="fab fa-instagram text-lg text-white"></i>
-                            </a>
-                            <?php endif; ?>
-                        </div>
-                    </div>
+
                 </div>
                 <div class="animate-on-scroll">
                     <div class="bg-neutral-800 rounded-lg p-8">

@@ -785,45 +785,7 @@ function personal_website_customize_register($wp_customize) {
         'type'    => 'text',
     ));
     
-    // Social Media Section
-    $wp_customize->add_section('social_media', array(
-        'title'    => __('Social Media Links', 'personal-website'),
-        'priority' => 40,
-    ));
-    
-    // LinkedIn
-    $wp_customize->add_setting('social_linkedin', array(
-        'default'           => 'https://www.linkedin.com/in/ericsson-budhilaw',
-        'sanitize_callback' => 'esc_url_raw',
-    ));
-    $wp_customize->add_control('social_linkedin', array(
-        'label'   => __('LinkedIn URL', 'personal-website'),
-        'section' => 'social_media',
-        'type'    => 'url',
-    ));
-    
-    // GitHub
-    $wp_customize->add_setting('social_github', array(
-        'default'           => 'https://github.com/budhilaw',
-        'sanitize_callback' => 'esc_url_raw',
-    ));
-    $wp_customize->add_control('social_github', array(
-        'label'   => __('GitHub URL', 'personal-website'),
-        'section' => 'social_media',
-        'type'    => 'url',
-    ));
-    
-    // Twitter
-    $wp_customize->add_setting('social_twitter', array(
-        'default'           => 'https://twitter.com/ericsson_budhi',
-        'sanitize_callback' => 'esc_url_raw',
-    ));
-    $wp_customize->add_control('social_twitter', array(
-        'label'   => __('Twitter URL', 'personal-website'),
-        'section' => 'social_media',
-        'type'    => 'url',
-    ));
-    
+
     // =======================
     // Footer - Brand Section
     // =======================
