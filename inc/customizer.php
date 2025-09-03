@@ -56,49 +56,7 @@ function personal_website_customize_register($wp_customize) {
 
 
 
-    // Front Page Services Section
-    // Front Page - Services Section
-    $wp_customize->add_section('front_page_services', array(
-        'title'    => __('Front Page - Services', 'personal-website'),
-        'priority' => 32.5,
-    ));
 
-    // Services Section Title
-    $wp_customize->add_setting('services_section_title', array(
-        'default'           => 'Services',
-        'sanitize_callback' => 'sanitize_text_field',
-    ));
-    $wp_customize->add_control('services_section_title', array(
-        'label'   => __('Services Section Title', 'personal-website'),
-        'section' => 'front_page_services',
-        'type'    => 'text',
-    ));
-
-    // Services Section Subtitle
-    $wp_customize->add_setting('services_section_subtitle', array(
-        'default'           => 'I offer a range of software development services to help bring your ideas to life',
-        'sanitize_callback' => 'sanitize_textarea_field',
-    ));
-    $wp_customize->add_control('services_section_subtitle', array(
-        'label'   => __('Services Section Subtitle', 'personal-website'),
-        'section' => 'front_page_services',
-        'type'    => 'textarea',
-    ));
-
-    // Services List (JSON)
-    $wp_customize->add_setting('services_list', array(
-        'default'           => '',
-        'sanitize_callback' => 'wp_kses_post',
-    ));
-    $wp_customize->add_control('services_list', array(
-        'label'       => __('Services List (JSON Format)', 'personal-website'),
-        'description' => __('Enter services in JSON format. Max 3 services. Example: [{"title":"Web Development","description":"Custom web applications using modern technologies","icon":"fas fa-code","background":"#7c3aed","features":["Responsive Design","SEO Optimization","Performance Focused"]}]', 'personal-website'),
-        'section'     => 'front_page_services',
-        'type'        => 'textarea',
-        'input_attrs' => array(
-            'rows' => 8,
-        ),
-    ));
 
     $wp_customize->add_section('front_page_contact', array(
         'title'    => __('Front Page - Contact', 'personal-website'),
@@ -298,111 +256,6 @@ function personal_website_customize_register($wp_customize) {
         'description' => __('<strong>JSON Format Example:</strong><br><code>[{"slug":"mobile","name":"Mobile Apps","color":"green"},{"slug":"web","name":"Web Development","color":"blue"},{"slug":"api","name":"API Development","color":"purple"},{"slug":"fullstack","name":"Full Stack","color":"orange"}]</code><br><br><strong>Fields:</strong><br>• <strong>slug</strong>: Unique identifier (lowercase, no spaces)<br>• <strong>name</strong>: Display name for the category<br>• <strong>color</strong>: Badge color (green, blue, purple, orange, red, teal, indigo, pink, gray)<br><br><strong>Note:</strong> Leave empty to use default categories (Mobile, Backend, Frontend, Full Stack)', 'personal-website'),
         'section'     => 'portfolio_settings',
         'type'        => 'hidden',
-    ));
-
-    // Front Page - Portfolio Section
-    $wp_customize->add_section('front_page_portfolio', array(
-        'title'    => __('Front Page - Portfolio', 'personal-website'),
-        'priority' => 32.65,
-    ));
-
-    // Portfolio Section Title
-    $wp_customize->add_setting('portfolio_section_title', array(
-        'default'           => 'Featured Projects',
-        'sanitize_callback' => 'sanitize_text_field',
-    ));
-    $wp_customize->add_control('portfolio_section_title', array(
-        'label'       => __('Portfolio Section Title', 'personal-website'),
-        'description' => __('Title for the portfolio section on front page', 'personal-website'),
-        'section'     => 'front_page_portfolio',
-        'type'        => 'text',
-    ));
-
-    // Portfolio Section Description
-    $wp_customize->add_setting('portfolio_section_description', array(
-        'default'           => 'Here are some of the projects I\'ve worked on recently',
-        'sanitize_callback' => 'sanitize_textarea_field',
-    ));
-    $wp_customize->add_control('portfolio_section_description', array(
-        'label'       => __('Portfolio Section Description', 'personal-website'),
-        'description' => __('Description under the portfolio section title', 'personal-website'),
-        'section'     => 'front_page_portfolio',
-        'type'        => 'textarea',
-    ));
-
-    // Number of Portfolio Items to Show
-    $wp_customize->add_setting('portfolio_posts_count', array(
-        'default'           => 6,
-        'sanitize_callback' => 'absint',
-    ));
-    $wp_customize->add_control('portfolio_posts_count', array(
-        'label'       => __('Number of Portfolio Items', 'personal-website'),
-        'description' => __('How many portfolio items to display (1-12)', 'personal-website'),
-        'section'     => 'front_page_portfolio',
-        'type'        => 'number',
-        'input_attrs' => array(
-            'min' => 1,
-            'max' => 12,
-            'step' => 1,
-        ),
-    ));
-
-    // Portfolio Section Show/Hide
-    $wp_customize->add_setting('portfolio_section_show', array(
-        'default'           => true,
-        'sanitize_callback' => 'wp_validate_boolean',
-    ));
-    $wp_customize->add_control('portfolio_section_show', array(
-        'label'       => __('Show Portfolio Section', 'personal-website'),
-        'description' => __('Display the portfolio section on the front page', 'personal-website'),
-        'section'     => 'front_page_portfolio',
-        'type'        => 'checkbox',
-    ));
-
-    // Featured Portfolio Items (specific post IDs)
-    $wp_customize->add_setting('featured_portfolio_1', array(
-        'default'           => '',
-        'sanitize_callback' => 'absint',
-    ));
-    $wp_customize->add_control('featured_portfolio_1', array(
-        'label'       => __('Featured Portfolio Item 1 (ID)', 'personal-website'),
-        'description' => __('Enter portfolio post ID for first featured item. Leave empty for automatic selection.', 'personal-website'),
-        'section'     => 'front_page_portfolio',
-        'type'        => 'number',
-        'input_attrs' => array(
-            'min' => 1,
-            'step' => 1,
-        ),
-    ));
-
-    $wp_customize->add_setting('featured_portfolio_2', array(
-        'default'           => '',
-        'sanitize_callback' => 'absint',
-    ));
-    $wp_customize->add_control('featured_portfolio_2', array(
-        'label'       => __('Featured Portfolio Item 2 (ID)', 'personal-website'),
-        'description' => __('Enter portfolio post ID for second featured item. Leave empty for automatic selection.', 'personal-website'),
-        'section'     => 'front_page_portfolio',
-        'type'        => 'number',
-        'input_attrs' => array(
-            'min' => 1,
-            'step' => 1,
-        ),
-    ));
-
-    $wp_customize->add_setting('featured_portfolio_3', array(
-        'default'           => '',
-        'sanitize_callback' => 'absint',
-    ));
-    $wp_customize->add_control('featured_portfolio_3', array(
-        'label'       => __('Featured Portfolio Item 3 (ID)', 'personal-website'),
-        'description' => __('Enter portfolio post ID for third featured item. Leave empty for automatic selection.', 'personal-website'),
-        'section'     => 'front_page_portfolio',
-        'type'        => 'number',
-        'input_attrs' => array(
-            'min' => 1,
-            'step' => 1,
-        ),
     ));
 
     // Help Text for Portfolio
@@ -1052,15 +905,15 @@ function get_footer_made_with_text() {
 
 // Services Section Functions
 function get_services_section_title() {
-    return get_theme_mod('services_section_title', 'Services');
+    return get_option('services_section_title', 'Services');
 }
 
 function get_services_section_subtitle() {
-    return get_theme_mod('services_section_subtitle', 'I offer a range of software development services to help bring your ideas to life');
+    return get_option('services_section_subtitle', 'I offer a range of software development services to help bring your ideas to life');
 }
 
 function get_services_list() {
-    $services_json = get_theme_mod('services_list', '');
+    $services_json = get_option('services_list', '');
     if (empty($services_json)) {
         return array();
     }
@@ -1199,31 +1052,31 @@ function get_portfolio_category_by_slug($slug) {
 
 // Portfolio Section Functions for Front Page
 function get_portfolio_section_show() {
-    return get_theme_mod('portfolio_section_show', true);
+    return get_option('portfolio_section_show', true);
 }
 
 function get_portfolio_section_title() {
-    return get_theme_mod('portfolio_section_title', 'Featured Projects');
+    return get_option('portfolio_section_title', 'Featured Projects');
 }
 
 function get_portfolio_section_description() {
-    return get_theme_mod('portfolio_section_description', 'Here are some of the projects I\'ve worked on recently');
+    return get_option('portfolio_section_description', "Here are some of the projects I've worked on recently");
 }
 
 function get_portfolio_posts_count() {
-    return get_theme_mod('portfolio_posts_count', 6);
+    return get_option('portfolio_posts_count', 6);
 }
 
 function get_featured_portfolio_1() {
-    return get_theme_mod('featured_portfolio_1', '');
+    return get_option('featured_portfolio_1', '');
 }
 
 function get_featured_portfolio_2() {
-    return get_theme_mod('featured_portfolio_2', '');
+    return get_option('featured_portfolio_2', '');
 }
 
 function get_featured_portfolio_3() {
-    return get_theme_mod('featured_portfolio_3', '');
+    return get_option('featured_portfolio_3', '');
 }
 
 function get_front_page_portfolio_posts() {

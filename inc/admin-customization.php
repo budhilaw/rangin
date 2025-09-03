@@ -181,6 +181,42 @@ function personal_website_theme_options_page() {
             update_option('projects_completed', absint($_POST['projects_completed']));
         }
         
+        // Services Section
+        if (isset($_POST['services_section_title'])) {
+            update_option('services_section_title', sanitize_text_field(stripslashes($_POST['services_section_title'])));
+        }
+        if (isset($_POST['services_section_subtitle'])) {
+            update_option('services_section_subtitle', sanitize_textarea_field(stripslashes($_POST['services_section_subtitle'])));
+        }
+        if (isset($_POST['services_list'])) {
+            update_option('services_list', wp_kses_post(stripslashes($_POST['services_list'])));
+        }
+        
+        // Portfolio Section
+        if (isset($_POST['portfolio_section_title'])) {
+            update_option('portfolio_section_title', sanitize_text_field(stripslashes($_POST['portfolio_section_title'])));
+        }
+        if (isset($_POST['portfolio_section_description'])) {
+            update_option('portfolio_section_description', sanitize_textarea_field(stripslashes($_POST['portfolio_section_description'])));
+        }
+        if (isset($_POST['portfolio_posts_count'])) {
+            update_option('portfolio_posts_count', absint($_POST['portfolio_posts_count']));
+        }
+        if (isset($_POST['portfolio_section_show'])) {
+            update_option('portfolio_section_show', wp_validate_boolean($_POST['portfolio_section_show']));
+        } else {
+            update_option('portfolio_section_show', false);
+        }
+        if (isset($_POST['featured_portfolio_1'])) {
+            update_option('featured_portfolio_1', absint($_POST['featured_portfolio_1']));
+        }
+        if (isset($_POST['featured_portfolio_2'])) {
+            update_option('featured_portfolio_2', absint($_POST['featured_portfolio_2']));
+        }
+        if (isset($_POST['featured_portfolio_3'])) {
+            update_option('featured_portfolio_3', absint($_POST['featured_portfolio_3']));
+        }
+        
         if (!empty($success_messages)) {
             echo '<div class="theme-options-notice notice notice-success is-dismissible"><p>' . __('Settings saved successfully!', 'personal-website') . '</p></div>';
         }
@@ -200,6 +236,16 @@ function personal_website_theme_options_page() {
     $about_section_email = get_option('about_section_email', '');
     $years_experience = get_option('years_experience', 5);
     $projects_completed = get_option('projects_completed', 50);
+    $services_section_title = get_option('services_section_title', 'Services');
+    $services_section_subtitle = get_option('services_section_subtitle', 'I offer a range of software development services to help bring your ideas to life');
+    $services_list = get_option('services_list', '');
+    $portfolio_section_title = get_option('portfolio_section_title', 'Featured Projects');
+    $portfolio_section_description = get_option('portfolio_section_description', "Here are some of the projects I've worked on recently");
+    $portfolio_posts_count = get_option('portfolio_posts_count', 6);
+    $portfolio_section_show = get_option('portfolio_section_show', true);
+    $featured_portfolio_1 = get_option('featured_portfolio_1', '');
+    $featured_portfolio_2 = get_option('featured_portfolio_2', '');
+    $featured_portfolio_3 = get_option('featured_portfolio_3', '');
     ?>
     <div class="theme-options-wrap">
         <div class="theme-options-header">
@@ -437,6 +483,160 @@ function personal_website_theme_options_page() {
                                 placeholder="50"
                             />
                             <p class="theme-options-help"><?php _e('Number of projects you have completed.', 'personal-website'); ?></p>
+                        </div>
+                    </div>
+
+                    <!-- Services Section -->
+                    <div class="theme-options-section">
+                        <div class="theme-options-section-header">
+                            <h2><span class="dashicons dashicons-admin-tools"></span><?php _e('Services Section', 'personal-website'); ?></h2>
+                        </div>
+                        
+                        <div class="theme-options-field">
+                            <label for="services_section_title"><?php _e('Services Section Title', 'personal-website'); ?></label>
+                            <input 
+                                type="text" 
+                                id="services_section_title" 
+                                name="services_section_title" 
+                                value="<?php echo esc_attr($services_section_title); ?>" 
+                                class="theme-options-input"
+                                placeholder="<?php _e('Services', 'personal-website'); ?>"
+                            />
+                            <p class="theme-options-help"><?php _e('The main title for the services section.', 'personal-website'); ?></p>
+                        </div>
+
+                        <div class="theme-options-field">
+                            <label for="services_section_subtitle"><?php _e('Services Section Subtitle', 'personal-website'); ?></label>
+                            <textarea 
+                                id="services_section_subtitle" 
+                                name="services_section_subtitle" 
+                                class="theme-options-textarea"
+                                rows="3"
+                                placeholder="<?php _e('I offer a range of software development services to help bring your ideas to life', 'personal-website'); ?>"
+                            ><?php echo esc_textarea($services_section_subtitle); ?></textarea>
+                            <p class="theme-options-help"><?php _e('A subtitle or description for the services section.', 'personal-website'); ?></p>
+                        </div>
+
+                        <div class="theme-options-field">
+                            <label for="services_list"><?php _e('Services List (JSON Format)', 'personal-website'); ?></label>
+                            <textarea 
+                                id="services_list" 
+                                name="services_list" 
+                                class="theme-options-textarea"
+                                rows="8"
+                                placeholder='<?php _e('[{"title":"Web Development","description":"Custom web applications","icon":"fas fa-code","background":"#7c3aed","features":["Responsive Design","SEO Optimization"]}]', 'personal-website'); ?>'
+                            ><?php echo esc_textarea($services_list); ?></textarea>
+                            <p class="theme-options-help">
+                                <?php _e('Enter services in JSON format. Maximum 3 services. Each service should have: title, description, icon, background color, and features array.', 'personal-website'); ?>
+                                <br><strong><?php _e('Example:', 'personal-website'); ?></strong> 
+                                <code>[{"title":"Web Development","description":"Custom web applications using modern technologies","icon":"fas fa-code","background":"#7c3aed","features":["Responsive Design","SEO Optimization","Performance Focused"]}]</code>
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Portfolio Section -->
+                    <div class="theme-options-section">
+                        <div class="theme-options-section-header">
+                            <h2><span class="dashicons dashicons-portfolio"></span><?php _e('Portfolio Section', 'personal-website'); ?></h2>
+                        </div>
+                        
+                        <div class="theme-options-field">
+                            <label>
+                                <input 
+                                    type="checkbox" 
+                                    name="portfolio_section_show" 
+                                    value="1" 
+                                    <?php checked($portfolio_section_show, true); ?>
+                                />
+                                <?php _e('Show Portfolio Section', 'personal-website'); ?>
+                            </label>
+                            <p class="theme-options-help"><?php _e('Display the portfolio section on the front page.', 'personal-website'); ?></p>
+                        </div>
+                        
+                        <div class="theme-options-field">
+                            <label for="portfolio_section_title"><?php _e('Portfolio Section Title', 'personal-website'); ?></label>
+                            <input 
+                                type="text" 
+                                id="portfolio_section_title" 
+                                name="portfolio_section_title" 
+                                value="<?php echo esc_attr($portfolio_section_title); ?>" 
+                                class="theme-options-input"
+                                placeholder="<?php _e('Featured Projects', 'personal-website'); ?>"
+                            />
+                            <p class="theme-options-help"><?php _e('Title for the portfolio section on the front page.', 'personal-website'); ?></p>
+                        </div>
+
+                        <div class="theme-options-field">
+                            <label for="portfolio_section_description"><?php _e('Portfolio Section Description', 'personal-website'); ?></label>
+                            <textarea 
+                                id="portfolio_section_description" 
+                                name="portfolio_section_description" 
+                                class="theme-options-textarea"
+                                rows="3"
+                                placeholder="<?php _e('Here are some of the projects I\'ve worked on recently', 'personal-website'); ?>"
+                            ><?php echo esc_textarea($portfolio_section_description); ?></textarea>
+                            <p class="theme-options-help"><?php _e('Description under the portfolio section title.', 'personal-website'); ?></p>
+                        </div>
+
+                        <div class="theme-options-field">
+                            <label for="portfolio_posts_count"><?php _e('Number of Portfolio Items', 'personal-website'); ?></label>
+                            <input 
+                                type="number" 
+                                id="portfolio_posts_count" 
+                                name="portfolio_posts_count" 
+                                value="<?php echo esc_attr($portfolio_posts_count); ?>" 
+                                class="theme-options-input"
+                                min="1" 
+                                max="12" 
+                                step="1"
+                                placeholder="6"
+                            />
+                            <p class="theme-options-help"><?php _e('How many portfolio items to display (1-12).', 'personal-website'); ?></p>
+                        </div>
+
+                        <div class="theme-options-field">
+                            <label for="featured_portfolio_1"><?php _e('Featured Portfolio Item 1 (ID)', 'personal-website'); ?></label>
+                            <input 
+                                type="number" 
+                                id="featured_portfolio_1" 
+                                name="featured_portfolio_1" 
+                                value="<?php echo esc_attr($featured_portfolio_1); ?>" 
+                                class="theme-options-input"
+                                min="1" 
+                                step="1"
+                                placeholder=""
+                            />
+                            <p class="theme-options-help"><?php _e('Enter portfolio post ID for first featured item. Leave empty for automatic selection.', 'personal-website'); ?></p>
+                        </div>
+
+                        <div class="theme-options-field">
+                            <label for="featured_portfolio_2"><?php _e('Featured Portfolio Item 2 (ID)', 'personal-website'); ?></label>
+                            <input 
+                                type="number" 
+                                id="featured_portfolio_2" 
+                                name="featured_portfolio_2" 
+                                value="<?php echo esc_attr($featured_portfolio_2); ?>" 
+                                class="theme-options-input"
+                                min="1" 
+                                step="1"
+                                placeholder=""
+                            />
+                            <p class="theme-options-help"><?php _e('Enter portfolio post ID for second featured item. Leave empty for automatic selection.', 'personal-website'); ?></p>
+                        </div>
+
+                        <div class="theme-options-field">
+                            <label for="featured_portfolio_3"><?php _e('Featured Portfolio Item 3 (ID)', 'personal-website'); ?></label>
+                            <input 
+                                type="number" 
+                                id="featured_portfolio_3" 
+                                name="featured_portfolio_3" 
+                                value="<?php echo esc_attr($featured_portfolio_3); ?>" 
+                                class="theme-options-input"
+                                min="1" 
+                                step="1"
+                                placeholder=""
+                            />
+                            <p class="theme-options-help"><?php _e('Enter portfolio post ID for third featured item. Leave empty for automatic selection.', 'personal-website'); ?></p>
                         </div>
                     </div>
                 </div>
