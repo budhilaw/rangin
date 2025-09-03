@@ -53,184 +53,9 @@ function personal_website_customize_register($wp_customize) {
         'section' => 'personal_info',
         'type'    => 'textarea',
     ));
-    
-    // Front Page Hero Section
-    $wp_customize->add_section('front_page_hero', array(
-        'title'    => __('Front Page - Hero', 'personal-website'),
-        'priority' => 31,
-    ));
-    
-    // Hero Greeting Text
-    $wp_customize->add_setting('hero_greeting', array(
-        'default'           => 'Hi, I\'m',
-        'sanitize_callback' => 'sanitize_text_field',
-    ));
-    $wp_customize->add_control('hero_greeting', array(
-        'label'       => __('Hero Greeting Text', 'personal-website'),
-        'description' => __('The greeting text before your name (e.g., "Hello, I\'m", "Welcome, I\'m")', 'personal-website'),
-        'section'     => 'front_page_hero',
-        'type'        => 'text',
-    ));
-    
-    // Hero Description Override
-    $wp_customize->add_setting('hero_description', array(
-        'default'           => '',
-        'sanitize_callback' => 'sanitize_textarea_field',
-    ));
-    $wp_customize->add_control('hero_description', array(
-        'label'       => __('Hero Description', 'personal-website'),
-        'description' => __('Custom description for hero section. Leave empty to use "Job Title - Bio" format.', 'personal-website'),
-        'section'     => 'front_page_hero',
-        'type'        => 'textarea',
-    ));
-    
-    // Hero Background Image
-    $wp_customize->add_setting('hero_background_image', array(
-        'default'           => '',
-        'sanitize_callback' => 'esc_url_raw',
-    ));
-    $wp_customize->add_control(new WP_Customize_Image_Control($wp_customize, 'hero_background_image', array(
-        'label'       => __('Hero Background Image', 'personal-website'),
-        'description' => __('Optional background image for hero section (will overlay with gradient)', 'personal-website'),
-        'section'     => 'front_page_hero',
-    )));
-    
-    // Primary CTA Button Text
-    $wp_customize->add_setting('hero_primary_cta_text', array(
-        'default'           => 'View My Work',
-        'sanitize_callback' => 'sanitize_text_field',
-    ));
-    $wp_customize->add_control('hero_primary_cta_text', array(
-        'label'       => __('Primary Button Text', 'personal-website'),
-        'description' => __('Text for the main call-to-action button', 'personal-website'),
-        'section'     => 'front_page_hero',
-        'type'        => 'text',
-    ));
-    
-    // Primary CTA Button Link
-    $wp_customize->add_setting('hero_primary_cta_link', array(
-        'default'           => '#portfolio',
-        'sanitize_callback' => 'esc_url_raw',
-    ));
-    $wp_customize->add_control('hero_primary_cta_link', array(
-        'label'       => __('Primary Button Link', 'personal-website'),
-        'description' => __('URL or anchor link for primary button (e.g., #portfolio, /contact, external URL)', 'personal-website'),
-        'section'     => 'front_page_hero',
-        'type'        => 'url',
-    ));
-    
-    // Secondary CTA Button Text
-    $wp_customize->add_setting('hero_secondary_cta_text', array(
-        'default'           => 'Hire Me',
-        'sanitize_callback' => 'sanitize_text_field',
-    ));
-    $wp_customize->add_control('hero_secondary_cta_text', array(
-        'label'       => __('Secondary Button Text', 'personal-website'),
-        'description' => __('Text for the secondary call-to-action button', 'personal-website'),
-        'section'     => 'front_page_hero',
-        'type'        => 'text',
-    ));
-    
-    // Secondary CTA Button Link
-    $wp_customize->add_setting('hero_secondary_cta_link', array(
-        'default'           => '#contact',
-        'sanitize_callback' => 'esc_url_raw',
-    ));
-    $wp_customize->add_control('hero_secondary_cta_link', array(
-        'label'       => __('Secondary Button Link', 'personal-website'),
-        'description' => __('URL or anchor link for secondary button (e.g., #contact, mailto:, external URL)', 'personal-website'),
-        'section'     => 'front_page_hero',
-        'type'        => 'url',
-    ));
-    
-    // Show/Hide Animated Background
-    $wp_customize->add_setting('hero_show_animated_bg', array(
-        'default'           => true,
-        'sanitize_callback' => 'wp_validate_boolean',
-    ));
-    $wp_customize->add_control('hero_show_animated_bg', array(
-        'label'       => __('Show Animated Background Shapes', 'personal-website'),
-        'description' => __('Display floating geometric shapes in the background', 'personal-website'),
-        'section'     => 'front_page_hero',
-        'type'        => 'checkbox',
-    ));
 
-    // Front Page About Me Section
-    $wp_customize->add_section('front_page_about', array(
-        'title'    => __('Front Page - About Me', 'personal-website'),
-        'priority' => 32,
-    ));
-    
-    // About Me Photo
-    $wp_customize->add_setting('about_me_photo', array(
-        'default'           => '',
-        'sanitize_callback' => 'esc_url_raw',
-    ));
-    $wp_customize->add_control(new WP_Customize_Image_Control($wp_customize, 'about_me_photo', array(
-        'label'       => __('About Me Photo', 'personal-website'),
-        'description' => __('Upload a portrait photo for the About Me section (recommended: portrait orientation, 400x600px)', 'personal-website'),
-        'section'     => 'front_page_about',
-    )));
-    
-    // About Me Description
-    $wp_customize->add_setting('about_me_description', array(
-        'default'           => 'With over 5 years of experience in software development, I specialize in creating scalable web applications and mobile solutions. I\'m passionate about clean code, user experience, and staying up-to-date with the latest technologies.\n\nI enjoy tackling complex problems and turning innovative ideas into reality. When I\'m not coding, you can find me exploring new technologies, contributing to open-source projects, or sharing knowledge through technical writing.',
-        'sanitize_callback' => 'sanitize_textarea_field',
-    ));
-    $wp_customize->add_control('about_me_description', array(
-        'label'       => __('About Me Description', 'personal-website'),
-        'description' => __('Write a detailed description about yourself for the About Me section', 'personal-website'),
-        'section'     => 'front_page_about',
-        'type'        => 'textarea',
-        'settings'    => 'about_me_description',
-    ));
-    
-    // About Section Email
-    $wp_customize->add_setting('about_section_email', array(
-        'default'           => '',
-        'sanitize_callback' => 'sanitize_email',
-    ));
-    $wp_customize->add_control('about_section_email', array(
-        'label'       => __('About Section Email', 'personal-website'),
-        'description' => __('Email address for "Get In Touch" button. Leave empty to use general contact email.', 'personal-website'),
-        'section'     => 'front_page_about',
-        'type'        => 'email',
-    ));
-    
-    // Years of Experience
-    $wp_customize->add_setting('years_experience', array(
-        'default'           => '5',
-        'sanitize_callback' => 'absint',
-    ));
-    $wp_customize->add_control('years_experience', array(
-        'label'       => __('Years of Experience', 'personal-website'),
-        'description' => __('Number of years of professional experience', 'personal-website'),
-        'section'     => 'front_page_about',
-        'type'        => 'number',
-        'input_attrs' => array(
-            'min' => 0,
-            'max' => 50,
-            'step' => 1,
-        ),
-    ));
-    
-    // Projects Completed
-    $wp_customize->add_setting('projects_completed', array(
-        'default'           => '50',
-        'sanitize_callback' => 'absint',
-    ));
-    $wp_customize->add_control('projects_completed', array(
-        'label'       => __('Projects Completed', 'personal-website'),
-        'description' => __('Number of projects you have completed', 'personal-website'),
-        'section'     => 'front_page_about',
-        'type'        => 'number',
-        'input_attrs' => array(
-            'min' => 0,
-            'max' => 1000,
-            'step' => 1,
-        ),
-    ));
-    
+
+
     // Front Page Services Section
     // Front Page - Services Section
     $wp_customize->add_section('front_page_services', array(
@@ -1000,32 +825,32 @@ function get_social_twitter() {
 }
 
 function get_about_me_photo() {
-    return get_theme_mod('about_me_photo', '');
+    return get_option('about_me_photo', '');
 }
 
 function get_about_me_description() {
-    return get_theme_mod('about_me_description', 'With over 5 years of experience in software development, I specialize in creating scalable web applications and mobile solutions. I\'m passionate about clean code, user experience, and staying up-to-date with the latest technologies.\n\nI enjoy tackling complex problems and turning innovative ideas into reality. When I\'m not coding, you can find me exploring new technologies, contributing to open-source projects, or sharing knowledge through technical writing.');
+    return get_option('about_me_description', "With over 5 years of experience in software development, I specialize in creating scalable web applications and mobile solutions. I'm passionate about clean code, user experience, and staying up-to-date with the latest technologies.\n\nI enjoy tackling complex problems and turning innovative ideas into reality. When I'm not coding, you can find me exploring new technologies, contributing to open-source projects, or sharing knowledge through technical writing.");
 }
 
 function get_about_section_email() {
-    $about_email = get_theme_mod('about_section_email', '');
+    $about_email = get_option('about_section_email', '');
     return !empty($about_email) ? $about_email : get_contact_email();
 }
 
 function get_years_experience() {
-    return get_theme_mod('years_experience', '5');
+    return get_option('years_experience', '5');
 }
 
 function get_projects_completed() {
-    return get_theme_mod('projects_completed', '50');
+    return get_option('projects_completed', '50');
 }
 
 function get_hero_greeting() {
-    return get_theme_mod('hero_greeting', 'Hi, I\'m');
+    return get_option('hero_greeting', "Hi, I'm");
 }
 
 function get_hero_description() {
-    $custom_description = get_theme_mod('hero_description', '');
+    $custom_description = get_option('hero_description', '');
     if (!empty($custom_description)) {
         return $custom_description;
     }
@@ -1034,27 +859,27 @@ function get_hero_description() {
 }
 
 function get_hero_background_image() {
-    return get_theme_mod('hero_background_image', '');
+    return get_option('hero_background_image', '');
 }
 
 function get_hero_primary_cta_text() {
-    return get_theme_mod('hero_primary_cta_text', 'View My Work');
+    return get_option('hero_primary_cta_text', 'View My Work');
 }
 
 function get_hero_primary_cta_link() {
-    return get_theme_mod('hero_primary_cta_link', '#portfolio');
+    return get_option('hero_primary_cta_link', '#portfolio');
 }
 
 function get_hero_secondary_cta_text() {
-    return get_theme_mod('hero_secondary_cta_text', 'Hire Me');
+    return get_option('hero_secondary_cta_text', 'Hire Me');
 }
 
 function get_hero_secondary_cta_link() {
-    return get_theme_mod('hero_secondary_cta_link', '#contact');
+    return get_option('hero_secondary_cta_link', '#contact');
 }
 
 function get_hero_show_animated_bg() {
-    return get_theme_mod('hero_show_animated_bg', true);
+    return get_option('hero_show_animated_bg', true);
 }
 
 function get_contact_section_title() {

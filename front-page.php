@@ -28,11 +28,11 @@ get_header(); ?>
                     <?php echo esc_html(get_hero_description()); ?>
                 </p>
                 <div class="flex flex-col sm:flex-row gap-4 justify-center animate-fade-in-up animation-delay-400">
-                    <a href="<?php echo esc_url(get_hero_primary_cta_link()); ?>" 
+                    <a href="<?php echo esc_url(get_hero_primary_cta_link()); ?>" target="_blank" 
                        class="btn btn-primary px-8 py-3 font-semibold transform hover:scale-105">
                         <?php echo esc_html(get_hero_primary_cta_text()); ?>
                     </a>
-                    <a href="<?php echo esc_url(get_hero_secondary_cta_link()); ?>" 
+                    <a href="<?php echo esc_url(get_hero_secondary_cta_link()); ?>" target="_blank" 
                        class="btn btn-outline px-8 py-3 font-semibold">
                         <?php echo esc_html(get_hero_secondary_cta_text()); ?>
                     </a>
@@ -134,13 +134,6 @@ get_header(); ?>
                                     <div class="text-3xl font-bold text-accent-600"><?php echo esc_html(get_projects_completed()); ?>+</div>
                                     <div class="text-neutral-600 dark:text-neutral-400">Projects Completed</div>
                                 </div>
-                            </div>
-                            
-                            <div class="text-center">
-                                <p class="text-neutral-500 dark:text-neutral-400 text-sm mb-4">
-                                    <i class="fas fa-info-circle mr-1"></i>
-                                    Add your photo from Appearance → Customize → Front Page - About Me
-                                </p>
                             </div>
                         </div>
                     <?php endif; ?>

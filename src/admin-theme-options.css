@@ -1,0 +1,345 @@
+/* Theme Options Admin Page Styles */
+/* Using TailwindCSS utility classes with some custom CSS for WordPress admin specificity */
+
+/* Container and Layout */
+.theme-options-wrap {
+    @apply my-5 mx-8 font-sans;
+}
+
+.theme-options-header {
+    @apply text-white p-8 rounded-t-lg shadow-lg;
+    background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+}
+
+.theme-options-header h1 {
+    @apply text-white m-0 mb-3 text-3xl font-semibold flex items-center gap-3;
+}
+
+.theme-options-header .dashicons {
+    @apply text-3xl w-8 h-8;
+}
+
+.theme-options-description {
+    @apply m-0 opacity-90 text-base;
+}
+
+.theme-options-content {
+    @apply bg-white border-0 rounded-b-lg shadow-lg;
+    @apply border-x border-b border-neutral-200;
+}
+
+/* Elegant Tab Navigation */
+.theme-options-tabs {
+    @apply flex bg-gradient-to-r from-primary-25 to-secondary-25 rounded-t-lg overflow-hidden;
+    @apply shadow-sm border-0 mb-0;
+}
+
+.theme-options-tab {
+    @apply flex items-center gap-2 px-6 py-4 relative transition-all duration-300 cursor-pointer;
+    @apply text-neutral-600 font-medium bg-transparent hover:bg-white/50;
+    @apply border-r border-primary-100/50 last:border-r-0;
+    position: relative;
+    overflow: hidden;
+    pointer-events: auto;
+    z-index: 10;
+}
+
+.theme-options-tab::before {
+    content: '';
+    @apply absolute inset-0 bg-gradient-to-r from-primary-100/30 to-secondary-100/30;
+    @apply opacity-0 transition-opacity duration-300;
+    pointer-events: none;
+    z-index: -1;
+}
+
+.theme-options-tab:hover::before {
+    @apply opacity-100;
+}
+
+.theme-options-tab.active {
+    @apply bg-white text-primary-700 shadow-sm;
+    @apply border-b-0;
+    transform: translateY(0);
+}
+
+.theme-options-tab.active::before {
+    @apply opacity-0;
+}
+
+.theme-options-tab.active::after {
+    content: '';
+    @apply absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-primary-500 to-secondary-500;
+    pointer-events: none;
+    z-index: -1;
+}
+
+.theme-options-tab .dashicons {
+    @apply text-base w-4 h-4 transition-transform duration-300;
+    font-size: 16px !important;
+    line-height: 1 !important;
+}
+
+.theme-options-tab:hover .dashicons {
+    @apply transform scale-110;
+}
+
+.theme-options-tab.active .dashicons {
+    @apply text-primary-600 transform scale-110;
+}
+
+/* Tab Content with Smooth Transitions */
+.theme-options-tab-content {
+    @apply opacity-0 transform translate-y-4 transition-all duration-300 ease-out;
+    display: none;
+}
+
+.theme-options-tab-content.active {
+    @apply opacity-100 transform translate-y-0;
+    display: block;
+    animation: fadeInUp 0.4s ease-out;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Elegant Sections */
+.theme-options-section {
+    @apply p-8 border-b border-neutral-100/60 last:border-b-0 relative;
+    @apply bg-gradient-to-r from-transparent via-primary-25/20 to-transparent;
+}
+
+.theme-options-section:nth-child(even) {
+    @apply bg-gradient-to-r from-transparent via-secondary-25/20 to-transparent;
+}
+
+.theme-options-section-header {
+    @apply mb-8;
+}
+
+.theme-options-section-header h2 {
+    @apply m-0 text-xl text-neutral-800 flex items-center gap-3 font-semibold;
+    @apply pb-3 border-b-2 border-transparent;
+    border-image: linear-gradient(90deg, rgb(199 210 254), rgb(221 214 254)) 1;
+}
+
+.theme-options-section-header .dashicons {
+    @apply text-primary-500 text-xl w-6 h-6 p-1 rounded-lg;
+    @apply bg-gradient-to-br from-primary-50 to-secondary-50;
+}
+
+/* Elegant Form Fields */
+.theme-options-field {
+    @apply mb-6 relative;
+}
+
+.theme-options-field label {
+    @apply block mb-3 font-semibold text-neutral-700 text-sm;
+    @apply flex items-center gap-2;
+}
+
+.theme-options-input {
+    @apply w-full max-w-md px-4 py-3 border-2 border-neutral-200 rounded-lg text-sm transition-all duration-300;
+    @apply bg-gradient-to-br from-neutral-25 to-neutral-50;
+    @apply focus:outline-none focus:border-primary-400 focus:bg-white focus:shadow-lg focus:shadow-primary-100/50;
+    @apply hover:border-neutral-300;
+}
+
+.theme-options-textarea {
+    @apply w-full max-w-2xl px-4 py-3 border-2 border-neutral-200 rounded-lg text-sm transition-all duration-300;
+    @apply bg-gradient-to-br from-neutral-25 to-neutral-50 resize-y;
+    @apply focus:outline-none focus:border-primary-400 focus:bg-white focus:shadow-lg focus:shadow-primary-100/50;
+    @apply hover:border-neutral-300;
+}
+
+.theme-options-help {
+    @apply mt-3 mb-0 text-neutral-500 text-xs leading-5 italic;
+    @apply bg-neutral-50 px-3 py-2 rounded border-l-2 border-primary-200;
+}
+
+/* Elegant Actions Section */
+.theme-options-actions {
+    @apply px-8 py-8 bg-gradient-to-r from-neutral-25 via-primary-25/30 to-secondary-25/30;
+    @apply border-t border-neutral-200/50 rounded-b-lg;
+}
+
+.theme-options-submit {
+    @apply text-white border-0 px-10 py-4 text-sm font-semibold rounded-xl transition-all duration-300 cursor-pointer;
+    @apply shadow-lg hover:shadow-xl hover:-translate-y-1 focus:shadow-xl focus:outline-none;
+    @apply relative overflow-hidden;
+    background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%) !important;
+}
+
+.theme-options-submit::before {
+    content: '';
+    @apply absolute inset-0 bg-gradient-to-r from-white/20 to-transparent opacity-0 transition-opacity duration-300;
+}
+
+.theme-options-submit:hover::before {
+    @apply opacity-100;
+}
+
+.theme-options-submit:hover,
+.theme-options-submit:focus {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 8px 25px rgba(99, 102, 241, 0.4) !important;
+}
+
+.theme-options-submit:focus {
+    box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.2), 0 8px 25px rgba(99, 102, 241, 0.4) !important;
+}
+
+/* Success Notice */
+.theme-options-notice {
+    @apply mt-5 mb-0 border-l-4 border-l-primary-500;
+}
+
+.theme-options-notice p {
+    @apply my-2;
+}
+
+/* Mobile Responsive Design (max-width: 640px) */
+@media (max-width: 639px) {
+    .theme-options-wrap {
+        @apply mx-2;
+    }
+    
+    .theme-options-header {
+        @apply p-5;
+    }
+    
+    .theme-options-header h1 {
+        @apply text-2xl;
+    }
+    
+    .theme-options-section {
+        @apply p-5;
+    }
+    
+    .theme-options-input,
+    .theme-options-textarea {
+        @apply max-w-full;
+    }
+    
+    /* Mobile-friendly tabs */
+    .theme-options-tabs {
+        @apply flex-col;
+    }
+    
+    .theme-options-tab {
+        @apply border-r-0 border-b border-primary-100/50 last:border-b-0 px-6 py-3;
+    }
+    
+    .theme-options-tab.active::after {
+        @apply h-0 w-1 right-0 bottom-0 top-0 left-auto;
+    }
+    
+    .theme-options-tab .dashicons {
+        @apply text-base w-4 h-4;
+    }
+}
+
+/* Custom animations for enhanced UX */
+@keyframes slideInFromTop {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.theme-options-wrap {
+    animation: slideInFromTop 0.3s ease-out;
+}
+
+/* Success message animation */
+@keyframes successPulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(99, 102, 241, 0.4);
+    }
+    70% {
+        box-shadow: 0 0 0 10px rgba(99, 102, 241, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(99, 102, 241, 0);
+    }
+}
+
+.theme-options-notice {
+    animation: successPulse 0.6s ease-out;
+}
+
+/* Icon styles for better visual hierarchy */
+.theme-options-header .dashicons::before,
+.theme-options-section-header .dashicons::before {
+    @apply transition-all duration-300;
+}
+
+.theme-options-section:hover .theme-options-section-header .dashicons::before {
+    @apply transform scale-110;
+}
+
+/* Enhanced focus styles for accessibility */
+.theme-options-input:focus {
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1), 0 1px 3px 0 rgba(0, 0, 0, 0.1) !important;
+}
+
+/* WordPress admin specificity overrides */
+.wp-admin .theme-options-submit:hover {
+    color: white !important;
+}
+
+.wp-admin .theme-options-input:focus {
+    border-color: #6366f1 !important;
+}
+
+/* Loading state for submit button */
+.theme-options-submit.loading {
+    @apply opacity-75 cursor-not-allowed;
+    pointer-events: none;
+}
+
+.theme-options-submit.loading::after {
+    content: '';
+    @apply inline-block w-4 h-4 ml-2 border-2 border-white border-t-transparent rounded-full animate-spin;
+}
+
+/* Media upload styles */
+.theme-options-media-upload .no-image-placeholder {
+    @apply w-52 h-52 bg-neutral-50 border-2 border-dashed border-neutral-300 rounded-xl;
+    @apply flex items-center justify-center text-neutral-400 transition-all duration-200;
+}
+
+.theme-options-media-upload .no-image-placeholder:hover {
+    @apply bg-neutral-100 border-neutral-400;
+}
+
+.theme-options-media-upload .no-image-placeholder .dashicons {
+    @apply text-5xl block;
+    width: 48px !important;
+    height: 48px !important;
+    line-height: 1 !important;
+    font-size: 48px !important;
+}
+
+.theme-options-media-upload .media-preview img {
+    @apply max-w-52 h-auto rounded-xl border-2 border-neutral-200 shadow-sm transition-all duration-200;
+}
+
+.theme-options-media-upload .media-preview img:hover {
+    @apply border-neutral-300 shadow-md;
+}
+
+.theme-options-media-upload .media-buttons {
+    @apply mt-3 flex gap-2;
+}
