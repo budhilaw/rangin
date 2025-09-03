@@ -334,96 +334,6 @@ function personal_website_customize_register($wp_customize) {
         'section'     => 'about_page_skills',
         'type'        => 'hidden',
     ));
-    
-    // Front Page Latest Posts Section
-    $wp_customize->add_section('front_page_latest_posts', array(
-        'title'    => __('Front Page - Latest Posts', 'personal-website'),
-        'priority' => 34,
-    ));
-    
-    // Blog Section Title
-    $wp_customize->add_setting('blog_section_title', array(
-        'default'           => 'Latest Blog Posts',
-        'sanitize_callback' => 'sanitize_text_field',
-    ));
-    $wp_customize->add_control('blog_section_title', array(
-        'label'       => __('Blog Section Title', 'personal-website'),
-        'description' => __('Title for the blog section on front page', 'personal-website'),
-        'section'     => 'front_page_latest_posts',
-        'type'        => 'text',
-    ));
-    
-    // Blog Section Description
-    $wp_customize->add_setting('blog_section_description', array(
-        'default'           => 'Insights and tutorials about software development and technology',
-        'sanitize_callback' => 'sanitize_textarea_field',
-    ));
-    $wp_customize->add_control('blog_section_description', array(
-        'label'       => __('Blog Section Description', 'personal-website'),
-        'description' => __('Description under the blog section title', 'personal-website'),
-        'section'     => 'front_page_latest_posts',
-        'type'        => 'textarea',
-    ));
-    
-    // Featured Post 1
-    $wp_customize->add_setting('featured_post_1', array(
-        'default'           => '',
-        'sanitize_callback' => 'absint',
-    ));
-    $wp_customize->add_control('featured_post_1', array(
-        'label'       => __('Featured Post 1 (ID)', 'personal-website'),
-        'description' => __('Enter the post ID for the first featured post. Leave empty for no post.', 'personal-website'),
-        'section'     => 'front_page_latest_posts',
-        'type'        => 'number',
-        'input_attrs' => array(
-            'min' => 1,
-            'step' => 1,
-        ),
-    ));
-    
-    // Featured Post 2
-    $wp_customize->add_setting('featured_post_2', array(
-        'default'           => '',
-        'sanitize_callback' => 'absint',
-    ));
-    $wp_customize->add_control('featured_post_2', array(
-        'label'       => __('Featured Post 2 (ID)', 'personal-website'),
-        'description' => __('Enter the post ID for the second featured post. Leave empty for no post.', 'personal-website'),
-        'section'     => 'front_page_latest_posts',
-        'type'        => 'number',
-        'input_attrs' => array(
-            'min' => 1,
-            'step' => 1,
-        ),
-    ));
-    
-    // Featured Post 3
-    $wp_customize->add_setting('featured_post_3', array(
-        'default'           => '',
-        'sanitize_callback' => 'absint',
-    ));
-    $wp_customize->add_control('featured_post_3', array(
-        'label'       => __('Featured Post 3 (ID)', 'personal-website'),
-        'description' => __('Enter the post ID for the third featured post. Leave empty for no post.', 'personal-website'),
-        'section'     => 'front_page_latest_posts',
-        'type'        => 'number',
-        'input_attrs' => array(
-            'min' => 1,
-            'step' => 1,
-        ),
-    ));
-    
-    // Help Text for Finding Post IDs
-    $wp_customize->add_setting('featured_posts_help', array(
-        'sanitize_callback' => 'sanitize_text_field',
-    ));
-    $wp_customize->add_control('featured_posts_help', array(
-        'label'       => __('💡 How It Works', 'personal-website'),
-        'description' => __('• Enter specific post IDs to feature those posts<br>• Leave fields empty for no post in that slot<br>• If ALL fields are empty, recent posts will be shown<br><br><strong>Finding Post IDs:</strong> Go to Posts → All Posts, hover over a post title and look at the URL. The number after "post=" is the post ID. Example: post=123 means ID is 123.', 'personal-website'),
-        'section'     => 'front_page_latest_posts',
-        'type'        => 'hidden',
-    ));
-    
     // Contact Information Section
     $wp_customize->add_section('contact_info', array(
         'title'    => __('Contact Information', 'personal-website'),
@@ -786,23 +696,23 @@ function get_contact_cta_message() {
 }
 
 function get_blog_section_title() {
-    return get_theme_mod('blog_section_title', 'Latest Blog Posts');
+    return get_option('blog_section_title', 'Latest Blog Posts');
 }
 
 function get_blog_section_description() {
-    return get_theme_mod('blog_section_description', 'Insights and tutorials about software development and technology');
+    return get_option('blog_section_description', 'Insights and tutorials about software development and technology');
 }
 
 function get_featured_post_1() {
-    return get_theme_mod('featured_post_1', '');
+    return get_option('featured_post_1', '');
 }
 
 function get_featured_post_2() {
-    return get_theme_mod('featured_post_2', '');
+    return get_option('featured_post_2', '');
 }
 
 function get_featured_post_3() {
-    return get_theme_mod('featured_post_3', '');
+    return get_option('featured_post_3', '');
 }
 
 function get_featured_posts() {

@@ -217,6 +217,23 @@ function personal_website_theme_options_page() {
             update_option('featured_portfolio_3', absint($_POST['featured_portfolio_3']));
         }
         
+        // Latest Posts Section
+        if (isset($_POST['blog_section_title'])) {
+            update_option('blog_section_title', sanitize_text_field(stripslashes($_POST['blog_section_title'])));
+        }
+        if (isset($_POST['blog_section_description'])) {
+            update_option('blog_section_description', sanitize_textarea_field(stripslashes($_POST['blog_section_description'])));
+        }
+        if (isset($_POST['featured_post_1'])) {
+            update_option('featured_post_1', absint($_POST['featured_post_1']));
+        }
+        if (isset($_POST['featured_post_2'])) {
+            update_option('featured_post_2', absint($_POST['featured_post_2']));
+        }
+        if (isset($_POST['featured_post_3'])) {
+            update_option('featured_post_3', absint($_POST['featured_post_3']));
+        }
+        
         if (!empty($success_messages)) {
             echo '<div class="theme-options-notice notice notice-success is-dismissible"><p>' . __('Settings saved successfully!', 'personal-website') . '</p></div>';
         }
@@ -246,6 +263,11 @@ function personal_website_theme_options_page() {
     $featured_portfolio_1 = get_option('featured_portfolio_1', '');
     $featured_portfolio_2 = get_option('featured_portfolio_2', '');
     $featured_portfolio_3 = get_option('featured_portfolio_3', '');
+    $blog_section_title = get_option('blog_section_title', 'Latest Blog Posts');
+    $blog_section_description = get_option('blog_section_description', 'Insights and tutorials about software development and technology');
+    $featured_post_1 = get_option('featured_post_1', '');
+    $featured_post_2 = get_option('featured_post_2', '');
+    $featured_post_3 = get_option('featured_post_3', '');
     ?>
     <div class="theme-options-wrap">
         <div class="theme-options-header">
@@ -602,7 +624,6 @@ function personal_website_theme_options_page() {
                                 name="featured_portfolio_1" 
                                 value="<?php echo esc_attr($featured_portfolio_1); ?>" 
                                 class="theme-options-input"
-                                min="1" 
                                 step="1"
                                 placeholder=""
                             />
@@ -617,7 +638,6 @@ function personal_website_theme_options_page() {
                                 name="featured_portfolio_2" 
                                 value="<?php echo esc_attr($featured_portfolio_2); ?>" 
                                 class="theme-options-input"
-                                min="1" 
                                 step="1"
                                 placeholder=""
                             />
@@ -632,11 +652,91 @@ function personal_website_theme_options_page() {
                                 name="featured_portfolio_3" 
                                 value="<?php echo esc_attr($featured_portfolio_3); ?>" 
                                 class="theme-options-input"
-                                min="1" 
                                 step="1"
                                 placeholder=""
                             />
                             <p class="theme-options-help"><?php _e('Enter portfolio post ID for third featured item. Leave empty for automatic selection.', 'personal-website'); ?></p>
+                        </div>
+                    </div>
+
+                    <!-- Latest Posts Section -->
+                    <div class="theme-options-section">
+                        <div class="theme-options-section-header">
+                            <h2><span class="dashicons dashicons-admin-post"></span><?php _e('Latest Posts Section', 'personal-website'); ?></h2>
+                        </div>
+                        
+                        <div class="theme-options-field">
+                            <label for="blog_section_title"><?php _e('Blog Section Title', 'personal-website'); ?></label>
+                            <input 
+                                type="text" 
+                                id="blog_section_title" 
+                                name="blog_section_title" 
+                                value="<?php echo esc_attr($blog_section_title); ?>" 
+                                class="theme-options-input"
+                                placeholder="<?php _e('Latest Blog Posts', 'personal-website'); ?>"
+                            />
+                            <p class="theme-options-help"><?php _e('Title for the blog section on the front page.', 'personal-website'); ?></p>
+                        </div>
+
+                        <div class="theme-options-field">
+                            <label for="blog_section_description"><?php _e('Blog Section Description', 'personal-website'); ?></label>
+                            <textarea 
+                                id="blog_section_description" 
+                                name="blog_section_description" 
+                                class="theme-options-textarea"
+                                rows="3"
+                                placeholder="<?php _e('Insights and tutorials about software development and technology', 'personal-website'); ?>"
+                            ><?php echo esc_textarea($blog_section_description); ?></textarea>
+                            <p class="theme-options-help"><?php _e('Description under the blog section title.', 'personal-website'); ?></p>
+                        </div>
+
+                        <div class="theme-options-field">
+                            <label for="featured_post_1"><?php _e('Featured Post 1 (ID)', 'personal-website'); ?></label>
+                            <input 
+                                type="number" 
+                                id="featured_post_1" 
+                                name="featured_post_1" 
+                                value="<?php echo esc_attr($featured_post_1); ?>" 
+                                class="theme-options-input"
+                                step="1"
+                                placeholder=""
+                            />
+                            <p class="theme-options-help"><?php _e('Enter the post ID for the first featured post. Leave empty for no post.', 'personal-website'); ?></p>
+                        </div>
+
+                        <div class="theme-options-field">
+                            <label for="featured_post_2"><?php _e('Featured Post 2 (ID)', 'personal-website'); ?></label>
+                            <input 
+                                type="number" 
+                                id="featured_post_2" 
+                                name="featured_post_2" 
+                                value="<?php echo esc_attr($featured_post_2); ?>" 
+                                class="theme-options-input"
+                                step="1"
+                                placeholder=""
+                            />
+                            <p class="theme-options-help"><?php _e('Enter the post ID for the second featured post. Leave empty for no post.', 'personal-website'); ?></p>
+                        </div>
+
+                        <div class="theme-options-field">
+                            <label for="featured_post_3"><?php _e('Featured Post 3 (ID)', 'personal-website'); ?></label>
+                            <input 
+                                type="number" 
+                                id="featured_post_3" 
+                                name="featured_post_3" 
+                                value="<?php echo esc_attr($featured_post_3); ?>" 
+                                class="theme-options-input"
+                                step="1"
+                                placeholder=""
+                            />
+                            <p class="theme-options-help"><?php _e('Enter the post ID for the third featured post. Leave empty for no post.', 'personal-website'); ?></p>
+                        </div>
+
+                        <div class="theme-options-field">
+                            <p class="theme-options-help">
+                                <strong><?php _e('💡 How to find Post IDs:', 'personal-website'); ?></strong><br>
+                                <?php _e('Go to Posts > All Posts, hover over a post title, and look at the URL in your browser\'s status bar. The ID will be shown as "post=123".', 'personal-website'); ?>
+                            </p>
                         </div>
                     </div>
                 </div>
