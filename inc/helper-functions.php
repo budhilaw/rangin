@@ -85,3 +85,112 @@ function personal_website_body_classes($classes) {
     return $classes;
 }
 add_filter('body_class', 'personal_website_body_classes');
+
+/**
+ * Social Media Helper Functions
+ */
+
+/**
+ * Get social media link with fallback to customizer
+ */
+function get_social_media_link($platform) {
+    $option_key = 'social_' . $platform;
+    $customizer_key = 'footer_social_' . $platform;
+    
+    // Check theme options first
+    $link = get_option($option_key, '');
+    
+    // Fallback to customizer if not set in theme options
+    if (empty($link)) {
+        $link = get_theme_mod($customizer_key, '');
+    }
+    
+    return $link;
+}
+
+/**
+ * Get all social media links
+ */
+function get_all_social_media_links() {
+    $platforms = array('github', 'gitlab', 'linkedin', 'x', 'facebook', 'instagram', 'threads');
+    $links = array();
+    
+    foreach ($platforms as $platform) {
+        $link = get_social_media_link($platform);
+        if (!empty($link)) {
+            $links[$platform] = $link;
+        }
+    }
+    
+    return $links;
+}
+
+/**
+ * Display social media icons
+ */
+function display_social_media_icons($classes = '') {
+    $social_links = get_all_social_media_links();
+    
+    if (empty($social_links)) {
+        return;
+    }
+    
+    $icon_map = array(
+        'github' => 'fab fa-github',
+        'gitlab' => 'fab fa-gitlab',
+        'linkedin' => 'fab fa-linkedin',
+        'x' => 'fab fa-x-twitter',
+        'facebook' => 'fab fa-facebook',
+        'instagram' => 'fab fa-instagram',
+        'threads' => 'fab fa-threads'
+    );
+    
+    $label_map = array(
+        'github' => 'GitHub',
+        'gitlab' => 'GitLab',
+        'linkedin' => 'LinkedIn',
+        'x' => 'X (Twitter)',
+        'facebook' => 'Facebook',
+        'instagram' => 'Instagram',
+        'threads' => 'Threads'
+    );
+    
+    echo '<div class="social-media-links ' . esc_attr($classes) . '">';
+    foreach ($social_links as $platform => $url) {
+        $icon = isset($icon_map[$platform]) ? $icon_map[$platform] : 'fas fa-link';
+        $label = isset($label_map[$platform]) ? $label_map[$platform] : ucfirst($platform);
+        
+        echo '<a href="' . esc_url($url) . '" target="_blank" rel="noopener noreferrer" class="social-link social-' . esc_attr($platform) . '" aria-label="' . esc_attr($label) . '">';
+        echo '<i class="' . esc_attr($icon) . '" aria-hidden="true"></i>';
+        echo '</a>';
+    }
+    echo '</div>';
+}
+
+/**
+ * Contact Information Helper Functions
+ */
+
+/**
+ * Get front page contact information with fallback to customizer
+ */
+function get_front_contact_info($field) {
+    $theme_option_key = 'front_contact_' . $field;
+    $contact_option_key = 'contact_' . $field;
+    $customizer_key = 'contact_' . $field; // backwards-compat
+    
+    // Check theme options first
+    $value = get_option($theme_option_key, '');
+    
+    // Fallback to general contact options in Theme Options
+    if (empty($value)) {
+        $value = get_option($contact_option_key, '');
+    }
+
+    // Fallback to customizer if still empty (backward compatibility)
+    if (empty($value)) {
+        $value = get_theme_mod($customizer_key, '');
+    }
+    
+    return $value;
+}

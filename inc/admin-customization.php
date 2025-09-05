@@ -191,6 +191,22 @@ function personal_website_theme_options_page() {
         if (isset($_POST['services_list'])) {
             update_option('services_list', wp_kses_post(stripslashes($_POST['services_list'])));
         }
+
+        // Skills & Expertise Section
+        if (isset($_POST['about_skills_show'])) {
+            update_option('about_skills_show', wp_validate_boolean($_POST['about_skills_show']));
+        } else {
+            update_option('about_skills_show', false);
+        }
+        if (isset($_POST['about_skills_title'])) {
+            update_option('about_skills_title', sanitize_text_field(stripslashes($_POST['about_skills_title'])));
+        }
+        if (isset($_POST['about_skills_subtitle'])) {
+            update_option('about_skills_subtitle', sanitize_textarea_field(stripslashes($_POST['about_skills_subtitle'])));
+        }
+        if (isset($_POST['about_skills_list'])) {
+            update_option('about_skills_list', wp_kses_post(stripslashes($_POST['about_skills_list'])));
+        }
         
         // Portfolio Section
         if (isset($_POST['portfolio_section_title'])) {
@@ -234,6 +250,94 @@ function personal_website_theme_options_page() {
             update_option('featured_post_3', absint($_POST['featured_post_3']));
         }
         
+        // Social Media Links
+        if (isset($_POST['social_github'])) {
+            update_option('social_github', esc_url_raw($_POST['social_github']));
+        }
+        if (isset($_POST['social_gitlab'])) {
+            update_option('social_gitlab', esc_url_raw($_POST['social_gitlab']));
+        }
+        if (isset($_POST['social_linkedin'])) {
+            update_option('social_linkedin', esc_url_raw($_POST['social_linkedin']));
+        }
+        if (isset($_POST['social_x'])) {
+            update_option('social_x', esc_url_raw($_POST['social_x']));
+        }
+        if (isset($_POST['social_facebook'])) {
+            update_option('social_facebook', esc_url_raw($_POST['social_facebook']));
+        }
+        if (isset($_POST['social_instagram'])) {
+            update_option('social_instagram', esc_url_raw($_POST['social_instagram']));
+        }
+        if (isset($_POST['social_threads'])) {
+            update_option('social_threads', esc_url_raw($_POST['social_threads']));
+        }
+
+        // Contact Information (General)
+        if (isset($_POST['contact_email'])) {
+            update_option('contact_email', sanitize_email($_POST['contact_email']));
+        }
+        if (isset($_POST['contact_phone'])) {
+            update_option('contact_phone', sanitize_text_field($_POST['contact_phone']));
+        }
+        if (isset($_POST['contact_location'])) {
+            update_option('contact_location', sanitize_text_field($_POST['contact_location']));
+        }
+        
+        // Contact Information
+        if (isset($_POST['contact_section_title'])) {
+            update_option('contact_section_title', sanitize_text_field(stripslashes($_POST['contact_section_title'])));
+        }
+        if (isset($_POST['contact_section_description'])) {
+            update_option('contact_section_description', sanitize_textarea_field(stripslashes($_POST['contact_section_description'])));
+        }
+        if (isset($_POST['front_contact_email'])) {
+            update_option('front_contact_email', sanitize_email($_POST['front_contact_email']));
+        }
+        if (isset($_POST['front_contact_phone'])) {
+            update_option('front_contact_phone', sanitize_text_field($_POST['front_contact_phone']));
+        }
+        if (isset($_POST['front_contact_location'])) {
+            update_option('front_contact_location', sanitize_text_field($_POST['front_contact_location']));
+        }
+        if (isset($_POST['contact_cta_message'])) {
+            update_option('contact_cta_message', sanitize_textarea_field(stripslashes($_POST['contact_cta_message'])));
+        }
+
+        // About Page - General
+        if (isset($_POST['about_page_title'])) {
+            update_option('about_page_title', sanitize_text_field(stripslashes($_POST['about_page_title'])));
+        }
+        if (isset($_POST['about_page_subtitle'])) {
+            update_option('about_page_subtitle', sanitize_textarea_field(stripslashes($_POST['about_page_subtitle'])));
+        }
+
+        // Footer (Brand & Bottom)
+        if (isset($_POST['footer_brand_title'])) {
+            update_option('footer_brand_title', sanitize_text_field(stripslashes($_POST['footer_brand_title'])));
+        }
+        if (isset($_POST['footer_brand_description'])) {
+            update_option('footer_brand_description', sanitize_textarea_field(stripslashes($_POST['footer_brand_description'])));
+        }
+        if (isset($_POST['footer_copyright'])) {
+            update_option('footer_copyright', wp_kses_post(stripslashes($_POST['footer_copyright'])));
+        }
+        if (isset($_POST['footer_link_1_text'])) {
+            update_option('footer_link_1_text', sanitize_text_field(stripslashes($_POST['footer_link_1_text'])));
+        }
+        if (isset($_POST['footer_link_1_url'])) {
+            update_option('footer_link_1_url', esc_url_raw($_POST['footer_link_1_url']));
+        }
+        if (isset($_POST['footer_link_2_text'])) {
+            update_option('footer_link_2_text', sanitize_text_field(stripslashes($_POST['footer_link_2_text'])));
+        }
+        if (isset($_POST['footer_link_2_url'])) {
+            update_option('footer_link_2_url', esc_url_raw($_POST['footer_link_2_url']));
+        }
+        if (isset($_POST['footer_made_with_text'])) {
+            update_option('footer_made_with_text', sanitize_text_field(stripslashes($_POST['footer_made_with_text'])));
+        }
+        
         if (!empty($success_messages)) {
             echo '<div class="theme-options-notice notice notice-success is-dismissible"><p>' . __('Settings saved successfully!', 'personal-website') . '</p></div>';
         }
@@ -268,6 +372,38 @@ function personal_website_theme_options_page() {
     $featured_post_1 = get_option('featured_post_1', '');
     $featured_post_2 = get_option('featured_post_2', '');
     $featured_post_3 = get_option('featured_post_3', '');
+    
+    // Social Media Links
+    $social_github = get_option('social_github', '');
+    $social_gitlab = get_option('social_gitlab', '');
+    $social_linkedin = get_option('social_linkedin', '');
+    $social_x = get_option('social_x', '');
+    $social_facebook = get_option('social_facebook', '');
+    $social_instagram = get_option('social_instagram', '');
+    $social_threads = get_option('social_threads', '');
+
+    // Contact Information (General)
+    $contact_email = get_option('contact_email', get_theme_mod('contact_email', ''));
+    $contact_phone = get_option('contact_phone', get_theme_mod('contact_phone', ''));
+    $contact_location = get_option('contact_location', get_theme_mod('contact_location', ''));
+
+    // Footer (Brand & Bottom)
+    $footer_brand_title = get_option('footer_brand_title', get_theme_mod('footer_brand_title', get_bloginfo('name')));
+    $footer_brand_description = get_option('footer_brand_description', get_theme_mod('footer_brand_description', 'Full-Stack Software Engineer specializing in creating innovative digital solutions. Let\'s build something amazing together.'));
+    $footer_copyright = get_option('footer_copyright', get_theme_mod('footer_copyright', '&copy; ' . date('Y') . ' ' . get_bloginfo('name') . '. All rights reserved.'));
+    $footer_link_1_text = get_option('footer_link_1_text', get_theme_mod('footer_link_1_text', 'Privacy Policy'));
+    $footer_link_1_url  = get_option('footer_link_1_url', get_theme_mod('footer_link_1_url', ''));
+    $footer_link_2_text = get_option('footer_link_2_text', get_theme_mod('footer_link_2_text', 'Terms of Service'));
+    $footer_link_2_url  = get_option('footer_link_2_url', get_theme_mod('footer_link_2_url', ''));
+    $footer_made_with_text = get_option('footer_made_with_text', get_theme_mod('footer_made_with_text', 'Made with ❤️ by Ericsson Budhilaw'));
+    
+    // Contact Information
+    $contact_section_title = get_option('contact_section_title', 'Let\'s Work Together');
+    $contact_section_description = get_option('contact_section_description', 'Ready to start your next project? Let\'s discuss how I can help bring your ideas to life');
+    $front_contact_email = get_option('front_contact_email', '');
+    $front_contact_phone = get_option('front_contact_phone', '');
+    $front_contact_location = get_option('front_contact_location', '');
+    $contact_cta_message = get_option('contact_cta_message', 'I\'m currently available for freelance work and new opportunities. Whether you need a complete web application, mobile app, or just want to discuss your ideas, I\'d love to hear from you.');
     ?>
     <div class="theme-options-wrap">
         <div class="theme-options-header">
@@ -284,6 +420,14 @@ function personal_website_theme_options_page() {
             <button type="button" class="theme-options-tab" data-tab="front-page">
                 <span class="dashicons dashicons-admin-home"></span>
                 <?php _e('Front Page', 'personal-website'); ?>
+            </button>
+            <button type="button" class="theme-options-tab" data-tab="about-page">
+                <span class="dashicons dashicons-id-alt"></span>
+                <?php _e('About Page', 'personal-website'); ?>
+            </button>
+            <button type="button" class="theme-options-tab" data-tab="footer">
+                <span class="dashicons dashicons-editor-underline"></span>
+                <?php _e('Footer', 'personal-website'); ?>
             </button>
         </div>
 
@@ -309,6 +453,189 @@ function personal_website_theme_options_page() {
                                 placeholder="<?php _e('Enter your site title', 'personal-website'); ?>"
                             />
                             <p class="theme-options-help"><?php _e('This is the name of your website that appears in the browser title and search results.', 'personal-website'); ?></p>
+                        </div>
+                    </div>
+
+                    <!-- Contact Information -->
+                    <div class="theme-options-section">
+                        <div class="theme-options-section-header">
+                            <h2><span class="dashicons dashicons-email"></span><?php _e('Contact Information', 'personal-website'); ?></h2>
+                        </div>
+
+                        <div class="theme-options-field">
+                            <label for="contact_email"><?php _e('Contact Email', 'personal-website'); ?></label>
+                            <input
+                                type="email"
+                                id="contact_email"
+                                name="contact_email"
+                                value="<?php echo esc_attr($contact_email); ?>"
+                                class="theme-options-input"
+                                placeholder="<?php _e('your@email.com', 'personal-website'); ?>"
+                            />
+                            <p class="theme-options-help"><?php _e('Primary email used throughout the site (About/Contact sections).', 'personal-website'); ?></p>
+                        </div>
+
+                        <div class="theme-options-field">
+                            <label for="contact_phone"><?php _e('Contact Phone', 'personal-website'); ?></label>
+                            <input
+                                type="text"
+                                id="contact_phone"
+                                name="contact_phone"
+                                value="<?php echo esc_attr($contact_phone); ?>"
+                                class="theme-options-input"
+                                placeholder="<?php _e('+1 (555) 123-4567', 'personal-website'); ?>"
+                            />
+                            <p class="theme-options-help"><?php _e('Primary phone used throughout the site.', 'personal-website'); ?></p>
+                        </div>
+
+                        <div class="theme-options-field">
+                            <label for="contact_location"><?php _e('Location', 'personal-website'); ?></label>
+                            <input
+                                type="text"
+                                id="contact_location"
+                                name="contact_location"
+                                value="<?php echo esc_attr($contact_location); ?>"
+                                class="theme-options-input"
+                                placeholder="<?php _e('City, Country', 'personal-website'); ?>"
+                            />
+                            <p class="theme-options-help"><?php _e('Your location displayed in contact areas.', 'personal-website'); ?></p>
+                        </div>
+                    </div>
+
+                    <!-- Social Media Links Section -->
+                    <div class="theme-options-section">
+                        <div class="theme-options-section-header">
+                            <h2><span class="dashicons dashicons-share"></span><?php _e('Social Media Links', 'personal-website'); ?></h2>
+                        </div>
+                        
+                        <div class="theme-options-field">
+                            <label for="social_github"><?php _e('GitHub URL', 'personal-website'); ?></label>
+                            <input 
+                                type="url" 
+                                id="social_github" 
+                                name="social_github" 
+                                value="<?php echo esc_attr($social_github); ?>" 
+                                class="theme-options-input"
+                                placeholder="<?php _e('https://github.com/username', 'personal-website'); ?>"
+                            />
+                            <p class="theme-options-help"><?php _e('Your GitHub profile URL. Leave empty to hide.', 'personal-website'); ?></p>
+                        </div>
+                        
+                        <div class="theme-options-field">
+                            <label for="social_gitlab"><?php _e('GitLab URL', 'personal-website'); ?></label>
+                            <input 
+                                type="url" 
+                                id="social_gitlab" 
+                                name="social_gitlab" 
+                                value="<?php echo esc_attr($social_gitlab); ?>" 
+                                class="theme-options-input"
+                                placeholder="<?php _e('https://gitlab.com/username', 'personal-website'); ?>"
+                            />
+                            <p class="theme-options-help"><?php _e('Your GitLab profile URL. Leave empty to hide.', 'personal-website'); ?></p>
+                        </div>
+                        
+                        <div class="theme-options-field">
+                            <label for="social_linkedin"><?php _e('LinkedIn URL', 'personal-website'); ?></label>
+                            <input 
+                                type="url" 
+                                id="social_linkedin" 
+                                name="social_linkedin" 
+                                value="<?php echo esc_attr($social_linkedin); ?>" 
+                                class="theme-options-input"
+                                placeholder="<?php _e('https://linkedin.com/in/username', 'personal-website'); ?>"
+                            />
+                            <p class="theme-options-help"><?php _e('Your LinkedIn profile URL. Leave empty to hide.', 'personal-website'); ?></p>
+                        </div>
+                        
+                        <div class="theme-options-field">
+                            <label for="social_x"><?php _e('X (Twitter) URL', 'personal-website'); ?></label>
+                            <input 
+                                type="url" 
+                                id="social_x" 
+                                name="social_x" 
+                                value="<?php echo esc_attr($social_x); ?>" 
+                                class="theme-options-input"
+                                placeholder="<?php _e('https://x.com/username', 'personal-website'); ?>"
+                            />
+                            <p class="theme-options-help"><?php _e('Your X (Twitter) profile URL. Leave empty to hide.', 'personal-website'); ?></p>
+                        </div>
+                        
+                        <div class="theme-options-field">
+                            <label for="social_facebook"><?php _e('Facebook URL', 'personal-website'); ?></label>
+                            <input 
+                                type="url" 
+                                id="social_facebook" 
+                                name="social_facebook" 
+                                value="<?php echo esc_attr($social_facebook); ?>" 
+                                class="theme-options-input"
+                                placeholder="<?php _e('https://facebook.com/username', 'personal-website'); ?>"
+                            />
+                            <p class="theme-options-help"><?php _e('Your Facebook profile URL. Leave empty to hide.', 'personal-website'); ?></p>
+                        </div>
+                        
+                        <div class="theme-options-field">
+                            <label for="social_instagram"><?php _e('Instagram URL', 'personal-website'); ?></label>
+                            <input 
+                                type="url" 
+                                id="social_instagram" 
+                                name="social_instagram" 
+                                value="<?php echo esc_attr($social_instagram); ?>" 
+                                class="theme-options-input"
+                                placeholder="<?php _e('https://instagram.com/username', 'personal-website'); ?>"
+                            />
+                            <p class="theme-options-help"><?php _e('Your Instagram profile URL. Leave empty to hide.', 'personal-website'); ?></p>
+                        </div>
+                        
+                        <div class="theme-options-field">
+                            <label for="social_threads"><?php _e('Threads URL', 'personal-website'); ?></label>
+                            <input 
+                                type="url" 
+                                id="social_threads" 
+                                name="social_threads" 
+                                value="<?php echo esc_attr($social_threads); ?>" 
+                                class="theme-options-input"
+                                placeholder="<?php _e('https://threads.net/@username', 'personal-website'); ?>"
+                            />
+                            <p class="theme-options-help"><?php _e('Your Threads profile URL. Leave empty to hide.', 'personal-website'); ?></p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- About Page Tab -->
+                <div class="theme-options-tab-content" id="tab-about-page">
+                    <div class="theme-options-section">
+                        <div class="theme-options-section-header">
+                            <h2><span class="dashicons dashicons-admin-page"></span><?php _e('About Page - General', 'personal-website'); ?></h2>
+                        </div>
+
+                        <?php 
+                        $opt_about_page_title = get_option('about_page_title', get_theme_mod('about_page_title', ''));
+                        $opt_about_page_subtitle = get_option('about_page_subtitle', get_theme_mod('about_page_subtitle', ''));
+                        ?>
+
+                        <div class="theme-options-field">
+                            <label for="about_page_title"><?php _e('About Page Title', 'personal-website'); ?></label>
+                            <input 
+                                type="text" 
+                                id="about_page_title" 
+                                name="about_page_title" 
+                                value="<?php echo esc_attr($opt_about_page_title); ?>" 
+                                class="theme-options-input"
+                                placeholder="<?php _e('Leave empty to use page title', 'personal-website'); ?>"
+                            />
+                            <p class="theme-options-help"><?php _e('Custom title for the About page. Leave empty to use the page title.', 'personal-website'); ?></p>
+                        </div>
+
+                        <div class="theme-options-field">
+                            <label for="about_page_subtitle"><?php _e('About Page Subtitle', 'personal-website'); ?></label>
+                            <textarea 
+                                id="about_page_subtitle" 
+                                name="about_page_subtitle" 
+                                class="theme-options-textarea"
+                                rows="3"
+                                placeholder="<?php _e('Leave empty to use the page excerpt', 'personal-website'); ?>"
+                            ><?php echo esc_textarea($opt_about_page_subtitle); ?></textarea>
+                            <p class="theme-options-help"><?php _e('Custom subtitle/description for the About page. Leave empty to use the page excerpt.', 'personal-website'); ?></p>
                         </div>
                     </div>
                 </div>
@@ -556,6 +883,37 @@ function personal_website_theme_options_page() {
                         </div>
                     </div>
 
+                    <!-- Skills & Expertise Section -->
+                    <div class="theme-options-section">
+                        <div class="theme-options-section-header">
+                            <h2><span class="dashicons dashicons-awards"></span><?php _e('Skills & Expertise Section', 'personal-website'); ?></h2>
+                        </div>
+
+                        <div class="theme-options-field">
+                            <label for="about_skills_show">
+                                <input type="checkbox" id="about_skills_show" name="about_skills_show" value="1" <?php checked(get_option('about_skills_show', true)); ?> />
+                                <?php _e('Show Skills & Expertise Section', 'personal-website'); ?>
+                            </label>
+                            <p class="theme-options-help"><?php _e('Display the skills section (used on About page).', 'personal-website'); ?></p>
+                        </div>
+
+                        <div class="theme-options-field">
+                            <label for="about_skills_title"><?php _e('Section Title', 'personal-website'); ?></label>
+                            <input type="text" id="about_skills_title" name="about_skills_title" value="<?php echo esc_attr(get_option('about_skills_title', get_theme_mod('about_skills_title', 'Skills & Expertise'))); ?>" class="theme-options-input" />
+                        </div>
+
+                        <div class="theme-options-field">
+                            <label for="about_skills_subtitle"><?php _e('Section Subtitle', 'personal-website'); ?></label>
+                            <textarea id="about_skills_subtitle" name="about_skills_subtitle" rows="3" class="theme-options-textarea"><?php echo esc_textarea(get_option('about_skills_subtitle', get_theme_mod('about_skills_subtitle', 'Technologies and tools I work with to bring ideas to life'))); ?></textarea>
+                        </div>
+
+                        <div class="theme-options-field">
+                            <label for="about_skills_list"><?php _e('Skills List (JSON Format)', 'personal-website'); ?></label>
+                            <textarea id="about_skills_list" name="about_skills_list" rows="8" class="theme-options-textarea" placeholder='[{"name":"React","icon":"fab fa-react","color":"blue"},{"name":"Node.js","icon":"fab fa-node-js","color":"green"}]'><?php echo esc_textarea(get_option('about_skills_list', get_theme_mod('about_skills_list', ''))); ?></textarea>
+                            <p class="theme-options-help"><?php _e('Up to 8 skills. Colors: blue, green, purple, orange, yellow, red, teal, indigo, pink, gray. Icons use Font Awesome classes (e.g., "fab fa-react").', 'personal-website'); ?></p>
+                        </div>
+                    </div>
+
                     <!-- Portfolio Section -->
                     <div class="theme-options-section">
                         <div class="theme-options-section-header">
@@ -739,12 +1097,176 @@ function personal_website_theme_options_page() {
                             </p>
                         </div>
                     </div>
+
+                    <!-- Contact Section -->
+                    <div class="theme-options-section">
+                        <div class="theme-options-section-header">
+                            <h2><span class="dashicons dashicons-email"></span><?php _e('Contact Section', 'personal-website'); ?></h2>
+                        </div>
+                        
+                        <div class="theme-options-field">
+                            <label for="contact_section_title"><?php _e('Contact Section Title', 'personal-website'); ?></label>
+                            <input 
+                                type="text" 
+                                id="contact_section_title" 
+                                name="contact_section_title" 
+                                value="<?php echo esc_attr($contact_section_title); ?>" 
+                                class="theme-options-input"
+                                placeholder="<?php _e('Let\'s Work Together', 'personal-website'); ?>"
+                            />
+                            <p class="theme-options-help"><?php _e('Main heading for the contact section on the front page.', 'personal-website'); ?></p>
+                        </div>
+
+                        <div class="theme-options-field">
+                            <label for="contact_section_description"><?php _e('Contact Section Description', 'personal-website'); ?></label>
+                            <textarea 
+                                id="contact_section_description" 
+                                name="contact_section_description" 
+                                class="theme-options-textarea"
+                                rows="3"
+                                placeholder="<?php _e('Ready to start your next project? Let\'s discuss how I can help bring your ideas to life', 'personal-website'); ?>"
+                            ><?php echo esc_textarea($contact_section_description); ?></textarea>
+                            <p class="theme-options-help"><?php _e('Subtitle/description under the main heading.', 'personal-website'); ?></p>
+                        </div>
+
+                        <div class="theme-options-field">
+                            <label for="front_contact_email"><?php _e('Contact Email', 'personal-website'); ?></label>
+                            <input 
+                                type="email" 
+                                id="front_contact_email" 
+                                name="front_contact_email" 
+                                value="<?php echo esc_attr($front_contact_email); ?>" 
+                                class="theme-options-input"
+                                placeholder="<?php _e('your@email.com', 'personal-website'); ?>"
+                            />
+                            <p class="theme-options-help"><?php _e('Email address for the front page contact section. Leave empty to use general contact email from Customizer.', 'personal-website'); ?></p>
+                        </div>
+
+                        <div class="theme-options-field">
+                            <label for="front_contact_phone"><?php _e('Contact Phone', 'personal-website'); ?></label>
+                            <input 
+                                type="text" 
+                                id="front_contact_phone" 
+                                name="front_contact_phone" 
+                                value="<?php echo esc_attr($front_contact_phone); ?>" 
+                                class="theme-options-input"
+                                placeholder="<?php _e('+1 (555) 123-4567', 'personal-website'); ?>"
+                            />
+                            <p class="theme-options-help"><?php _e('Phone number for the front page contact section. Leave empty to use general contact phone from Customizer.', 'personal-website'); ?></p>
+                        </div>
+
+                        <div class="theme-options-field">
+                            <label for="front_contact_location"><?php _e('Contact Location', 'personal-website'); ?></label>
+                            <input 
+                                type="text" 
+                                id="front_contact_location" 
+                                name="front_contact_location" 
+                                value="<?php echo esc_attr($front_contact_location); ?>" 
+                                class="theme-options-input"
+                                placeholder="<?php _e('Jakarta, Indonesia', 'personal-website'); ?>"
+                            />
+                            <p class="theme-options-help"><?php _e('Location for the front page contact section. Leave empty to use general contact location from Customizer.', 'personal-website'); ?></p>
+                        </div>
+
+                        <div class="theme-options-field">
+                            <label for="contact_cta_message"><?php _e('Contact CTA Message', 'personal-website'); ?></label>
+                            <textarea 
+                                id="contact_cta_message" 
+                                name="contact_cta_message" 
+                                class="theme-options-textarea"
+                                rows="5"
+                                placeholder="<?php _e('I\'m currently available for freelance work and new opportunities...', 'personal-website'); ?>"
+                            ><?php echo esc_textarea($contact_cta_message); ?></textarea>
+                            <p class="theme-options-help"><?php _e('Call-to-action message in the contact section right panel.', 'personal-website'); ?></p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Footer Tab -->
+                <div class="theme-options-tab-content" id="tab-footer">
+                    <!-- Footer Brand -->
+                    <div class="theme-options-section">
+                        <div class="theme-options-section-header">
+                            <h2><span class="dashicons dashicons-admin-appearance"></span><?php _e('Footer Brand', 'personal-website'); ?></h2>
+                        </div>
+                        <div class="theme-options-field">
+                            <label for="footer_brand_title"><?php _e('Brand Title', 'personal-website'); ?></label>
+                            <input
+                                type="text"
+                                id="footer_brand_title"
+                                name="footer_brand_title"
+                                value="<?php echo esc_attr($footer_brand_title); ?>"
+                                class="theme-options-input"
+                                placeholder="<?php _e('Your Brand / Site Name', 'personal-website'); ?>"
+                            />
+                            <p class="theme-options-help"><?php _e('Footer brand title shown in the footer heading.', 'personal-website'); ?></p>
+                        </div>
+                        <div class="theme-options-field">
+                            <label for="footer_brand_description"><?php _e('Brand Description', 'personal-website'); ?></label>
+                            <textarea
+                                id="footer_brand_description"
+                                name="footer_brand_description"
+                                class="theme-options-textarea"
+                                rows="3"
+                                placeholder="<?php _e('Short description about you/brand', 'personal-website'); ?>"
+                            ><?php echo esc_textarea($footer_brand_description); ?></textarea>
+                            <p class="theme-options-help"><?php _e('Short description displayed beneath the brand title.', 'personal-website'); ?></p>
+                        </div>
+                    </div>
+
+                    <!-- Footer Bottom -->
+                    <div class="theme-options-section">
+                        <div class="theme-options-section-header">
+                            <h2><span class="dashicons dashicons-editor-insertmore"></span><?php _e('Footer Bottom', 'personal-website'); ?></h2>
+                        </div>
+                        <div class="theme-options-field">
+                            <label for="footer_copyright"><?php _e('Copyright Text (HTML allowed)', 'personal-website'); ?></label>
+                            <input
+                                type="text"
+                                id="footer_copyright"
+                                name="footer_copyright"
+                                value="<?php echo esc_attr($footer_copyright); ?>"
+                                class="theme-options-input"
+                                placeholder="<?php echo esc_attr('&copy; ' . date('Y') . ' ' . get_bloginfo('name') . '.'); ?>"
+                            />
+                            <p class="theme-options-help"><?php _e('Displayed as the main copyright line in the footer.', 'personal-website'); ?></p>
+                        </div>
+                        <div class="theme-options-field">
+                            <label for="footer_link_1_text"><?php _e('Footer Link 1 Text', 'personal-website'); ?></label>
+                            <input type="text" id="footer_link_1_text" name="footer_link_1_text" value="<?php echo esc_attr($footer_link_1_text); ?>" class="theme-options-input" />
+                        </div>
+                        <div class="theme-options-field">
+                            <label for="footer_link_1_url"><?php _e('Footer Link 1 URL', 'personal-website'); ?></label>
+                            <input type="url" id="footer_link_1_url" name="footer_link_1_url" value="<?php echo esc_attr($footer_link_1_url); ?>" class="theme-options-input" />
+                        </div>
+                        <div class="theme-options-field">
+                            <label for="footer_link_2_text"><?php _e('Footer Link 2 Text', 'personal-website'); ?></label>
+                            <input type="text" id="footer_link_2_text" name="footer_link_2_text" value="<?php echo esc_attr($footer_link_2_text); ?>" class="theme-options-input" />
+                        </div>
+                        <div class="theme-options-field">
+                            <label for="footer_link_2_url"><?php _e('Footer Link 2 URL', 'personal-website'); ?></label>
+                            <input type="url" id="footer_link_2_url" name="footer_link_2_url" value="<?php echo esc_attr($footer_link_2_url); ?>" class="theme-options-input" />
+                        </div>
+                        <div class="theme-options-field">
+                            <label for="footer_made_with_text"><?php _e('Made With Text', 'personal-website'); ?></label>
+                            <input type="text" id="footer_made_with_text" name="footer_made_with_text" value="<?php echo esc_attr($footer_made_with_text); ?>" class="theme-options-input" placeholder="<?php _e('Made with ❤️ by Your Name', 'personal-website'); ?>" />
+                            <p class="theme-options-help"><?php _e('Short signature line shown at the very bottom.', 'personal-website'); ?></p>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="theme-options-actions">
                     <?php submit_button(__('Save Settings', 'personal-website'), 'primary', 'submit', false, array('class' => 'theme-options-submit')); ?>
                 </div>
             </form>
+            <div class="theme-options-trademark" style="margin-top:24px; padding:16px; border-top:1px solid #e5e7eb; text-align:center; color:#555;">
+                &copy; <?php echo date('Y'); ?>
+                <a href="https://budhilaw.com" target="_blank" rel="noopener noreferrer" style="text-decoration:none; font-weight:600;">
+                    Ericsson Budhilaw
+                </a>.
+                All rights reserved. <br /> <br /> Inquiries:
+                <a href="mailto:hello@budhilaw.com" style="text-decoration:none; font-weight:600;">hello@budhilaw.com</a>.
+            </div>
         </div>
     </div>
     <?php
@@ -910,5 +1432,3 @@ function personal_website_theme_options_scripts() {
     }
 }
 add_action('admin_head', 'personal_website_theme_options_scripts');
-
-

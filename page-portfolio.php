@@ -48,28 +48,23 @@ get_header(); ?>
             ));
 
             if ($portfolio_query->have_posts()):
-                // Get all categories for filter buttons
-                $categories = array();
-                while ($portfolio_query->have_posts()) {
-                    $portfolio_query->the_post();
-                    $cat = get_portfolio_category();
-                    if ($cat && !in_array($cat, $categories)) {
-                        $categories[] = $cat;
-                    }
-                }
-                wp_reset_postdata();
+                // Get taxonomy terms for filter buttons
+                $portfolio_terms = get_terms(array(
+                    'taxonomy' => 'portfolio_category',
+                    'hide_empty' => true,
+                ));
             ?>
                 
                 <!-- Filter Buttons -->
-                <?php if (!empty($categories)): ?>
+                <?php if (!is_wp_error($portfolio_terms) && !empty($portfolio_terms)): ?>
                 <div class="text-center mb-12">
                     <div class="inline-flex flex-wrap justify-center gap-2 p-2 bg-neutral-100 dark:bg-neutral-800 rounded-lg">
                         <button class="portfolio-filter-btn active px-6 py-2 rounded-md font-medium transition-all duration-300 bg-primary-600 text-white" data-filter="all">
                             All Projects
                         </button>
-                        <?php foreach ($categories as $category): ?>
-                        <button class="portfolio-filter-btn px-6 py-2 rounded-md font-medium transition-all duration-300 text-neutral-700 dark:text-neutral-300 hover:bg-primary-100 dark:hover:bg-primary-900" data-filter="<?php echo esc_attr($category); ?>">
-                            <?php echo esc_html(get_portfolio_category_name($category)); ?>
+                        <?php foreach ($portfolio_terms as $term): ?>
+                        <button class="portfolio-filter-btn px-6 py-2 rounded-md font-medium transition-all duration-300 text-neutral-700 dark:text-neutral-300 hover:bg-primary-100 dark:hover:bg-primary-900" data-filter="<?php echo esc_attr($term->slug); ?>">
+                            <?php echo esc_html($term->name); ?>
                         </button>
                         <?php endforeach; ?>
                     </div>
@@ -90,8 +85,13 @@ get_header(); ?>
                     while ($portfolio_query->have_posts()):
                         $portfolio_query->the_post();
                         
-                        $category = get_portfolio_category();
+                        $category = get_portfolio_category(); // primary category slug (first term)
                         $category_color = get_portfolio_category_color($category);
+                        $terms = get_the_terms(get_the_ID(), 'portfolio_category');
+                        $term_slugs = array();
+                        if ($terms && !is_wp_error($terms)) {
+                            foreach ($terms as $t) { $term_slugs[] = $t->slug; }
+                        }
                         $demo_link = get_portfolio_demo_link();
                         $github_link = get_portfolio_github_link();
                         $technologies = get_portfolio_technologies();
@@ -116,7 +116,7 @@ get_header(); ?>
                         $category_text_class = $color_classes[$category_color]['text'] ?? $color_classes['blue']['text'];
                     ?>
                     
-                    <article class="portfolio-item card overflow-hidden animate-on-scroll" data-category="<?php echo esc_attr($category); ?>">
+                    <article class="portfolio-item card overflow-hidden animate-on-scroll" data-category="<?php echo esc_attr($category); ?>" data-categories="<?php echo esc_attr(implode(',', $term_slugs)); ?>">
                         <?php if (has_post_thumbnail()): ?>
                         <div class="relative overflow-hidden group">
                             <?php the_post_thumbnail('large', array('class' => 'w-full h-64 object-cover transition-transform duration-300 group-hover:scale-110')); ?>
@@ -282,8 +282,10 @@ document.addEventListener('DOMContentLoaded', function() {
             // Filter portfolio items
             portfolioItems.forEach(item => {
                 const itemCategory = item.getAttribute('data-category');
-                
-                if (filter === 'all' || filter === itemCategory) {
+                const itemCategories = (item.getAttribute('data-categories') || '').split(',').filter(Boolean);
+                const matches = filter === 'all' || itemCategory === filter || itemCategories.includes(filter);
+
+                if (matches) {
                     item.style.display = 'block';
                     // Add fade-in animation
                     item.style.opacity = '0';

@@ -15,248 +15,10 @@ if (!defined('ABSPATH')) {
  */
 function personal_website_customize_register($wp_customize) {
     
-    // Personal Information Section
-    $wp_customize->add_section('personal_info', array(
-        'title'    => __('Personal Information', 'personal-website'),
-        'priority' => 30,
-    ));
-    
-    // Name
-    $wp_customize->add_setting('personal_name', array(
-        'default'           => 'Ericsson Budhilaw',
-        'sanitize_callback' => 'sanitize_text_field',
-    ));
-    $wp_customize->add_control('personal_name', array(
-        'label'   => __('Full Name', 'personal-website'),
-        'section' => 'personal_info',
-        'type'    => 'text',
-    ));
-    
-    // Job Title
-    $wp_customize->add_setting('job_title', array(
-        'default'           => 'Full-Stack Software Engineer',
-        'sanitize_callback' => 'sanitize_text_field',
-    ));
-    $wp_customize->add_control('job_title', array(
-        'label'   => __('Job Title', 'personal-website'),
-        'section' => 'personal_info',
-        'type'    => 'text',
-    ));
-    
-    // Bio/Description
-    $wp_customize->add_setting('personal_bio', array(
-        'default'           => 'Passionate about building innovative solutions that make a difference',
-        'sanitize_callback' => 'sanitize_textarea_field',
-    ));
-    $wp_customize->add_control('personal_bio', array(
-        'label'   => __('Bio/Description', 'personal-website'),
-        'section' => 'personal_info',
-        'type'    => 'textarea',
-    ));
+    // Personal Information Section removed; managed elsewhere
 
+    // About Page General settings moved to Theme Options > About Page
 
-
-
-
-    $wp_customize->add_section('front_page_contact', array(
-        'title'    => __('Front Page - Contact', 'personal-website'),
-        'priority' => 33,
-    ));
-    
-    // Contact Section Title
-    $wp_customize->add_setting('contact_section_title', array(
-        'default'           => 'Let\'s Work Together',
-        'sanitize_callback' => 'sanitize_text_field',
-    ));
-    $wp_customize->add_control('contact_section_title', array(
-        'label'       => __('Contact Section Title', 'personal-website'),
-        'description' => __('Main heading for the contact section', 'personal-website'),
-        'section'     => 'front_page_contact',
-        'type'        => 'text',
-    ));
-    
-    // Contact Section Description
-    $wp_customize->add_setting('contact_section_description', array(
-        'default'           => 'Ready to start your next project? Let\'s discuss how I can help bring your ideas to life',
-        'sanitize_callback' => 'sanitize_textarea_field',
-    ));
-    $wp_customize->add_control('contact_section_description', array(
-        'label'       => __('Contact Section Description', 'personal-website'),
-        'description' => __('Subtitle/description under the main heading', 'personal-website'),
-        'section'     => 'front_page_contact',
-        'type'        => 'textarea',
-    ));
-    
-    // Front Page Contact Email
-    $wp_customize->add_setting('front_contact_email', array(
-        'default'           => '',
-        'sanitize_callback' => 'sanitize_email',
-    ));
-    $wp_customize->add_control('front_contact_email', array(
-        'label'       => __('Contact Email', 'personal-website'),
-        'description' => __('Email address for the front page contact section. Leave empty to use general contact email.', 'personal-website'),
-        'section'     => 'front_page_contact',
-        'type'        => 'email',
-    ));
-    
-    // Front Page Contact Phone
-    $wp_customize->add_setting('front_contact_phone', array(
-        'default'           => '',
-        'sanitize_callback' => 'sanitize_text_field',
-    ));
-    $wp_customize->add_control('front_contact_phone', array(
-        'label'       => __('Contact Phone', 'personal-website'),
-        'description' => __('Phone number for the front page contact section. Leave empty to use general contact phone.', 'personal-website'),
-        'section'     => 'front_page_contact',
-        'type'        => 'text',
-    ));
-    
-    // Front Page Contact Location
-    $wp_customize->add_setting('front_contact_location', array(
-        'default'           => '',
-        'sanitize_callback' => 'sanitize_text_field',
-    ));
-    $wp_customize->add_control('front_contact_location', array(
-        'label'       => __('Contact Location', 'personal-website'),
-        'description' => __('Location for the front page contact section. Leave empty to use general contact location.', 'personal-website'),
-        'section'     => 'front_page_contact',
-        'type'        => 'text',
-    ));
-    
-    // Social Media Links for Front Page
-    // X (Twitter)
-    $wp_customize->add_setting('front_social_twitter', array(
-        'default'           => '',
-        'sanitize_callback' => 'esc_url_raw',
-    ));
-    $wp_customize->add_control('front_social_twitter', array(
-        'label'       => __('X (Twitter) URL', 'personal-website'),
-        'description' => __('Your X (Twitter) profile URL. Leave empty to hide.', 'personal-website'),
-        'section'     => 'front_page_contact',
-        'type'        => 'url',
-    ));
-    
-    // LinkedIn
-    $wp_customize->add_setting('front_social_linkedin', array(
-        'default'           => '',
-        'sanitize_callback' => 'esc_url_raw',
-    ));
-    $wp_customize->add_control('front_social_linkedin', array(
-        'label'       => __('LinkedIn URL', 'personal-website'),
-        'description' => __('Your LinkedIn profile URL. Leave empty to hide.', 'personal-website'),
-        'section'     => 'front_page_contact',
-        'type'        => 'url',
-    ));
-    
-    // GitHub
-    $wp_customize->add_setting('front_social_github', array(
-        'default'           => '',
-        'sanitize_callback' => 'esc_url_raw',
-    ));
-    $wp_customize->add_control('front_social_github', array(
-        'label'       => __('GitHub URL', 'personal-website'),
-        'description' => __('Your GitHub profile URL. Leave empty to hide.', 'personal-website'),
-        'section'     => 'front_page_contact',
-        'type'        => 'url',
-    ));
-    
-    // Facebook
-    $wp_customize->add_setting('front_social_facebook', array(
-        'default'           => '',
-        'sanitize_callback' => 'esc_url_raw',
-    ));
-    $wp_customize->add_control('front_social_facebook', array(
-        'label'       => __('Facebook URL', 'personal-website'),
-        'description' => __('Your Facebook profile URL. Leave empty to hide.', 'personal-website'),
-        'section'     => 'front_page_contact',
-        'type'        => 'url',
-    ));
-    
-    // Instagram
-    $wp_customize->add_setting('front_social_instagram', array(
-        'default'           => '',
-        'sanitize_callback' => 'esc_url_raw',
-    ));
-    $wp_customize->add_control('front_social_instagram', array(
-        'label'       => __('Instagram URL', 'personal-website'),
-        'description' => __('Your Instagram profile URL. Leave empty to hide.', 'personal-website'),
-        'section'     => 'front_page_contact',
-        'type'        => 'url',
-    ));
-    
-    // Contact CTA Message
-    $wp_customize->add_setting('contact_cta_message', array(
-        'default'           => 'I\'m currently available for freelance work and new opportunities. Whether you need a complete web application, mobile app, or just want to discuss your ideas, I\'d love to hear from you.',
-        'sanitize_callback' => 'sanitize_textarea_field',
-    ));
-    $wp_customize->add_control('contact_cta_message', array(
-        'label'       => __('Contact CTA Message', 'personal-website'),
-        'description' => __('Call-to-action message in the contact section right panel', 'personal-website'),
-        'section'     => 'front_page_contact',
-        'type'        => 'textarea',
-    ));
-    
-    // About Page - General Settings
-    $wp_customize->add_section('about_page_general', array(
-        'title'    => __('About Page - General', 'personal-website'),
-        'priority' => 32.6,
-    ));
-
-    // About Page Title
-    $wp_customize->add_setting('about_page_title', array(
-        'default'           => '',
-        'sanitize_callback' => 'sanitize_text_field',
-    ));
-    $wp_customize->add_control('about_page_title', array(
-        'label'       => __('About Page Title', 'personal-website'),
-        'description' => __('Custom title for the About page. Leave empty to use the page title.', 'personal-website'),
-        'section'     => 'about_page_general',
-        'type'        => 'text',
-    ));
-
-    // About Page Subtitle
-    $wp_customize->add_setting('about_page_subtitle', array(
-        'default'           => '',
-        'sanitize_callback' => 'sanitize_textarea_field',
-    ));
-    $wp_customize->add_control('about_page_subtitle', array(
-        'label'       => __('About Page Subtitle', 'personal-website'),
-        'description' => __('Custom subtitle/description for the About page. Leave empty to use the page excerpt.', 'personal-website'),
-        'section'     => 'about_page_general',
-        'type'        => 'textarea',
-    ));
-
-    // Portfolio Settings Section
-    $wp_customize->add_section('portfolio_settings', array(
-        'title'    => __('Portfolio Settings', 'personal-website'),
-        'priority' => 32.65,
-    ));
-
-    // Portfolio Categories
-    $wp_customize->add_setting('portfolio_categories', array(
-        'default'           => '',
-        'sanitize_callback' => 'wp_kses_post',
-    ));
-    $wp_customize->add_control('portfolio_categories', array(
-        'label'       => __('Portfolio Categories (JSON Format)', 'personal-website'),
-        'description' => __('Define custom categories for your portfolio items. Example: [{"slug":"mobile","name":"Mobile","color":"green"},{"slug":"backend","name":"Backend","color":"blue"},{"slug":"frontend","name":"Frontend","color":"purple"}]. Available colors: green, blue, purple, orange, red, teal, indigo, pink, gray', 'personal-website'),
-        'section'     => 'portfolio_settings',
-        'type'        => 'textarea',
-        'input_attrs' => array(
-            'rows' => 6,
-        ),
-    ));
-
-    // Help Text for Portfolio Categories
-    $wp_customize->add_setting('portfolio_categories_help', array(
-        'sanitize_callback' => 'sanitize_text_field',
-    ));
-    $wp_customize->add_control('portfolio_categories_help', array(
-        'label'       => __('💡 How to Configure Categories', 'personal-website'),
-        'description' => __('<strong>JSON Format Example:</strong><br><code>[{"slug":"mobile","name":"Mobile Apps","color":"green"},{"slug":"web","name":"Web Development","color":"blue"},{"slug":"api","name":"API Development","color":"purple"},{"slug":"fullstack","name":"Full Stack","color":"orange"}]</code><br><br><strong>Fields:</strong><br>• <strong>slug</strong>: Unique identifier (lowercase, no spaces)<br>• <strong>name</strong>: Display name for the category<br>• <strong>color</strong>: Badge color (green, blue, purple, orange, red, teal, indigo, pink, gray)<br><br><strong>Note:</strong> Leave empty to use default categories (Mobile, Backend, Frontend, Full Stack)', 'personal-website'),
-        'section'     => 'portfolio_settings',
-        'type'        => 'hidden',
-    ));
 
     // Help Text for Portfolio
     $wp_customize->add_setting('portfolio_help', array(
@@ -269,282 +31,9 @@ function personal_website_customize_register($wp_customize) {
         'type'        => 'hidden',
     ));
 
-    // About Page - Skills & Expertise Section
-    $wp_customize->add_section('about_page_skills', array(
-        'title'    => __('About Page - Skills & Expertise', 'personal-website'),
-        'priority' => 32.7,
-    ));
-
-    // Show/Hide Skills Section
-    $wp_customize->add_setting('about_skills_show', array(
-        'default'           => true,
-        'sanitize_callback' => 'wp_validate_boolean',
-    ));
-    $wp_customize->add_control('about_skills_show', array(
-        'label'       => __('Show Skills & Expertise Section', 'personal-website'),
-        'description' => __('Display the skills section on the About page', 'personal-website'),
-        'section'     => 'about_page_skills',
-        'type'        => 'checkbox',
-    ));
-
-    // Skills Section Title
-    $wp_customize->add_setting('about_skills_title', array(
-        'default'           => 'Skills & Expertise',
-        'sanitize_callback' => 'sanitize_text_field',
-    ));
-    $wp_customize->add_control('about_skills_title', array(
-        'label'   => __('Skills Section Title', 'personal-website'),
-        'section' => 'about_page_skills',
-        'type'    => 'text',
-    ));
-
-    // Skills Section Subtitle
-    $wp_customize->add_setting('about_skills_subtitle', array(
-        'default'           => 'Technologies and tools I work with to bring ideas to life',
-        'sanitize_callback' => 'sanitize_textarea_field',
-    ));
-    $wp_customize->add_control('about_skills_subtitle', array(
-        'label'   => __('Skills Section Subtitle', 'personal-website'),
-        'section' => 'about_page_skills',
-        'type'    => 'textarea',
-    ));
-
-    // Skills List (JSON)
-    $wp_customize->add_setting('about_skills_list', array(
-        'default'           => '',
-        'sanitize_callback' => 'wp_kses_post',
-    ));
-    $wp_customize->add_control('about_skills_list', array(
-        'label'       => __('Skills List (JSON Format)', 'personal-website'),
-        'description' => __('Enter skills in JSON format. Max 8 skills. Example: [{"name":"React","icon":"fab fa-react","color":"blue"},{"name":"Node.js","icon":"fab fa-node-js","color":"green"}]. Available colors: blue, green, purple, orange, yellow, red, teal, indigo, pink, gray', 'personal-website'),
-        'section'     => 'about_page_skills',
-        'type'        => 'textarea',
-        'input_attrs' => array(
-            'rows' => 8,
-        ),
-    ));
-
-    // Help Text for Skills
-    $wp_customize->add_setting('about_skills_help', array(
-        'sanitize_callback' => 'sanitize_text_field',
-    ));
-    $wp_customize->add_control('about_skills_help', array(
-        'label'       => __('💡 How to Add Skills', 'personal-website'),
-        'description' => __('<strong>JSON Format Example:</strong><br><code>[{"name":"React","icon":"fab fa-react","color":"blue"},{"name":"PHP","icon":"fab fa-php","color":"purple"},{"name":"JavaScript","icon":"fab fa-js-square","color":"yellow"}]</code><br><br><strong>Icon Classes:</strong> Use Font Awesome classes like "fab fa-react", "fas fa-database", "fab fa-node-js"<br><br><strong>Colors:</strong> blue, green, purple, orange, yellow, red, teal, indigo, pink, gray<br><br><strong>Max Skills:</strong> 8 skills recommended for best layout', 'personal-website'),
-        'section'     => 'about_page_skills',
-        'type'        => 'hidden',
-    ));
-    // Contact Information Section
-    $wp_customize->add_section('contact_info', array(
-        'title'    => __('Contact Information', 'personal-website'),
-        'priority' => 35,
-    ));
-    
-    // Email
-    $wp_customize->add_setting('contact_email', array(
-        'default'           => 'hello@ericssonbudhilaw.com',
-        'sanitize_callback' => 'sanitize_email',
-    ));
-    $wp_customize->add_control('contact_email', array(
-        'label'   => __('Email Address', 'personal-website'),
-        'section' => 'contact_info',
-        'type'    => 'email',
-    ));
-    
-    // Phone
-    $wp_customize->add_setting('contact_phone', array(
-        'default'           => '+1 (555) 123-4567',
-        'sanitize_callback' => 'sanitize_text_field',
-    ));
-    $wp_customize->add_control('contact_phone', array(
-        'label'   => __('Phone Number', 'personal-website'),
-        'section' => 'contact_info',
-        'type'    => 'text',
-    ));
-    
-    // Location
-    $wp_customize->add_setting('contact_location', array(
-        'default'           => 'Jakarta, Indonesia',
-        'sanitize_callback' => 'sanitize_text_field',
-    ));
-    $wp_customize->add_control('contact_location', array(
-        'label'   => __('Location', 'personal-website'),
-        'section' => 'contact_info',
-        'type'    => 'text',
-    ));
+    // Contact Information Section removed; managed in Theme Options > General
     
 
-    // =======================
-    // Footer - Brand Section
-    // =======================
-    $wp_customize->add_section('footer_brand', array(
-        'title'    => __('Footer - Brand', 'personal-website'),
-        'priority' => 40,
-    ));
-    
-    // Footer Brand Title
-    $wp_customize->add_setting('footer_brand_title', array(
-        'default'           => get_bloginfo('name'),
-        'sanitize_callback' => 'sanitize_text_field',
-    ));
-    $wp_customize->add_control('footer_brand_title', array(
-        'label'       => __('Brand Title', 'personal-website'),
-        'description' => __('Footer brand title', 'personal-website'),
-        'section'     => 'footer_brand',
-        'type'        => 'text',
-    ));
-    
-    // Footer Brand Description
-    $wp_customize->add_setting('footer_brand_description', array(
-        'default'           => 'Full-Stack Software Engineer specializing in creating innovative digital solutions. Let\'s build something amazing together.',
-        'sanitize_callback' => 'sanitize_textarea_field',
-    ));
-    $wp_customize->add_control('footer_brand_description', array(
-        'label'       => __('Brand Description', 'personal-website'),
-        'description' => __('Footer brand description text', 'personal-website'),
-        'section'     => 'footer_brand',
-        'type'        => 'textarea',
-    ));
-    
-    // Footer Social Media - X (Twitter)
-    $wp_customize->add_setting('footer_social_x', array(
-        'default'           => '',
-        'sanitize_callback' => 'esc_url_raw',
-    ));
-    $wp_customize->add_control('footer_social_x', array(
-        'label'       => __('X (Twitter) URL', 'personal-website'),
-        'description' => __('Your X (Twitter) profile URL. Leave empty to hide.', 'personal-website'),
-        'section'     => 'footer_brand',
-        'type'        => 'url',
-    ));
-    
-    // Footer Social Media - Instagram
-    $wp_customize->add_setting('footer_social_instagram', array(
-        'default'           => '',
-        'sanitize_callback' => 'esc_url_raw',
-    ));
-    $wp_customize->add_control('footer_social_instagram', array(
-        'label'       => __('Instagram URL', 'personal-website'),
-        'description' => __('Your Instagram profile URL. Leave empty to hide.', 'personal-website'),
-        'section'     => 'footer_brand',
-        'type'        => 'url',
-    ));
-    
-    // Footer Social Media - LinkedIn
-    $wp_customize->add_setting('footer_social_linkedin', array(
-        'default'           => '',
-        'sanitize_callback' => 'esc_url_raw',
-    ));
-    $wp_customize->add_control('footer_social_linkedin', array(
-        'label'       => __('LinkedIn URL', 'personal-website'),
-        'description' => __('Your LinkedIn profile URL. Leave empty to hide.', 'personal-website'),
-        'section'     => 'footer_brand',
-        'type'        => 'url',
-    ));
-    
-    // Footer Social Media - GitHub
-    $wp_customize->add_setting('footer_social_github', array(
-        'default'           => '',
-        'sanitize_callback' => 'esc_url_raw',
-    ));
-    $wp_customize->add_control('footer_social_github', array(
-        'label'       => __('GitHub URL', 'personal-website'),
-        'description' => __('Your GitHub profile URL. Leave empty to hide.', 'personal-website'),
-        'section'     => 'footer_brand',
-        'type'        => 'url',
-    ));
-    
-    // Footer Social Media - Facebook
-    $wp_customize->add_setting('footer_social_facebook', array(
-        'default'           => '',
-        'sanitize_callback' => 'esc_url_raw',
-    ));
-    $wp_customize->add_control('footer_social_facebook', array(
-        'label'       => __('Facebook URL', 'personal-website'),
-        'description' => __('Your Facebook profile URL. Leave empty to hide.', 'personal-website'),
-        'section'     => 'footer_brand',
-        'type'        => 'url',
-    ));
-    
-    // =======================
-    // Footer - Bottom Section
-    // =======================
-    $wp_customize->add_section('footer_bottom', array(
-        'title'    => __('Footer - Bottom', 'personal-website'),
-        'priority' => 41,
-    ));
-    
-    // Footer Copyright
-    $wp_customize->add_setting('footer_copyright', array(
-        'default'           => '&copy; ' . date('Y') . ' ' . get_bloginfo('name') . '. All rights reserved.',
-        'sanitize_callback' => 'wp_kses_post',
-    ));
-    $wp_customize->add_control('footer_copyright', array(
-        'label'       => __('Copyright Message', 'personal-website'),
-        'description' => __('Copyright message displayed on the left', 'personal-website'),
-        'section'     => 'footer_bottom',
-        'type'        => 'text',
-    ));
-    
-    // Footer Link 1 Text
-    $wp_customize->add_setting('footer_link_1_text', array(
-        'default'           => 'Privacy Policy',
-        'sanitize_callback' => 'sanitize_text_field',
-    ));
-    $wp_customize->add_control('footer_link_1_text', array(
-        'label'       => __('Link 1 Text', 'personal-website'),
-        'description' => __('Text for first footer link', 'personal-website'),
-        'section'     => 'footer_bottom',
-        'type'        => 'text',
-    ));
-    
-    // Footer Link 1 URL
-    $wp_customize->add_setting('footer_link_1_url', array(
-        'default'           => '',
-        'sanitize_callback' => 'esc_url_raw',
-    ));
-    $wp_customize->add_control('footer_link_1_url', array(
-        'label'       => __('Link 1 URL', 'personal-website'),
-        'description' => __('URL for first footer link. Leave empty to hide.', 'personal-website'),
-        'section'     => 'footer_bottom',
-        'type'        => 'url',
-    ));
-    
-    // Footer Link 2 Text
-    $wp_customize->add_setting('footer_link_2_text', array(
-        'default'           => 'Terms of Service',
-        'sanitize_callback' => 'sanitize_text_field',
-    ));
-    $wp_customize->add_control('footer_link_2_text', array(
-        'label'       => __('Link 2 Text', 'personal-website'),
-        'description' => __('Text for second footer link', 'personal-website'),
-        'section'     => 'footer_bottom',
-        'type'        => 'text',
-    ));
-    
-    // Footer Link 2 URL
-    $wp_customize->add_setting('footer_link_2_url', array(
-        'default'           => '',
-        'sanitize_callback' => 'esc_url_raw',
-    ));
-    $wp_customize->add_control('footer_link_2_url', array(
-        'label'       => __('Link 2 URL', 'personal-website'),
-        'description' => __('URL for second footer link. Leave empty to hide.', 'personal-website'),
-        'section'     => 'footer_bottom',
-        'type'        => 'url',
-    ));
-    
-    // Footer Made With Text
-    $wp_customize->add_setting('footer_made_with_text', array(
-        'default'           => 'Made with ❤️ by Ericsson Budhilaw',
-        'sanitize_callback' => 'sanitize_text_field',
-    ));
-    $wp_customize->add_control('footer_made_with_text', array(
-        'label'       => __('Made With Text', 'personal-website'),
-        'description' => __('Text like "Made with ❤️ by Your Name"', 'personal-website'),
-        'section'     => 'footer_bottom',
-        'type'        => 'text',
-    ));
 }
 add_action('customize_register', 'personal_website_customize_register');
 
@@ -564,26 +53,86 @@ function get_personal_bio() {
 }
 
 function get_contact_email() {
+    $opt = get_option('contact_email', '');
+    if (!empty($opt)) {
+        return $opt;
+    }
     return get_theme_mod('contact_email', 'hello@ericssonbudhilaw.com');
 }
 
 function get_contact_phone() {
+    $opt = get_option('contact_phone', '');
+    if (!empty($opt)) {
+        return $opt;
+    }
     return get_theme_mod('contact_phone', '+1 (555) 123-4567');
 }
 
 function get_contact_location() {
+    $opt = get_option('contact_location', '');
+    if (!empty($opt)) {
+        return $opt;
+    }
     return get_theme_mod('contact_location', 'Jakarta, Indonesia');
 }
 
 function get_social_linkedin() {
+    // Check theme options first, then customizer
+    $theme_option = get_option('social_linkedin', '');
+    if (!empty($theme_option)) {
+        return $theme_option;
+    }
     return get_theme_mod('social_linkedin', 'https://www.linkedin.com/in/ericsson-budhilaw');
 }
 
 function get_social_github() {
+    // Check theme options first, then customizer
+    $theme_option = get_option('social_github', '');
+    if (!empty($theme_option)) {
+        return $theme_option;
+    }
     return get_theme_mod('social_github', 'https://github.com/budhilaw');
 }
 
+function get_social_gitlab() {
+    // Theme options only for new platforms
+    return get_option('social_gitlab', '');
+}
+
+function get_social_x() {
+    // Theme options only for new platform name
+    return get_option('social_x', '');
+}
+
+function get_social_facebook() {
+    // Check theme options first, then customizer
+    $theme_option = get_option('social_facebook', '');
+    if (!empty($theme_option)) {
+        return $theme_option;
+    }
+    return get_theme_mod('footer_social_facebook', '');
+}
+
+function get_social_instagram() {
+    // Check theme options first, then customizer
+    $theme_option = get_option('social_instagram', '');
+    if (!empty($theme_option)) {
+        return $theme_option;
+    }
+    return get_theme_mod('footer_social_instagram', '');
+}
+
+function get_social_threads() {
+    // Theme options only for new platform
+    return get_option('social_threads', '');
+}
+
 function get_social_twitter() {
+    // Check theme options first (using 'x' for new platform name), then customizer
+    $theme_option = get_option('social_x', '');
+    if (!empty($theme_option)) {
+        return $theme_option;
+    }
     return get_theme_mod('social_twitter', 'https://twitter.com/ericsson_budhi');
 }
 
@@ -646,52 +195,107 @@ function get_hero_show_animated_bg() {
 }
 
 function get_contact_section_title() {
+    // Check theme options first, then customizer
+    $theme_option = get_option('contact_section_title', '');
+    if (!empty($theme_option)) {
+        return $theme_option;
+    }
     return get_theme_mod('contact_section_title', 'Let\'s Work Together');
 }
 
 function get_contact_section_description() {
+    // Check theme options first, then customizer
+    $theme_option = get_option('contact_section_description', '');
+    if (!empty($theme_option)) {
+        return $theme_option;
+    }
     return get_theme_mod('contact_section_description', 'Ready to start your next project? Let\'s discuss how I can help bring your ideas to life');
 }
 
 function get_front_contact_email() {
+    // Check theme options first, then customizer, then general contact
+    $theme_option = get_option('front_contact_email', '');
+    if (!empty($theme_option)) {
+        return $theme_option;
+    }
     $front_email = get_theme_mod('front_contact_email', '');
     return !empty($front_email) ? $front_email : get_contact_email();
 }
 
 function get_front_contact_phone() {
+    // Check theme options first, then customizer, then general contact
+    $theme_option = get_option('front_contact_phone', '');
+    if (!empty($theme_option)) {
+        return $theme_option;
+    }
     $front_phone = get_theme_mod('front_contact_phone', '');
     return !empty($front_phone) ? $front_phone : get_contact_phone();
 }
 
 function get_front_contact_location() {
+    // Check theme options first, then customizer, then general contact
+    $theme_option = get_option('front_contact_location', '');
+    if (!empty($theme_option)) {
+        return $theme_option;
+    }
     $front_location = get_theme_mod('front_contact_location', '');
     return !empty($front_location) ? $front_location : get_contact_location();
 }
 
 function get_front_social_twitter() {
+    // Check theme options first (using 'x' instead of 'twitter' for new platform name)
+    $theme_option = get_option('social_x', '');
+    if (!empty($theme_option)) {
+        return $theme_option;
+    }
     $front_twitter = get_theme_mod('front_social_twitter', '');
     return !empty($front_twitter) ? $front_twitter : get_social_twitter();
 }
 
 function get_front_social_linkedin() {
+    // Check theme options first
+    $theme_option = get_option('social_linkedin', '');
+    if (!empty($theme_option)) {
+        return $theme_option;
+    }
     $front_linkedin = get_theme_mod('front_social_linkedin', '');
     return !empty($front_linkedin) ? $front_linkedin : get_social_linkedin();
 }
 
 function get_front_social_github() {
+    // Check theme options first
+    $theme_option = get_option('social_github', '');
+    if (!empty($theme_option)) {
+        return $theme_option;
+    }
     $front_github = get_theme_mod('front_social_github', '');
     return !empty($front_github) ? $front_github : get_social_github();
 }
 
 function get_front_social_facebook() {
+    // Check theme options first
+    $theme_option = get_option('social_facebook', '');
+    if (!empty($theme_option)) {
+        return $theme_option;
+    }
     return get_theme_mod('front_social_facebook', '');
 }
 
 function get_front_social_instagram() {
+    // Check theme options first
+    $theme_option = get_option('social_instagram', '');
+    if (!empty($theme_option)) {
+        return $theme_option;
+    }
     return get_theme_mod('front_social_instagram', '');
 }
 
 function get_contact_cta_message() {
+    // Check theme options first, then customizer
+    $theme_option = get_option('contact_cta_message', '');
+    if (!empty($theme_option)) {
+        return $theme_option;
+    }
     return get_theme_mod('contact_cta_message', 'I\'m currently available for freelance work and new opportunities. Whether you need a complete web application, mobile app, or just want to discuss your ideas, I\'d love to hear from you.');
 }
 
@@ -758,31 +362,55 @@ function get_featured_posts() {
 // =======================
 
 function get_footer_brand_title() {
+    $opt = get_option('footer_brand_title', '');
+    if (!empty($opt)) {
+        return $opt;
+    }
     return get_theme_mod('footer_brand_title', get_bloginfo('name'));
 }
 
 function get_footer_brand_description() {
+    $opt = get_option('footer_brand_description', '');
+    if (!empty($opt)) {
+        return $opt;
+    }
     return get_theme_mod('footer_brand_description', 'Full-Stack Software Engineer specializing in creating innovative digital solutions. Let\'s build something amazing together.');
 }
 
 function get_footer_social_x() {
-    return get_theme_mod('footer_social_x', '');
+    // Prefer Theme Options (General tab), fallback to Customizer
+    $opt = get_option('social_x', '');
+    return !empty($opt) ? $opt : get_theme_mod('footer_social_x', '');
 }
 
 function get_footer_social_instagram() {
-    return get_theme_mod('footer_social_instagram', '');
+    $opt = get_option('social_instagram', '');
+    return !empty($opt) ? $opt : get_theme_mod('footer_social_instagram', '');
 }
 
 function get_footer_social_linkedin() {
-    return get_theme_mod('footer_social_linkedin', '');
+    $opt = get_option('social_linkedin', '');
+    return !empty($opt) ? $opt : get_theme_mod('footer_social_linkedin', '');
 }
 
 function get_footer_social_github() {
-    return get_theme_mod('footer_social_github', '');
+    $opt = get_option('social_github', '');
+    return !empty($opt) ? $opt : get_theme_mod('footer_social_github', '');
 }
 
 function get_footer_social_facebook() {
-    return get_theme_mod('footer_social_facebook', '');
+    $opt = get_option('social_facebook', '');
+    return !empty($opt) ? $opt : get_theme_mod('footer_social_facebook', '');
+}
+
+function get_footer_social_gitlab() {
+    $opt = get_option('social_gitlab', '');
+    return !empty($opt) ? $opt : get_theme_mod('footer_social_gitlab', '');
+}
+
+function get_footer_social_threads() {
+    $opt = get_option('social_threads', '');
+    return !empty($opt) ? $opt : get_theme_mod('footer_social_threads', '');
 }
 
 // =======================
@@ -790,26 +418,50 @@ function get_footer_social_facebook() {
 // =======================
 
 function get_footer_copyright() {
+    $opt = get_option('footer_copyright', '');
+    if (!empty($opt)) {
+        return $opt;
+    }
     return get_theme_mod('footer_copyright', '&copy; ' . date('Y') . ' ' . get_bloginfo('name') . '. All rights reserved.');
 }
 
 function get_footer_link_1_text() {
+    $opt = get_option('footer_link_1_text', '');
+    if (!empty($opt)) {
+        return $opt;
+    }
     return get_theme_mod('footer_link_1_text', 'Privacy Policy');
 }
 
 function get_footer_link_1_url() {
+    $opt = get_option('footer_link_1_url', '');
+    if (!empty($opt)) {
+        return $opt;
+    }
     return get_theme_mod('footer_link_1_url', '');
 }
 
 function get_footer_link_2_text() {
+    $opt = get_option('footer_link_2_text', '');
+    if (!empty($opt)) {
+        return $opt;
+    }
     return get_theme_mod('footer_link_2_text', 'Terms of Service');
 }
 
 function get_footer_link_2_url() {
+    $opt = get_option('footer_link_2_url', '');
+    if (!empty($opt)) {
+        return $opt;
+    }
     return get_theme_mod('footer_link_2_url', '');
 }
 
 function get_footer_made_with_text() {
+    $opt = get_option('footer_made_with_text', '');
+    if (!empty($opt)) {
+        return $opt;
+    }
     return get_theme_mod('footer_made_with_text', 'Made with ❤️ by Ericsson Budhilaw');
 }
 
@@ -844,30 +496,42 @@ function has_services() {
 
 // About Page Skills Functions
 function get_about_skills_show() {
+    $opt = get_option('about_skills_show', null);
+    if ($opt !== null && $opt !== '') {
+        return wp_validate_boolean($opt);
+    }
     return get_theme_mod('about_skills_show', true);
 }
 
 function get_about_skills_title() {
+    $opt = get_option('about_skills_title', '');
+    if (!empty($opt)) {
+        return $opt;
+    }
     return get_theme_mod('about_skills_title', 'Skills & Expertise');
 }
 
 function get_about_skills_subtitle() {
+    $opt = get_option('about_skills_subtitle', '');
+    if (!empty($opt)) {
+        return $opt;
+    }
     return get_theme_mod('about_skills_subtitle', 'Technologies and tools I work with to bring ideas to life');
 }
 
 function get_about_skills_list() {
-    $skills_json = get_theme_mod('about_skills_list', '');
+    $skills_json = get_option('about_skills_list', '');
+    if (empty($skills_json)) {
+        $skills_json = get_theme_mod('about_skills_list', '');
+    }
+    
     if (empty($skills_json)) {
         // Return default skills if none are configured
         return array(
             array('name' => 'React', 'icon' => 'fab fa-react', 'color' => 'blue'),
             array('name' => 'Node.js', 'icon' => 'fab fa-node-js', 'color' => 'green'),
             array('name' => 'PHP', 'icon' => 'fab fa-php', 'color' => 'purple'),
-            array('name' => 'Database', 'icon' => 'fas fa-database', 'color' => 'orange'),
-            array('name' => 'JavaScript', 'icon' => 'fab fa-js-square', 'color' => 'yellow'),
-            array('name' => 'Laravel', 'icon' => 'fab fa-laravel', 'color' => 'red'),
-            array('name' => 'Docker', 'icon' => 'fab fa-docker', 'color' => 'teal'),
-            array('name' => 'AWS', 'icon' => 'fab fa-aws', 'color' => 'indigo')
+            array('name' => 'JavaScript', 'icon' => 'fab fa-js-square', 'color' => 'yellow')
         );
     }
     
@@ -892,6 +556,12 @@ function has_about_skills() {
 
 // About Page General Functions
 function get_about_page_title() {
+    // Prefer Theme Options value
+    $opt = get_option('about_page_title', '');
+    if (!empty($opt)) {
+        return $opt;
+    }
+    // Backward compatibility with Customizer
     $custom_title = get_theme_mod('about_page_title', '');
     if (!empty($custom_title)) {
         return $custom_title;
@@ -901,6 +571,12 @@ function get_about_page_title() {
 }
 
 function get_about_page_subtitle() {
+    // Prefer Theme Options value
+    $opt = get_option('about_page_subtitle', '');
+    if (!empty($opt)) {
+        return $opt;
+    }
+    // Backward compatibility with Customizer
     $custom_subtitle = get_theme_mod('about_page_subtitle', '');
     if (!empty($custom_subtitle)) {
         return $custom_subtitle;
@@ -910,6 +586,10 @@ function get_about_page_subtitle() {
 }
 
 function has_about_page_subtitle() {
+    $opt = get_option('about_page_subtitle', '');
+    if (!empty($opt)) {
+        return true;
+    }
     $custom_subtitle = get_theme_mod('about_page_subtitle', '');
     return !empty($custom_subtitle) || !empty(get_the_excerpt());
 }
@@ -951,6 +631,19 @@ function get_portfolio_categories() {
 }
 
 function get_portfolio_category_by_slug($slug) {
+    if (empty($slug)) return null;
+    // Prefer real taxonomy terms if available
+    $term = get_term_by('slug', $slug, 'portfolio_category');
+    if ($term && !is_wp_error($term)) {
+        $colors = array('green','blue','purple','orange','red','teal','indigo','pink','gray');
+        $index = abs(crc32($slug)) % count($colors);
+        return array(
+            'slug' => $slug,
+            'name' => $term->name,
+            'color' => $colors[$index],
+        );
+    }
+    // Fallback to legacy Customizer categories (backward compatibility)
     $categories = get_portfolio_categories();
     foreach ($categories as $category) {
         if ($category['slug'] === $slug) {

@@ -11,6 +11,26 @@
                         <?php echo esc_html(get_footer_brand_description()); ?>
                     </p>
                     <div class="flex space-x-4">
+                        <?php if (get_footer_social_gitlab()): ?>
+                        <a href="<?php echo esc_url(get_footer_social_gitlab()); ?>" 
+                           target="_blank" 
+                           rel="noopener noreferrer" 
+                           class="w-10 h-10 bg-neutral-700 hover:bg-orange-600 rounded-lg flex items-center justify-center transition-all duration-300 transform hover:scale-110" 
+                           aria-label="GitLab">
+                            <i class="fab fa-gitlab text-lg"></i>
+                        </a>
+                        <?php endif; ?>
+                        
+                        <?php if (get_footer_social_threads()): ?>
+                        <a href="<?php echo esc_url(get_footer_social_threads()); ?>" 
+                           target="_blank" 
+                           rel="noopener noreferrer" 
+                           class="w-10 h-10 bg-neutral-700 hover:bg-neutral-600 rounded-lg flex items-center justify-center transition-all duration-300 transform hover:scale-110" 
+                           aria-label="Threads">
+                            <i class="fab fa-threads text-lg"></i>
+                        </a>
+                        <?php endif; ?>
+                        
                         <?php if (get_footer_social_x()): ?>
                         <a href="<?php echo esc_url(get_footer_social_x()); ?>" 
                            target="_blank" 

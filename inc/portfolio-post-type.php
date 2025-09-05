@@ -69,6 +69,38 @@ function register_portfolio_post_type() {
 add_action('init', 'register_portfolio_post_type');
 
 /**
+ * Register Portfolio Categories taxonomy
+ */
+function register_portfolio_categories_taxonomy() {
+    $labels = array(
+        'name'              => _x('Portfolio Categories', 'taxonomy general name', 'personal-website'),
+        'singular_name'     => _x('Portfolio Category', 'taxonomy singular name', 'personal-website'),
+        'search_items'      => __('Search Portfolio Categories', 'personal-website'),
+        'all_items'         => __('All Portfolio Categories', 'personal-website'),
+        'parent_item'       => __('Parent Portfolio Category', 'personal-website'),
+        'parent_item_colon' => __('Parent Portfolio Category:', 'personal-website'),
+        'edit_item'         => __('Edit Portfolio Category', 'personal-website'),
+        'update_item'       => __('Update Portfolio Category', 'personal-website'),
+        'add_new_item'      => __('Add New Portfolio Category', 'personal-website'),
+        'new_item_name'     => __('New Portfolio Category Name', 'personal-website'),
+        'menu_name'         => __('Categories', 'personal-website'),
+    );
+
+    $args = array(
+        'hierarchical'      => true,
+        'labels'            => $labels,
+        'show_ui'           => true,
+        'show_admin_column' => true,
+        'query_var'         => true,
+        'rewrite'           => array('slug' => 'portfolio-category', 'with_front' => false),
+        'show_in_rest'      => true,
+    );
+
+    register_taxonomy('portfolio_category', array('portfolio'), $args);
+}
+add_action('init', 'register_portfolio_categories_taxonomy');
+
+/**
  * Add Portfolio Meta Boxes
  */
 function add_portfolio_meta_boxes() {
@@ -91,38 +123,13 @@ function portfolio_details_callback($post) {
     wp_nonce_field('portfolio_details_nonce', 'portfolio_details_nonce');
 
     // Get current values
-    $category = get_post_meta($post->ID, '_portfolio_category', true);
     $demo_link = get_post_meta($post->ID, '_portfolio_demo_link', true);
     $github_link = get_post_meta($post->ID, '_portfolio_github_link', true);
     $technologies = get_post_meta($post->ID, '_portfolio_technologies', true);
     
-    // Get dynamic categories from customizer
-    $categories = get_portfolio_categories();
     ?>
     <table class="form-table">
-        <tr>
-            <th scope="row">
-                <label for="portfolio_category"><?php _e('Category', 'personal-website'); ?></label>
-            </th>
-            <td>
-                <select id="portfolio_category" name="portfolio_category" class="regular-text">
-                    <option value=""><?php _e('Select Category', 'personal-website'); ?></option>
-                    <?php foreach ($categories as $cat): ?>
-                    <option value="<?php echo esc_attr($cat['slug']); ?>" <?php selected($category, $cat['slug']); ?>>
-                        <?php echo esc_html($cat['name']); ?>
-                    </option>
-                    <?php endforeach; ?>
-                </select>
-                <p class="description">
-                    <?php _e('Select the main category for this portfolio item.', 'personal-website'); ?>
-                    <?php if (current_user_can('customize')): ?>
-                    <br><a href="<?php echo admin_url('customize.php?autofocus[section]=portfolio_settings'); ?>" target="_blank">
-                        <?php _e('Customize categories', 'personal-website'); ?> →
-                    </a>
-                    <?php endif; ?>
-                </p>
-            </td>
-        </tr>
+        
         <tr>
             <th scope="row">
                 <label for="portfolio_demo_link"><?php _e('Demo Link', 'personal-website'); ?></label>
@@ -173,10 +180,7 @@ function save_portfolio_meta_data($post_id) {
         return;
     }
 
-    // Save meta fields
-    if (isset($_POST['portfolio_category'])) {
-        update_post_meta($post_id, '_portfolio_category', sanitize_text_field($_POST['portfolio_category']));
-    }
+    // Save meta fields (category handled by taxonomy UI)
 
     if (isset($_POST['portfolio_demo_link'])) {
         update_post_meta($post_id, '_portfolio_demo_link', esc_url_raw($_POST['portfolio_demo_link']));
@@ -223,10 +227,10 @@ function display_portfolio_admin_columns($column, $post_id) {
             break;
             
         case 'portfolio_category':
-            $category = get_post_meta($post_id, '_portfolio_category', true);
-            if ($category) {
-                $category_data = get_portfolio_category_by_slug($category);
-                echo $category_data ? esc_html($category_data['name']) : esc_html(ucfirst($category));
+            $terms = get_the_terms($post_id, 'portfolio_category');
+            if ($terms && !is_wp_error($terms)) {
+                $names = wp_list_pluck($terms, 'name');
+                echo esc_html(implode(', ', $names));
             } else {
                 echo '<span style="color: #999;">Not set</span>';
             }
@@ -263,7 +267,11 @@ function get_portfolio_category($post_id = null) {
         global $post;
         $post_id = $post->ID;
     }
-    return get_post_meta($post_id, '_portfolio_category', true);
+    $terms = wp_get_post_terms($post_id, 'portfolio_category');
+    if (is_wp_error($terms) || empty($terms)) {
+        return '';
+    }
+    return $terms[0]->slug;
 }
 
 function get_portfolio_demo_link($post_id = null) {
@@ -291,13 +299,16 @@ function get_portfolio_technologies($post_id = null) {
 }
 
 function get_portfolio_category_name($category_slug) {
-    $category_data = get_portfolio_category_by_slug($category_slug);
-    return $category_data ? $category_data['name'] : ucfirst($category_slug);
+    if (empty($category_slug)) return '';
+    $term = get_term_by('slug', $category_slug, 'portfolio_category');
+    return $term && !is_wp_error($term) ? $term->name : ucfirst($category_slug);
 }
 
 function get_portfolio_category_color($category_slug) {
-    $category_data = get_portfolio_category_by_slug($category_slug);
-    return $category_data ? $category_data['color'] : 'blue';
+    if (empty($category_slug)) return 'blue';
+    $colors = array('green','blue','purple','orange','red','teal','indigo','pink','gray');
+    $index = abs(crc32($category_slug)) % count($colors);
+    return $colors[$index];
 }
 
 /**
