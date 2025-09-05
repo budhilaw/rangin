@@ -67,9 +67,21 @@ get_header(); ?>
                             <!-- Photo -->
                             <div class="lg:w-1/3 flex-shrink-0">
                                 <div class="relative">
+                                    <?php 
+                                    if (function_exists('image_opt_picture_for_url')) {
+                                        echo image_opt_picture_for_url(
+                                            $about_photo,
+                                            array(
+                                                'alt'   => get_personal_name(),
+                                                'class' => 'w-full max-w-sm mx-auto lg:mx-0 rounded-2xl shadow-2xl object-cover aspect-[3/4]'
+                                            )
+                                        );
+                                    } else {
+                                    ?>
                                     <img src="<?php echo esc_url($about_photo); ?>" 
                                          alt="<?php echo esc_attr(get_personal_name()); ?>" 
                                          class="w-full max-w-sm mx-auto lg:mx-0 rounded-2xl shadow-2xl object-cover aspect-[3/4]">
+                                    <?php } ?>
                                     <!-- Decorative elements -->
                                     <div class="absolute -inset-2 bg-gradient-to-r from-primary-500/20 to-accent-500/20 rounded-2xl -z-10 blur-xl"></div>
                                 </div>

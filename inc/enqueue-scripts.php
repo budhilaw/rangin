@@ -18,7 +18,11 @@ function personal_website_scripts() {
     wp_enqueue_style('font-awesome', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css', array(), '6.5.1');
     
     // Main stylesheet (compiled TailwindCSS)
-    wp_enqueue_style('personal-website-style', THEME_URL . '/assets/css/style.css', array('font-awesome'), THEME_VERSION);
+    $style_path_min = THEME_DIR . '/assets/css/style.min.css';
+    $style_url_min  = THEME_URL . '/assets/css/style.min.css';
+    $style_url      = THEME_URL . '/assets/css/style.css';
+    $main_css_url   = file_exists($style_path_min) ? $style_url_min : $style_url;
+    wp_enqueue_style('personal-website-style', $main_css_url, array('font-awesome'), THEME_VERSION);
     
     // Custom JavaScript
     wp_enqueue_script('personal-website-main', THEME_URL . '/assets/js/main.js', array('jquery'), THEME_VERSION, true);

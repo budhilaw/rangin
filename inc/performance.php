@@ -65,10 +65,25 @@ add_action('pre_get_posts', 'personal_website_optimize_queries');
  * Add cache busting for static assets
  */
 function personal_website_cache_busting($src) {
-    if (strpos($src, THEME_URL) !== false) {
-        $version = filemtime(str_replace(THEME_URL, THEME_DIR, $src));
-        return add_query_arg('v', $version, $src);
+    // Only handle theme assets
+    if (strpos($src, THEME_URL) === false) {
+        return $src;
     }
+
+    // Strip query string before mapping to filesystem
+    $no_query = strtok($src, '?');
+    $path = str_replace(THEME_URL, THEME_DIR, $no_query);
+
+    // Guard against missing files and warnings
+    if (file_exists($path)) {
+        $version = @filemtime($path);
+        if (!empty($version)) {
+            // Ensure we don't duplicate the param
+            $src = remove_query_arg('v', $src);
+            return add_query_arg('v', $version, $src);
+        }
+    }
+    // Fallback: leave original URL untouched
     return $src;
 }
 add_filter('style_loader_src', 'personal_website_cache_busting');

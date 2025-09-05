@@ -8,9 +8,11 @@
     "dev:frontend": "tailwindcss -i ./src/input.css -o ./assets/css/style.css --watch",
     "dev:admin": "tailwindcss -i ./src/admin-theme-options.css -o ./assets/css/admin-theme-options.css --watch",
     "build": "npm run build:frontend && npm run build:admin",
-    "build:frontend": "tailwindcss -i ./src/input.css -o ./assets/css/style.css --minify",
-    "build:admin": "tailwindcss -i ./src/admin-theme-options.css -o ./assets/css/admin-theme-options.css --minify",
-    "build-css-production": "npm run build"
+    "build:frontend": "tailwindcss -i ./src/input.css -o ./assets/css/style.css --minify && tailwindcss -i ./src/input.css -o ./assets/css/style.min.css --minify",
+    "build:admin": "tailwindcss -i ./src/admin-theme-options.css -o ./assets/css/admin-theme-options.css --minify && tailwindcss -i ./src/admin-theme-options.css -o ./assets/css/admin-theme-options.min.css --minify",
+    "build-css-production": "npm run build",
+    "build:js": "terser assets/js/main.js -o assets/js/main.min.js -c -m",
+    "build:prod": "npm run build && npm run build:js"
   },
   "keywords": [
     "wordpress",
@@ -26,6 +28,7 @@
     "@tailwindcss/forms": "^0.5.7",
     "@tailwindcss/typography": "^0.5.10",
     "@tailwindcss/aspect-ratio": "^0.4.2",
-    "concurrently": "^9.2.1"
+    "concurrently": "^9.2.1",
+    "terser": "^5.30.0"
   }
 }

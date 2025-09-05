@@ -117,8 +117,8 @@ add_action('admin_menu', 'personal_website_add_theme_options_menu');
  * Theme Options page content
  */
 function personal_website_theme_options_page() {
-    // Handle form submissions
-    if (isset($_POST['submit']) && check_admin_referer('theme_options_nonce')) {
+    // Handle form submissions (save or bulk actions)
+    if ((isset($_POST['submit']) || isset($_POST['run_bulk_image_conversion'])) && check_admin_referer('theme_options_nonce')) {
         $success_messages = array();
         
         // Site Information
@@ -337,6 +337,89 @@ function personal_website_theme_options_page() {
         if (isset($_POST['footer_made_with_text'])) {
             update_option('footer_made_with_text', sanitize_text_field(stripslashes($_POST['footer_made_with_text'])));
         }
+
+        // Image Optimization
+        // Only allow enabling when Imagick is installed
+        if (class_exists('Imagick') && isset($_POST['enable_image_optimization'])) {
+            update_option('enable_image_optimization', wp_validate_boolean($_POST['enable_image_optimization']));
+        } else {
+            update_option('enable_image_optimization', false);
+        }
+        if (isset($_POST['image_opt_target_format'])) {
+            $fmt = $_POST['image_opt_target_format'] === 'avif' ? 'avif' : 'webp';
+            update_option('image_opt_target_format', $fmt);
+        }
+        if (isset($_POST['enable_cloudflare_cdn'])) {
+            update_option('enable_cloudflare_cdn', wp_validate_boolean($_POST['enable_cloudflare_cdn']));
+        } else {
+            update_option('enable_cloudflare_cdn', false);
+        }
+        if (isset($_POST['cloudflare_cdn_domain'])) {
+            update_option('cloudflare_cdn_domain', sanitize_text_field($_POST['cloudflare_cdn_domain']));
+        }
+        if (isset($_POST['cloudflare_image_quality'])) {
+            update_option('cloudflare_image_quality', absint($_POST['cloudflare_image_quality']));
+        }
+
+        if (isset($_POST['image_opt_force_modern_only'])) {
+            update_option('image_opt_force_modern_only', wp_validate_boolean($_POST['image_opt_force_modern_only']));
+        } else {
+            update_option('image_opt_force_modern_only', false);
+        }
+
+        if (isset($_POST['image_opt_convert_original'])) {
+            update_option('image_opt_convert_original', wp_validate_boolean($_POST['image_opt_convert_original']));
+        } else {
+            update_option('image_opt_convert_original', false);
+        }
+        if (isset($_POST['image_opt_max_mp'])) {
+            update_option('image_opt_max_mp', max(1, absint($_POST['image_opt_max_mp'])));
+        }
+
+        if (isset($_POST['image_opt_convert_quality'])) {
+            $q = max(1, min(100, absint($_POST['image_opt_convert_quality'])));
+            update_option('image_opt_convert_quality', $q);
+        }
+
+        // Performance: Asset minification
+        if (isset($_POST['enable_asset_minification'])) {
+            update_option('enable_asset_minification', wp_validate_boolean($_POST['enable_asset_minification']));
+        } else {
+            update_option('enable_asset_minification', false);
+        }
+        if (isset($_POST['purge_asset_min_cache'])) {
+            $uploads = wp_get_upload_dir();
+            $dir = trailingslashit($uploads['basedir']) . 'ebtw-cache/min';
+            if (is_dir($dir)) {
+                foreach (glob($dir . '/*') as $f) { @unlink($f); }
+            }
+            echo '<div class="theme-options-inline-msg" style="margin-top:12px;padding:12px;border:1px solid #c7d2fe;background:#eff6ff;border-radius:6px;color:#1e3a8a;">' . __('Minified cache purged.', 'personal-website') . '</div>';
+        }
+        if (isset($_POST['enable_asset_minify_js'])) {
+            update_option('enable_asset_minify_js', wp_validate_boolean($_POST['enable_asset_minify_js']));
+        } else {
+            update_option('enable_asset_minify_js', false);
+        }
+
+        if (isset($_POST['run_bulk_image_conversion']) && wp_validate_boolean($_POST['run_bulk_image_conversion'])) {
+            if (function_exists('image_opt_bulk_convert_with_log')) {
+                $res = image_opt_bulk_convert_with_log(50);
+                $converted = intval($res['count']);
+                $logs = is_array($res['logs']) ? $res['logs'] : array();
+                echo '<div class="theme-options-inline-msg" style="margin-top:12px;padding:12px;border:1px solid #c7d2fe;background:#eff6ff;border-radius:6px;color:#1e3a8a;">';
+                echo '<strong>' . sprintf(__('Bulk conversion completed. Converted %d attachments (where supported).', 'personal-website'), $converted) . '</strong>';
+                if (!empty($logs)) {
+                    echo '<div style="margin-top:8px; max-height:260px; overflow:auto; background:#fff; border:1px solid #e5e7eb; border-radius:6px;">';
+                    echo '<ul style="margin:0; padding:10px 14px; list-style:disc inside;">';
+                    foreach ($logs as $line) {
+                        echo '<li>' . wp_kses_post($line) . '</li>';
+                    }
+                    echo '</ul></div>';
+                }
+                echo '</div>';
+                echo '<script>document.addEventListener("DOMContentLoaded",function(){var t=document.querySelector('."'".'.theme-options-tab[data-tab=\"image-optimization\"]'."'".');if(t){t.click();}});</script>';
+            }
+        }
         
         if (!empty($success_messages)) {
             echo '<div class="theme-options-notice notice notice-success is-dismissible"><p>' . __('Settings saved successfully!', 'personal-website') . '</p></div>';
@@ -428,6 +511,14 @@ function personal_website_theme_options_page() {
             <button type="button" class="theme-options-tab" data-tab="footer">
                 <span class="dashicons dashicons-editor-underline"></span>
                 <?php _e('Footer', 'personal-website'); ?>
+            </button>
+            <button type="button" class="theme-options-tab" data-tab="image-optimization">
+                <span class="dashicons dashicons-format-image"></span>
+                <?php _e('Image Optimization', 'personal-website'); ?>
+            </button>
+            <button type="button" class="theme-options-tab" data-tab="asset-optimization">
+                <span class="dashicons dashicons-performance"></span>
+                <?php _e('Asset Optimization', 'personal-website'); ?>
             </button>
         </div>
 
@@ -1255,6 +1346,199 @@ function personal_website_theme_options_page() {
                     </div>
                 </div>
 
+                <!-- Image Optimization Tab -->
+                <div class="theme-options-tab-content" id="tab-image-optimization">
+                    <div class="theme-options-section">
+                        <div class="theme-options-section-header">
+                            <h2><span class="dashicons dashicons-performance"></span><?php _e('Media Conversion & Compression', 'personal-website'); ?></h2>
+                        </div>
+
+                        <?php
+                        $enable_image_optimization = (bool) get_option('enable_image_optimization', false);
+                        $image_opt_target_format = get_option('image_opt_target_format', 'webp');
+                        $image_opt_convert_original = (bool) get_option('image_opt_convert_original', false);
+                        $image_opt_max_mp = absint(get_option('image_opt_max_mp', 12));
+                        // Detect Imagick and format support early (used to toggle input disabled state)
+                        $imagick_available = class_exists('Imagick');
+                        $imagick_ver = '';
+                        $webp_support = false;
+                        $avif_support = false;
+                        if ($imagick_available) {
+                            if (method_exists('Imagick', 'getVersion')) {
+                                $ver = Imagick::getVersion();
+                                if (is_array($ver) && !empty($ver['versionString'])) {
+                                    $imagick_ver = $ver['versionString'];
+                                }
+                            }
+                            if (method_exists('Imagick', 'queryFormats')) {
+                                $webp_support = !empty(Imagick::queryFormats('WEBP'));
+                                $avif_support = !empty(Imagick::queryFormats('AVIF'));
+                            }
+                        }
+                        ?>
+                        <div class="theme-options-field">
+                            <label for="enable_image_optimization">
+                                <input type="checkbox" id="enable_image_optimization" name="enable_image_optimization" value="1" <?php checked($enable_image_optimization); ?> <?php disabled(!$imagick_available); ?> />
+                                <?php _e('Enable image optimization (create WebP/AVIF on upload)', 'personal-website'); ?>
+                            </label>
+                            <p class="theme-options-help"><?php _e('Requires Imagick with WebP/AVIF support on the server. Non-supported formats will be skipped silently.', 'personal-website'); ?></p>
+                            <?php $gd_avif_support = function_exists('imageavif'); ?>
+                            <div style="margin-top:8px; padding:10px; border:1px solid #e5e7eb; border-radius:6px; background:#fafafa;">
+                                <strong><?php _e('Imagick Status:', 'personal-website'); ?></strong>
+                                <?php if ($imagick_available): ?>
+                                    <span style="color:#15803d; font-weight:600;">Available</span>
+                                    <?php if ($imagick_ver): ?>
+                                        <span style="color:#6b7280;">(<?php echo esc_html($imagick_ver); ?>)</span>
+                                    <?php endif; ?><br>
+                                    <span>WebP: <strong style="color:<?php echo $webp_support ? '#15803d' : '#b91c1c'; ?>;"><?php echo $webp_support ? __('Yes','personal-website') : __('No','personal-website'); ?></strong></span>
+                                    &nbsp;|&nbsp;
+                                    <span>AVIF: <strong style="color:<?php echo $avif_support ? '#15803d' : '#b91c1c'; ?>;"><?php echo $avif_support ? __('Yes','personal-website') : __('No','personal-website'); ?></strong></span>
+                                <?php else: ?>
+                                    <span style="color:#b91c1c; font-weight:600;">Not Installed</span>
+                                    <p class="theme-options-help" style="margin:6px 0 0 0;"><?php _e('Install and enable the PHP Imagick extension for best results (WebP/AVIF generation).', 'personal-website'); ?></p>
+                                <?php endif; ?>
+                                <div style="margin-top:6px; color:#374151;">
+                                    <strong>GD AVIF:</strong>
+                                    <span style="color:<?php echo $gd_avif_support ? '#15803d' : '#b91c1c'; ?>; font-weight:600;"><?php echo $gd_avif_support ? __('Yes','personal-website') : __('No','personal-website'); ?></span>
+                                    <?php if (!$gd_avif_support): ?>
+                                        <span class="theme-options-help" style="margin-left:6px; color:#6b7280;">(<?php _e('Requires PHP 8.1+ with GD compiled with libavif.', 'personal-website'); ?>)</span>
+                                    <?php endif; ?>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="theme-options-field">
+                            <label style="display:block; font-weight:600; margin-bottom:6px;">
+                                <?php _e('Conversion format (choose one)', 'personal-website'); ?>
+                            </label>
+                            <label style="margin-right:12px;">
+                                <input type="radio" name="image_opt_target_format" value="webp" <?php checked($image_opt_target_format !== 'avif'); ?> /> WEBP
+                            </label>
+                            <label>
+                                <input type="radio" name="image_opt_target_format" value="avif" <?php checked($image_opt_target_format === 'avif'); ?> /> AVIF
+                            </label>
+                            <p class="theme-options-help"><?php _e('Only one format will be created per image. AVIF typically offers better compression but requires client support.', 'personal-website'); ?></p>
+                        </div>
+
+                        <div class="theme-options-field">
+                            <?php $force_modern = (bool) get_option('image_opt_force_modern_only', false); ?>
+                            <label>
+                                <input type="checkbox" name="image_opt_force_modern_only" value="1" <?php checked($force_modern); ?> />
+                                <?php _e('Force modern format only (no JPEG fallback)', 'personal-website'); ?>
+                            </label>
+                            <p class="theme-options-help"><?php _e('Renders only AVIF/WebP on the frontend when a variant exists. Older browsers that lack support may not display images.', 'personal-website'); ?></p>
+                        </div>
+
+                        <div class="theme-options-field">
+                            <?php $convert_quality = absint(get_option('image_opt_convert_quality', 85)); ?>
+                            <label for="image_opt_convert_quality"><?php _e('Conversion quality (1–100)', 'personal-website'); ?></label>
+                            <input type="number" id="image_opt_convert_quality" name="image_opt_convert_quality" min="1" max="100" value="<?php echo esc_attr($convert_quality); ?>" class="theme-options-input" style="width:120px;" />
+                            <p class="theme-options-help"><?php _e('Applies to stored AVIF/WebP variants generated on upload/bulk. Lower is smaller files (e.g., 75).', 'personal-website'); ?></p>
+                        </div>
+
+                        <div class="theme-options-field">
+                            <label>
+                                <input type="checkbox" name="image_opt_convert_original" value="1" <?php checked($image_opt_convert_original); ?> />
+                                <?php _e('Also convert original file (may be slow).', 'personal-website'); ?>
+                            </label>
+                            <p class="theme-options-help"><?php _e('If unchecked, only WordPress-generated sizes are converted. This avoids very large originals that can be slow to encode.', 'personal-website'); ?></p>
+                        </div>
+
+                        <div class="theme-options-field">
+                            <label for="image_opt_max_mp"><?php _e('Max megapixels to convert', 'personal-website'); ?></label>
+                            <input type="number" id="image_opt_max_mp" name="image_opt_max_mp" min="1" max="100" value="<?php echo esc_attr($image_opt_max_mp); ?>" class="theme-options-input" style="width:120px;" />
+                            <p class="theme-options-help"><?php _e('Images larger than this (width x height / 1,000,000) will be skipped to prevent timeouts. Default: 12 MP.', 'personal-website'); ?></p>
+                        </div>
+
+                        <div class="theme-options-field">
+                            <button type="button" id="image-opt-bulk-btn" class="button button-secondary">
+                                <?php _e('Run Bulk Conversion (AJAX)', 'personal-website'); ?>
+                            </button>
+                            <span id="image-opt-bulk-status" style="margin-left:8px; color:#6b7280;"></span>
+                            <div id="image-opt-bulk-logs" style="display:none; margin-top:8px; max-height:260px; overflow:auto; background:#fff; border:1px solid #e5e7eb; border-radius:6px;"></div>
+                            <p class="theme-options-help"><?php _e('Progresses in small steps to avoid timeouts. Keep this page open until complete.', 'personal-website'); ?></p>
+                        </div>
+                    </div>
+
+                    <div class="theme-options-section">
+                        <div class="theme-options-section-header">
+                            <h2><span class="dashicons dashicons-cloud"></span><?php _e('Cloudflare CDN Integration (optional)', 'personal-website'); ?></h2>
+                        </div>
+
+                        <?php
+                        $enable_cloudflare_cdn = (bool) get_option('enable_cloudflare_cdn', false);
+                        $cloudflare_cdn_domain = get_option('cloudflare_cdn_domain', '');
+                        $cloudflare_image_quality = absint(get_option('cloudflare_image_quality', 85));
+                        ?>
+
+                        <div class="theme-options-field">
+                            <label for="enable_cloudflare_cdn">
+                                <input type="checkbox" id="enable_cloudflare_cdn" name="enable_cloudflare_cdn" value="1" <?php checked($enable_cloudflare_cdn); ?> />
+                                <?php _e('Enable Cloudflare CDN image rewriting', 'personal-website'); ?>
+                            </label>
+                            <p class="theme-options-help"><?php _e('Rewrites image URLs to use Cloudflare Image Resizing: format=auto and quality control. Ensure your site or CDN subdomain is proxied by Cloudflare.', 'personal-website'); ?></p>
+                        </div>
+
+                        <div class="theme-options-field">
+                            <label for="cloudflare_cdn_domain"><?php _e('Cloudflare CDN Domain (optional)', 'personal-website'); ?></label>
+                            <input type="text" id="cloudflare_cdn_domain" name="cloudflare_cdn_domain" value="<?php echo esc_attr($cloudflare_cdn_domain); ?>" class="theme-options-input" placeholder="cdn.example.com" />
+                            <p class="theme-options-help"><?php _e('Leave empty to use your primary domain. Provide a proxied subdomain if you use a dedicated CDN hostname.', 'personal-website'); ?></p>
+                        </div>
+
+                        <div class="theme-options-field">
+                            <label for="cloudflare_image_quality"><?php _e('Cloudflare Quality (1–100)', 'personal-website'); ?></label>
+                            <input type="number" id="cloudflare_image_quality" name="cloudflare_image_quality" value="<?php echo esc_attr($cloudflare_image_quality); ?>" min="1" max="100" class="theme-options-input" />
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Asset Optimization Tab -->
+                <div class="theme-options-tab-content" id="tab-asset-optimization">
+                    <div class="theme-options-section">
+                        <div class="theme-options-section-header">
+                            <h2><span class="dashicons dashicons-editor-code"></span><?php _e('Asset Minification', 'personal-website'); ?></h2>
+                        </div>
+                        <?php 
+                        $enable_asset_min = (bool) get_option('enable_asset_minification', false);
+                        $enable_asset_min_js = (bool) get_option('enable_asset_minify_js', false);
+                        $mm_available = function_exists('asset_opt_mm_available') && asset_opt_mm_available();
+                        ?>
+                        <div class="theme-options-field" style="margin-bottom:8px;">
+                            <strong><?php _e('Minifier engine:', 'personal-website'); ?></strong>
+                            <?php if ($mm_available): ?>
+                                <span style="color:#15803d; font-weight:600;">MatthiasMullie/Minify</span>
+                            <?php else: ?>
+                                <span style="color:#b45309; font-weight:600;">Fallback (safe packer)</span>
+                                <p class="theme-options-help" style="margin-top:6px;">
+                                    <?php _e('For best results, install the Composer package:', 'personal-website'); ?>
+                                    <code>composer require matthiasmullie/minify</code>
+                                    <br><?php _e('Place vendor/autoload.php in project or theme and it will be detected automatically.', 'personal-website'); ?>
+                                </p>
+                            <?php endif; ?>
+                        </div>
+                        <div class="theme-options-field">
+                            <label>
+                                <input type="checkbox" name="enable_asset_minification" value="1" <?php checked($enable_asset_min); ?> />
+                                <?php _e('Minify theme CSS/JS automatically', 'personal-website'); ?>
+                            </label>
+                            <p class="theme-options-help"><?php _e('Minifies theme-local CSS/JS and serves them from an uploads cache. External/CDN files are left untouched.', 'personal-website'); ?></p>
+                        </div>
+                        <div class="theme-options-field">
+                            <label>
+                                <input type="checkbox" name="enable_asset_minify_js" value="1" <?php checked($enable_asset_min_js); ?> />
+                                <?php _e('Also minify JS (experimental, conservative)', 'personal-website'); ?>
+                            </label>
+                            <p class="theme-options-help"><?php _e('JS minifier is very conservative to avoid syntax issues. Disable if you see console errors.', 'personal-website'); ?></p>
+                        </div>
+                        <div class="theme-options-field">
+                            <button type="submit" name="purge_asset_min_cache" value="1" class="button">
+                                <?php _e('Purge Minified Cache', 'personal-website'); ?>
+                            </button>
+                            <p class="theme-options-help"><?php _e('Deletes cached minified files from uploads/ebtw-cache/min. They will be regenerated on next load.', 'personal-website'); ?></p>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="theme-options-actions">
                     <?php submit_button(__('Save Settings', 'personal-website'), 'primary', 'submit', false, array('class' => 'theme-options-submit')); ?>
                 </div>
@@ -1282,12 +1566,10 @@ function personal_website_theme_options_admin_styles($hook) {
     }
     
     // Enqueue the separate compiled admin stylesheet
-    wp_enqueue_style(
-        'theme-options-admin',
-        THEME_URL . '/assets/css/admin-theme-options.css',
-        array(),
-        THEME_VERSION
-    );
+    $admin_min = THEME_DIR . '/assets/css/admin-theme-options.min.css';
+    $admin_url = file_exists($admin_min) ? THEME_URL . '/assets/css/admin-theme-options.min.css'
+                                         : THEME_URL . '/assets/css/admin-theme-options.css';
+    wp_enqueue_style('theme-options-admin', $admin_url, array(), THEME_VERSION);
 }
 add_action('admin_enqueue_scripts', 'personal_website_theme_options_admin_styles');
 
@@ -1352,7 +1634,7 @@ function personal_website_theme_options_scripts() {
                 });
             });
         }
-        
+
         function initMediaUploader() {
             // WordPress Media Uploader functionality
             jQuery(document).ready(function($) {
@@ -1417,15 +1699,63 @@ function personal_website_theme_options_scripts() {
                 });
             });
         }
-        
+
+        function initImageOptBulk() {
+            var btn = document.getElementById('image-opt-bulk-btn');
+            if (!btn) return;
+            var statusEl = document.getElementById('image-opt-bulk-status');
+            var logsEl = document.getElementById('image-opt-bulk-logs');
+            var running = false;
+
+            function step() {
+                if (!running) return;
+                statusEl.textContent = 'Processing...';
+                var fd = new FormData();
+                fd.append('action', 'image_opt_bulk_step');
+                fd.append('limit', 2);
+                fd.append('nonce', '<?php echo wp_create_nonce('image_opt_nonce'); ?>');
+
+                fetch(ajaxurl, { method: 'POST', credentials: 'same-origin', body: fd })
+                    .then(r => r.json())
+                    .then(function(res) {
+                        if (!res || !res.success) {
+                            statusEl.textContent = 'Error. Stopping.';
+                            running = false;
+                            return;
+                        }
+                        if (res.data && res.data.logs && res.data.logs.length) {
+                            logsEl.style.display = 'block';
+                            var ul = logsEl.querySelector('ul');
+                            if (!ul) { ul = document.createElement('ul'); ul.style.margin='0'; ul.style.padding='10px 14px'; ul.style.listStyle='disc inside'; logsEl.appendChild(ul); }
+                            res.data.logs.forEach(function(line){ var li=document.createElement('li'); li.textContent=line; ul.appendChild(li); });
+                            logsEl.scrollTop = logsEl.scrollHeight;
+                        }
+                        if (res.data && res.data.remaining > 0 && running) {
+                            statusEl.textContent = 'Remaining: ' + res.data.remaining;
+                            setTimeout(step, 200);
+                        } else {
+                            statusEl.textContent = 'Done';
+                            running = false;
+                        }
+                    })
+                    .catch(function(){ statusEl.textContent = 'Request failed'; running=false; });
+            }
+
+            btn.addEventListener('click', function(){
+                if (running) return; running = true; logsEl.innerHTML=''; logsEl.style.display='none'; statusEl.textContent='Starting...'; step();
+            });
+        }
+
         if (document.readyState === 'loading') {
             document.addEventListener('DOMContentLoaded', function() {
                 initThemeOptionsTabs();
                 initMediaUploader();
+                initImageOptBulk();
             });
         } else {
             initThemeOptionsTabs();
             initMediaUploader();
+            initImageOptBulk();
         }
         </script>
         <?php
