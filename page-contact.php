@@ -25,11 +25,11 @@ get_header(); ?>
     </section>
 
     <!-- Contact Info + Socials -->
-    <section class="py-16 bg-white dark:bg-neutral-900">
+    <section class="py-16">
         <div class="container mx-auto px-4 max-w-5xl">
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
+            <div class="grid grid-cols-1 items-center">
                 <!-- Contact Card -->
-                <div class="lg:col-span-1 card p-8">
+                <div class="lg:col-span-1 card p-8 mb-4">
                     <h2 class="text-2xl font-bold mb-6 flex items-center">
                         <i class="fas fa-envelope-open-text text-primary-500 mr-3"></i>
                         <?php _e('Contact Information', 'rangin'); ?>
