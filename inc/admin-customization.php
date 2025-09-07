@@ -192,21 +192,7 @@ function personal_website_theme_options_page() {
             update_option('services_list', wp_kses_post(stripslashes($_POST['services_list'])));
         }
 
-        // Skills & Expertise Section
-        if (isset($_POST['about_skills_show'])) {
-            update_option('about_skills_show', wp_validate_boolean($_POST['about_skills_show']));
-        } else {
-            update_option('about_skills_show', false);
-        }
-        if (isset($_POST['about_skills_title'])) {
-            update_option('about_skills_title', sanitize_text_field(stripslashes($_POST['about_skills_title'])));
-        }
-        if (isset($_POST['about_skills_subtitle'])) {
-            update_option('about_skills_subtitle', sanitize_textarea_field(stripslashes($_POST['about_skills_subtitle'])));
-        }
-        if (isset($_POST['about_skills_list'])) {
-            update_option('about_skills_list', wp_kses_post(stripslashes($_POST['about_skills_list'])));
-        }
+        // Skills & Expertise Section removed
         
         // Portfolio Section
         if (isset($_POST['portfolio_section_title'])) {
@@ -916,36 +902,7 @@ function personal_website_theme_options_page() {
                         </div>
                     </div>
 
-                    <!-- Skills & Expertise Section -->
-                    <div class="theme-options-section">
-                        <div class="theme-options-section-header">
-                            <h2><span class="dashicons dashicons-awards"></span><?php _e('Skills & Expertise Section', 'personal-website'); ?></h2>
-                        </div>
-
-                        <div class="theme-options-field">
-                            <label for="about_skills_show">
-                                <input type="checkbox" id="about_skills_show" name="about_skills_show" value="1" <?php checked(get_option('about_skills_show', true)); ?> />
-                                <?php _e('Show Skills & Expertise Section', 'personal-website'); ?>
-                            </label>
-                            <p class="theme-options-help"><?php _e('Display the skills section (used on About page).', 'personal-website'); ?></p>
-                        </div>
-
-                        <div class="theme-options-field">
-                            <label for="about_skills_title"><?php _e('Section Title', 'personal-website'); ?></label>
-                            <input type="text" id="about_skills_title" name="about_skills_title" value="<?php echo esc_attr(get_option('about_skills_title', get_theme_mod('about_skills_title', 'Skills & Expertise'))); ?>" class="theme-options-input" />
-                        </div>
-
-                        <div class="theme-options-field">
-                            <label for="about_skills_subtitle"><?php _e('Section Subtitle', 'personal-website'); ?></label>
-                            <textarea id="about_skills_subtitle" name="about_skills_subtitle" rows="3" class="theme-options-textarea"><?php echo esc_textarea(get_option('about_skills_subtitle', get_theme_mod('about_skills_subtitle', 'Technologies and tools I work with to bring ideas to life'))); ?></textarea>
-                        </div>
-
-                        <div class="theme-options-field">
-                            <label for="about_skills_list"><?php _e('Skills List (JSON Format)', 'personal-website'); ?></label>
-                            <textarea id="about_skills_list" name="about_skills_list" rows="8" class="theme-options-textarea" placeholder='[{"name":"React","icon":"fab fa-react","color":"blue"},{"name":"Node.js","icon":"fab fa-node-js","color":"green"}]'><?php echo esc_textarea(get_option('about_skills_list', get_theme_mod('about_skills_list', ''))); ?></textarea>
-                            <p class="theme-options-help"><?php _e('Up to 8 skills. Colors: blue, green, purple, orange, yellow, red, teal, indigo, pink, gray. Icons use Font Awesome classes (e.g., "fab fa-react").', 'personal-website'); ?></p>
-                        </div>
-                    </div>
+                    <!-- Skills & Expertise Section removed -->
 
                     <!-- Portfolio Section -->
                     <div class="theme-options-section">
