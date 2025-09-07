@@ -273,16 +273,7 @@ function personal_website_theme_options_page() {
             update_option('social_threads', esc_url_raw($_POST['social_threads']));
         }
 
-        // Contact Information (General)
-        if (isset($_POST['contact_email'])) {
-            update_option('contact_email', sanitize_email($_POST['contact_email']));
-        }
-        if (isset($_POST['contact_phone'])) {
-            update_option('contact_phone', sanitize_text_field($_POST['contact_phone']));
-        }
-        if (isset($_POST['contact_location'])) {
-            update_option('contact_location', sanitize_text_field($_POST['contact_location']));
-        }
+        // Contact Information (General) removed; use Front Page → Contact Section
         
         // Contact Information
         if (isset($_POST['contact_section_title'])) {
@@ -389,7 +380,7 @@ function personal_website_theme_options_page() {
         }
         if (isset($_POST['purge_asset_min_cache'])) {
             $uploads = wp_get_upload_dir();
-            $dir = trailingslashit($uploads['basedir']) . 'ebtw-cache/min';
+            $dir = trailingslashit($uploads['basedir']) . 'rangin-cache/min';
             if (is_dir($dir)) {
                 foreach (glob($dir . '/*') as $f) { @unlink($f); }
             }
@@ -464,11 +455,6 @@ function personal_website_theme_options_page() {
     $social_facebook = get_option('social_facebook', '');
     $social_instagram = get_option('social_instagram', '');
     $social_threads = get_option('social_threads', '');
-
-    // Contact Information (General)
-    $contact_email = get_option('contact_email', get_theme_mod('contact_email', ''));
-    $contact_phone = get_option('contact_phone', get_theme_mod('contact_phone', ''));
-    $contact_location = get_option('contact_location', get_theme_mod('contact_location', ''));
 
     // Footer (Brand & Bottom)
     $footer_brand_title = get_option('footer_brand_title', get_theme_mod('footer_brand_title', get_bloginfo('name')));
@@ -547,51 +533,7 @@ function personal_website_theme_options_page() {
                         </div>
                     </div>
 
-                    <!-- Contact Information -->
-                    <div class="theme-options-section">
-                        <div class="theme-options-section-header">
-                            <h2><span class="dashicons dashicons-email"></span><?php _e('Contact Information', 'personal-website'); ?></h2>
-                        </div>
-
-                        <div class="theme-options-field">
-                            <label for="contact_email"><?php _e('Contact Email', 'personal-website'); ?></label>
-                            <input
-                                type="email"
-                                id="contact_email"
-                                name="contact_email"
-                                value="<?php echo esc_attr($contact_email); ?>"
-                                class="theme-options-input"
-                                placeholder="<?php _e('your@email.com', 'personal-website'); ?>"
-                            />
-                            <p class="theme-options-help"><?php _e('Primary email used throughout the site (About/Contact sections).', 'personal-website'); ?></p>
-                        </div>
-
-                        <div class="theme-options-field">
-                            <label for="contact_phone"><?php _e('Contact Phone', 'personal-website'); ?></label>
-                            <input
-                                type="text"
-                                id="contact_phone"
-                                name="contact_phone"
-                                value="<?php echo esc_attr($contact_phone); ?>"
-                                class="theme-options-input"
-                                placeholder="<?php _e('+1 (555) 123-4567', 'personal-website'); ?>"
-                            />
-                            <p class="theme-options-help"><?php _e('Primary phone used throughout the site.', 'personal-website'); ?></p>
-                        </div>
-
-                        <div class="theme-options-field">
-                            <label for="contact_location"><?php _e('Location', 'personal-website'); ?></label>
-                            <input
-                                type="text"
-                                id="contact_location"
-                                name="contact_location"
-                                value="<?php echo esc_attr($contact_location); ?>"
-                                class="theme-options-input"
-                                placeholder="<?php _e('City, Country', 'personal-website'); ?>"
-                            />
-                            <p class="theme-options-help"><?php _e('Your location displayed in contact areas.', 'personal-website'); ?></p>
-                        </div>
-                    </div>
+                    <!-- Contact Information removed: use Front Page → Contact Section as single source of truth -->
 
                     <!-- Social Media Links Section -->
                     <div class="theme-options-section">
@@ -1534,7 +1476,7 @@ function personal_website_theme_options_page() {
                             <button type="submit" name="purge_asset_min_cache" value="1" class="button">
                                 <?php _e('Purge Minified Cache', 'personal-website'); ?>
                             </button>
-                            <p class="theme-options-help"><?php _e('Deletes cached minified files from uploads/ebtw-cache/min. They will be regenerated on next load.', 'personal-website'); ?></p>
+                            <p class="theme-options-help"><?php _e('Deletes cached minified files from uploads/rangin-cache/min. They will be regenerated on next load.', 'personal-website'); ?></p>
                         </div>
                     </div>
                 </div>

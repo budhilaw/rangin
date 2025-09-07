@@ -176,17 +176,11 @@ function display_social_media_icons($classes = '') {
  */
 function get_front_contact_info($field) {
     $theme_option_key = 'front_contact_' . $field;
-    $contact_option_key = 'contact_' . $field;
-    $customizer_key = 'contact_' . $field; // backwards-compat
+    $customizer_key = 'contact_' . $field; // backwards-compat only
     
     // Check theme options first
     $value = get_option($theme_option_key, '');
     
-    // Fallback to general contact options in Theme Options
-    if (empty($value)) {
-        $value = get_option($contact_option_key, '');
-    }
-
     // Fallback to customizer if still empty (backward compatibility)
     if (empty($value)) {
         $value = get_theme_mod($customizer_key, '');

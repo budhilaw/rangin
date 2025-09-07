@@ -11,17 +11,17 @@ if (!defined('ABSPATH')) {
 }
 
 /**
- * EBTW Search Widget
- */
-class EBTW_Search_Widget extends WP_Widget {
+ * Rangin Search Widget
+*/
+class Rangin_Search_Widget extends WP_Widget {
     
     /**
      * Constructor
      */
     public function __construct() {
         parent::__construct(
-            'ebtw_search_widget',
-            __('EBTW - Search', 'personal-website'),
+            'rangin_search_widget',
+            __('Rangin - Search', 'personal-website'),
             array(
                 'description' => __('A custom search widget with modern styling.', 'personal-website'),
             )
@@ -36,7 +36,7 @@ class EBTW_Search_Widget extends WP_Widget {
         
         // Output the search form directly without title
         ?>
-        <div class="ebtw-search-widget">
+        <div class="rangin-search-widget">
             <form role="search" method="get" action="<?php echo esc_url(home_url('/')); ?>" class="relative search-form">
                 <div class="search-widget-wrapper">
                     <input type="search" 
@@ -95,17 +95,17 @@ class EBTW_Search_Widget extends WP_Widget {
 }
 
 /**
- * EBTW Recent Posts Widget
- */
-class EBTW_Recent_Posts_Widget extends WP_Widget {
+ * Rangin Recent Posts Widget
+*/
+class Rangin_Recent_Posts_Widget extends WP_Widget {
     
     /**
      * Constructor
      */
     public function __construct() {
         parent::__construct(
-            'ebtw_recent_posts_widget',
-            __('EBTW - Recent Posts', 'personal-website'),
+            'rangin_recent_posts_widget',
+            __('Rangin - Recent Posts', 'personal-website'),
             array(
                 'description' => __('A custom recent posts widget with modern styling and formatted dates.', 'personal-website'),
             )
@@ -134,7 +134,7 @@ class EBTW_Recent_Posts_Widget extends WP_Widget {
         ));
         
         if (!empty($recent_posts)) {
-            echo '<div class="ebtw-recent-posts-widget">';
+            echo '<div class="rangin-recent-posts-widget">';
             echo '<ul class="recent-posts-list space-y-3">';
             
             foreach ($recent_posts as $post) {
@@ -160,7 +160,7 @@ class EBTW_Recent_Posts_Widget extends WP_Widget {
             echo '</ul>';
             echo '</div>';
         } else {
-            echo '<div class="ebtw-recent-posts-widget">';
+            echo '<div class="rangin-recent-posts-widget">';
             echo '<p class="text-neutral-600 dark:text-neutral-400 italic">' . __('No recent posts found.', 'personal-website') . '</p>';
             echo '</div>';
         }
@@ -267,17 +267,17 @@ class EBTW_Recent_Posts_Widget extends WP_Widget {
 }
 
 /**
- * EBTW Categories Widget
- */
-class EBTW_Categories_Widget extends WP_Widget {
+ * Rangin Categories Widget
+*/
+class Rangin_Categories_Widget extends WP_Widget {
     
     /**
      * Constructor
      */
     public function __construct() {
         parent::__construct(
-            'ebtw_categories_widget',
-            __('EBTW - Categories', 'personal-website'),
+            'rangin_categories_widget',
+            __('Rangin - Categories', 'personal-website'),
             array(
                 'description' => __('Display a list of categories with modern styling.', 'personal-website')
             )
@@ -436,18 +436,18 @@ class EBTW_Categories_Widget extends WP_Widget {
 }
 
 /**
- * EBTW Quick Links Widget
+ * Rangin Quick Links Widget
  * Displays navigation menu links in footer
  */
-class EBTW_Quick_Links_Widget extends WP_Widget {
+class Rangin_Quick_Links_Widget extends WP_Widget {
     
     public function __construct() {
         parent::__construct(
-            'ebtw_quick_links',
-            __('EBTW - Quick Links', 'personal-website'),
+            'rangin_quick_links',
+            __('Rangin - Quick Links', 'personal-website'),
             array(
                 'description' => __('Display navigation menu links in footer.', 'personal-website'),
-                'classname' => 'ebtw-quick-links-widget',
+                'classname' => 'rangin-quick-links-widget',
             )
         );
     }
@@ -475,7 +475,7 @@ class EBTW_Quick_Links_Widget extends WP_Widget {
                 'link_before' => '',
                 'link_after' => '',
                 'depth' => 1,
-                'walker' => new EBTW_Footer_Nav_Walker(),
+                'walker' => new Rangin_Footer_Nav_Walker(),
             ));
         } else {
             echo '<p class="text-neutral-400 text-sm">' . __('Please select a menu in widget settings.', 'personal-website') . '</p>';
@@ -495,7 +495,7 @@ class EBTW_Quick_Links_Widget extends WP_Widget {
         ?>
         <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; margin-bottom: 15px; border-left: 4px solid #007cba;">
             <h4 style="margin: 0 0 10px 0; color: #1d2327; font-size: 14px;">
-                🔗 EBTW Quick Links Widget
+                🔗 Rangin Quick Links Widget
             </h4>
             <p style="margin: 0; color: #646970; font-size: 12px; line-height: 1.4;">
                 <strong>📍 Features:</strong> Display navigation menu links in footer with custom styling
@@ -538,18 +538,18 @@ class EBTW_Quick_Links_Widget extends WP_Widget {
 }
 
 /**
- * EBTW Contact Info Widget
+ * Rangin Contact Info Widget
  * Displays contact information in footer
  */
-class EBTW_Contact_Info_Widget extends WP_Widget {
+class Rangin_Contact_Info_Widget extends WP_Widget {
     
     public function __construct() {
         parent::__construct(
-            'ebtw_contact_info',
-            __('EBTW - Contact Info', 'personal-website'),
+            'rangin_contact_info',
+            __('Rangin - Contact Info', 'personal-website'),
             array(
                 'description' => __('Display contact information with icons in footer.', 'personal-website'),
-                'classname' => 'ebtw-contact-info-widget',
+                'classname' => 'rangin-contact-info-widget',
             )
         );
     }
@@ -612,7 +612,7 @@ class EBTW_Contact_Info_Widget extends WP_Widget {
         ?>
         <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; margin-bottom: 15px; border-left: 4px solid #007cba;">
             <h4 style="margin: 0 0 10px 0; color: #1d2327; font-size: 14px;">
-                📞 EBTW Contact Info Widget
+                📞 Rangin Contact Info Widget
             </h4>
             <p style="margin: 0; color: #646970; font-size: 12px; line-height: 1.4;">
                 <strong>📍 Features:</strong> Display contact information with Font Awesome icons
@@ -670,7 +670,7 @@ class EBTW_Contact_Info_Widget extends WP_Widget {
  * Custom Footer Navigation Walker
  * For formatting footer menu links
  */
-class EBTW_Footer_Nav_Walker extends Walker_Nav_Menu {
+class Rangin_Footer_Nav_Walker extends Walker_Nav_Menu {
     
     // Start Level
     function start_lvl(&$output, $depth = 0, $args = null) {
@@ -722,11 +722,11 @@ class EBTW_Footer_Nav_Walker extends Walker_Nav_Menu {
 /**
  * Register the custom widgets
  */
-function ebtw_register_custom_widgets() {
-    register_widget('EBTW_Search_Widget');
-    register_widget('EBTW_Recent_Posts_Widget');
-    register_widget('EBTW_Categories_Widget');
-    register_widget('EBTW_Quick_Links_Widget');
-    register_widget('EBTW_Contact_Info_Widget');
+function rangin_register_custom_widgets() {
+    register_widget('Rangin_Search_Widget');
+    register_widget('Rangin_Recent_Posts_Widget');
+    register_widget('Rangin_Categories_Widget');
+    register_widget('Rangin_Quick_Links_Widget');
+    register_widget('Rangin_Contact_Info_Widget');
 }
-add_action('widgets_init', 'ebtw_register_custom_widgets');
+add_action('widgets_init', 'rangin_register_custom_widgets');

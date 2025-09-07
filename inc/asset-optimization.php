@@ -12,7 +12,7 @@ function asset_opt_enabled() {
 
 function asset_opt_cache_dir() {
     $uploads = wp_get_upload_dir();
-    $dir = trailingslashit($uploads['basedir']) . 'ebtw-cache/min';
+    $dir = trailingslashit($uploads['basedir']) . 'rangin-cache/min';
     if (!is_dir($dir)) {
         wp_mkdir_p($dir);
     }
@@ -21,7 +21,7 @@ function asset_opt_cache_dir() {
 
 function asset_opt_cache_url_base() {
     $uploads = wp_get_upload_dir();
-    return trailingslashit($uploads['baseurl']) . 'ebtw-cache/min';
+    return trailingslashit($uploads['baseurl']) . 'rangin-cache/min';
 }
 
 function asset_opt_is_local_theme_asset($src) {
