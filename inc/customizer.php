@@ -212,6 +212,14 @@ function get_contact_section_description() {
     return get_theme_mod('contact_section_description', 'Ready to start your next project? Let\'s discuss how I can help bring your ideas to life');
 }
 
+function has_contact_section_description() {
+    $theme_option = get_option('contact_section_description', '');
+    if (!empty($theme_option)) {
+        return true;
+    }
+    return false;
+}
+
 function get_front_contact_email() {
     // Check theme options first, then customizer, then general contact
     $theme_option = get_option('front_contact_email', '');

@@ -10,20 +10,25 @@
 get_header(); ?>
 
 <main id="main" class="main-content">
-    <!-- About Hero Section -->
+    <!-- About Hero Section - Header -->
+    <section class="py-20 bg-gradient-to-r from-primary-50 to-secondary-50 dark:from-primary-900 dark:to-secondary-900">
+        <div class="container mx-auto px-4">
+            <div class="text-center animate-on-scroll">
+                <h1 class="text-4xl md:text-5xl font-bold mb-4"><?php echo esc_html(get_about_page_title()); ?></h1>
+                <?php if (has_about_page_subtitle()): ?>
+                    <p class="text-xl text-neutral-600 dark:text-neutral-400 max-w-3xl mx-auto mb-8">
+                        <?php echo esc_html(get_about_page_subtitle()); ?>
+                    </p>
+                <?php endif; ?>
+                <div class="w-24 h-1 bg-gradient-to-r from-primary-500 to-secondary-500 mx-auto"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Hero Section - Content -->
     <section class="py-20 bg-neutral-50 dark:bg-neutral-850">
         <div class="container mx-auto px-4">
             <?php while (have_posts()): the_post(); ?>
-                <div class="text-center mb-16">
-                    <h1 class="text-4xl md:text-5xl font-bold mb-4"><?php echo esc_html(get_about_page_title()); ?></h1>
-                    <?php if (has_about_page_subtitle()): ?>
-                        <p class="text-xl text-neutral-600 dark:text-neutral-400 max-w-3xl mx-auto mb-8">
-                            <?php echo esc_html(get_about_page_subtitle()); ?>
-                        </p>
-                    <?php endif; ?>
-                    <div class="w-24 h-1 bg-gradient-to-r from-primary-500 to-secondary-500 mx-auto"></div>
-                </div>
-                
                 <div class="grid grid-cols-1 lg:grid-cols-1 gap-12 items-center max-w-6xl mx-auto">
                     <div class="animate-on-scroll">
                         <?php $about_photo = get_about_me_photo(); ?>

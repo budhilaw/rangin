@@ -11,26 +11,17 @@ get_header(); ?>
 
 <main id="main" class="main-content">
     <!-- Portfolio Hero Section -->
-    <section class="py-20 bg-neutral-50 dark:bg-neutral-850">
+    <section class="py-20 bg-gradient-to-r from-primary-50 to-secondary-50 dark:from-primary-900 dark:to-secondary-900">
         <div class="container mx-auto px-4">
-            <?php while (have_posts()): the_post(); ?>
-                <div class="text-center mb-16">
-                    <h1 class="text-4xl md:text-5xl font-bold mb-4"><?php the_title(); ?></h1>
-                    <?php if (get_the_excerpt()): ?>
-                        <p class="text-xl text-neutral-600 dark:text-neutral-400 max-w-3xl mx-auto mb-8">
-                            <?php echo get_the_excerpt(); ?>
-                        </p>
-                    <?php endif; ?>
-                    <div class="w-24 h-1 bg-gradient-to-r from-primary-500 to-secondary-500 mx-auto"></div>
-                </div>
-
-                <!-- Optional Page Content -->
-                <?php if (get_the_content()): ?>
-                    <div class="prose prose-lg prose-neutral dark:prose-invert max-w-4xl mx-auto mb-16 text-center">
-                        <?php the_content(); ?>
-                    </div>
+            <div class="text-center animate-on-scroll">
+                <h1 class="text-4xl md:text-5xl font-bold mb-4"><?php echo esc_html(get_portfolio_section_title()); ?></h1>
+                <?php if (get_portfolio_section_description()): ?>
+                    <p class="text-xl text-neutral-600 dark:text-neutral-400 max-w-3xl mx-auto mb-8">
+                        <?php echo esc_html(get_portfolio_section_description()); ?>
+                    </p>
                 <?php endif; ?>
-            <?php endwhile; ?>
+                <div class="w-24 h-1 bg-gradient-to-r from-primary-500 to-secondary-500 mx-auto"></div>
+            </div>
         </div>
     </section>
 

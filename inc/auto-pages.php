@@ -54,6 +54,26 @@ function pw_create_core_pages_on_activation() {
     $about_id     = pw_ensure_page(__('About', 'rangin'), 'about');
     $contact_id   = pw_ensure_page(__('Contact', 'rangin'), 'contact');
 
+    // Assign page templates where appropriate if not already set
+    if ($about_id) {
+        $current_tpl = get_page_template_slug($about_id);
+        if (empty($current_tpl) || $current_tpl === 'default') {
+            update_post_meta($about_id, '_wp_page_template', 'page-about.php');
+        }
+    }
+    if ($portfolio_id) {
+        $current_tpl = get_page_template_slug($portfolio_id);
+        if (empty($current_tpl) || $current_tpl === 'default') {
+            update_post_meta($portfolio_id, '_wp_page_template', 'page-portfolio.php');
+        }
+    }
+    if ($contact_id) {
+        $current_tpl = get_page_template_slug($contact_id);
+        if (empty($current_tpl) || $current_tpl === 'default') {
+            update_post_meta($contact_id, '_wp_page_template', 'page-contact.php');
+        }
+    }
+
     // Respect existing settings; only set if not configured
     $show_on_front = get_option('show_on_front');
     $current_front = (int) get_option('page_on_front');
