@@ -1,4 +1,5 @@
 {
+    "license": "GPL-2.0-or-later",
     "require": {
         "matthiasmullie/minify": "^1.3"
     }
