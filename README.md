@@ -182,7 +182,7 @@ Uploads cache
 
 ## License
 
-Licensed under the GNU General Public License v2 or later.
+Licensed under the GNU General Public License v2 or later. <br />
 https://www.gnu.org/licenses/gpl-2.0.html
 
 
