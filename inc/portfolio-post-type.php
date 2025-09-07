@@ -15,35 +15,35 @@ if (!defined('ABSPATH')) {
  */
 function register_portfolio_post_type() {
     $labels = array(
-        'name'                  => _x('Portfolio', 'Post type general name', 'personal-website'),
-        'singular_name'         => _x('Portfolio Item', 'Post type singular name', 'personal-website'),
-        'menu_name'             => _x('Portfolio', 'Admin Menu text', 'personal-website'),
-        'name_admin_bar'        => _x('Portfolio Item', 'Add New on Toolbar', 'personal-website'),
-        'add_new'               => __('Add New', 'personal-website'),
-        'add_new_item'          => __('Add New Portfolio Item', 'personal-website'),
-        'new_item'              => __('New Portfolio Item', 'personal-website'),
-        'edit_item'             => __('Edit Portfolio Item', 'personal-website'),
-        'view_item'             => __('View Portfolio Item', 'personal-website'),
-        'all_items'             => __('All Portfolio Items', 'personal-website'),
-        'search_items'          => __('Search Portfolio Items', 'personal-website'),
-        'parent_item_colon'     => __('Parent Portfolio Items:', 'personal-website'),
-        'not_found'             => __('No portfolio items found.', 'personal-website'),
-        'not_found_in_trash'    => __('No portfolio items found in Trash.', 'personal-website'),
-        'featured_image'        => _x('Portfolio Featured Image', 'Overrides the "Featured Image" phrase', 'personal-website'),
-        'set_featured_image'    => _x('Set portfolio featured image', 'Overrides the "Set featured image" phrase', 'personal-website'),
-        'remove_featured_image' => _x('Remove portfolio featured image', 'Overrides the "Remove featured image" phrase', 'personal-website'),
-        'use_featured_image'    => _x('Use as portfolio featured image', 'Overrides the "Use as featured image" phrase', 'personal-website'),
-        'archives'              => _x('Portfolio archives', 'The post type archive label used in nav menus', 'personal-website'),
-        'insert_into_item'      => _x('Insert into portfolio item', 'Overrides the "Insert into post"', 'personal-website'),
-        'uploaded_to_this_item' => _x('Uploaded to this portfolio item', 'Overrides the "Uploaded to this post"', 'personal-website'),
-        'filter_items_list'     => _x('Filter portfolio items list', 'Screen reader text for the filter links', 'personal-website'),
-        'items_list_navigation' => _x('Portfolio items list navigation', 'Screen reader text for the pagination', 'personal-website'),
-        'items_list'            => _x('Portfolio items list', 'Screen reader text for the items list', 'personal-website'),
+        'name'                  => _x('Portfolio', 'Post type general name', 'rangin'),
+        'singular_name'         => _x('Portfolio Item', 'Post type singular name', 'rangin'),
+        'menu_name'             => _x('Portfolio', 'Admin Menu text', 'rangin'),
+        'name_admin_bar'        => _x('Portfolio Item', 'Add New on Toolbar', 'rangin'),
+        'add_new'               => __('Add New', 'rangin'),
+        'add_new_item'          => __('Add New Portfolio Item', 'rangin'),
+        'new_item'              => __('New Portfolio Item', 'rangin'),
+        'edit_item'             => __('Edit Portfolio Item', 'rangin'),
+        'view_item'             => __('View Portfolio Item', 'rangin'),
+        'all_items'             => __('All Portfolio Items', 'rangin'),
+        'search_items'          => __('Search Portfolio Items', 'rangin'),
+        'parent_item_colon'     => __('Parent Portfolio Items:', 'rangin'),
+        'not_found'             => __('No portfolio items found.', 'rangin'),
+        'not_found_in_trash'    => __('No portfolio items found in Trash.', 'rangin'),
+        'featured_image'        => _x('Portfolio Featured Image', 'Overrides the "Featured Image" phrase', 'rangin'),
+        'set_featured_image'    => _x('Set portfolio featured image', 'Overrides the "Set featured image" phrase', 'rangin'),
+        'remove_featured_image' => _x('Remove portfolio featured image', 'Overrides the "Remove featured image" phrase', 'rangin'),
+        'use_featured_image'    => _x('Use as portfolio featured image', 'Overrides the "Use as featured image" phrase', 'rangin'),
+        'archives'              => _x('Portfolio archives', 'The post type archive label used in nav menus', 'rangin'),
+        'insert_into_item'      => _x('Insert into portfolio item', 'Overrides the "Insert into post"', 'rangin'),
+        'uploaded_to_this_item' => _x('Uploaded to this portfolio item', 'Overrides the "Uploaded to this post"', 'rangin'),
+        'filter_items_list'     => _x('Filter portfolio items list', 'Screen reader text for the filter links', 'rangin'),
+        'items_list_navigation' => _x('Portfolio items list navigation', 'Screen reader text for the pagination', 'rangin'),
+        'items_list'            => _x('Portfolio items list', 'Screen reader text for the items list', 'rangin'),
     );
 
     $args = array(
         'labels'             => $labels,
-        'description'        => __('Portfolio items to showcase your work.', 'personal-website'),
+        'description'        => __('Portfolio items to showcase your work.', 'rangin'),
         'public'             => true,
         'publicly_queryable' => true,
         'show_ui'            => true,
@@ -73,17 +73,17 @@ add_action('init', 'register_portfolio_post_type');
  */
 function register_portfolio_categories_taxonomy() {
     $labels = array(
-        'name'              => _x('Portfolio Categories', 'taxonomy general name', 'personal-website'),
-        'singular_name'     => _x('Portfolio Category', 'taxonomy singular name', 'personal-website'),
-        'search_items'      => __('Search Portfolio Categories', 'personal-website'),
-        'all_items'         => __('All Portfolio Categories', 'personal-website'),
-        'parent_item'       => __('Parent Portfolio Category', 'personal-website'),
-        'parent_item_colon' => __('Parent Portfolio Category:', 'personal-website'),
-        'edit_item'         => __('Edit Portfolio Category', 'personal-website'),
-        'update_item'       => __('Update Portfolio Category', 'personal-website'),
-        'add_new_item'      => __('Add New Portfolio Category', 'personal-website'),
-        'new_item_name'     => __('New Portfolio Category Name', 'personal-website'),
-        'menu_name'         => __('Categories', 'personal-website'),
+        'name'              => _x('Portfolio Categories', 'taxonomy general name', 'rangin'),
+        'singular_name'     => _x('Portfolio Category', 'taxonomy singular name', 'rangin'),
+        'search_items'      => __('Search Portfolio Categories', 'rangin'),
+        'all_items'         => __('All Portfolio Categories', 'rangin'),
+        'parent_item'       => __('Parent Portfolio Category', 'rangin'),
+        'parent_item_colon' => __('Parent Portfolio Category:', 'rangin'),
+        'edit_item'         => __('Edit Portfolio Category', 'rangin'),
+        'update_item'       => __('Update Portfolio Category', 'rangin'),
+        'add_new_item'      => __('Add New Portfolio Category', 'rangin'),
+        'new_item_name'     => __('New Portfolio Category Name', 'rangin'),
+        'menu_name'         => __('Categories', 'rangin'),
     );
 
     $args = array(
@@ -106,7 +106,7 @@ add_action('init', 'register_portfolio_categories_taxonomy');
 function add_portfolio_meta_boxes() {
     add_meta_box(
         'portfolio_details',
-        __('Portfolio Details', 'personal-website'),
+        __('Portfolio Details', 'rangin'),
         'portfolio_details_callback',
         'portfolio',
         'normal',
@@ -132,29 +132,29 @@ function portfolio_details_callback($post) {
         
         <tr>
             <th scope="row">
-                <label for="portfolio_demo_link"><?php _e('Demo Link', 'personal-website'); ?></label>
+                <label for="portfolio_demo_link"><?php _e('Demo Link', 'rangin'); ?></label>
             </th>
             <td>
                 <input type="url" id="portfolio_demo_link" name="portfolio_demo_link" value="<?php echo esc_attr($demo_link); ?>" class="regular-text" placeholder="https://example.com/demo">
-                <p class="description"><?php _e('Enter the live demo URL (optional). Leave empty to hide the demo button.', 'personal-website'); ?></p>
+                <p class="description"><?php _e('Enter the live demo URL (optional). Leave empty to hide the demo button.', 'rangin'); ?></p>
             </td>
         </tr>
         <tr>
             <th scope="row">
-                <label for="portfolio_github_link"><?php _e('GitHub Link', 'personal-website'); ?></label>
+                <label for="portfolio_github_link"><?php _e('GitHub Link', 'rangin'); ?></label>
             </th>
             <td>
                 <input type="url" id="portfolio_github_link" name="portfolio_github_link" value="<?php echo esc_attr($github_link); ?>" class="regular-text" placeholder="https://github.com/username/repository">
-                <p class="description"><?php _e('Enter the GitHub repository URL (optional). Leave empty to hide the GitHub button.', 'personal-website'); ?></p>
+                <p class="description"><?php _e('Enter the GitHub repository URL (optional). Leave empty to hide the GitHub button.', 'rangin'); ?></p>
             </td>
         </tr>
         <tr>
             <th scope="row">
-                <label for="portfolio_technologies"><?php _e('Technologies Used', 'personal-website'); ?></label>
+                <label for="portfolio_technologies"><?php _e('Technologies Used', 'rangin'); ?></label>
             </th>
             <td>
                 <input type="text" id="portfolio_technologies" name="portfolio_technologies" value="<?php echo esc_attr($technologies); ?>" class="regular-text" placeholder="React, Node.js, MongoDB">
-                <p class="description"><?php _e('Enter technologies used, separated by commas (optional).', 'personal-website'); ?></p>
+                <p class="description"><?php _e('Enter technologies used, separated by commas (optional).', 'rangin'); ?></p>
             </td>
         </tr>
     </table>
@@ -203,10 +203,10 @@ function add_portfolio_admin_columns($columns) {
     $new_columns = array();
     $new_columns['cb'] = $columns['cb'];
     $new_columns['title'] = $columns['title'];
-    $new_columns['portfolio_featured_image'] = __('Featured Image', 'personal-website');
-    $new_columns['portfolio_category'] = __('Category', 'personal-website');
-    $new_columns['portfolio_technologies'] = __('Technologies', 'personal-website');
-    $new_columns['portfolio_links'] = __('Links', 'personal-website');
+    $new_columns['portfolio_featured_image'] = __('Featured Image', 'rangin');
+    $new_columns['portfolio_category'] = __('Category', 'rangin');
+    $new_columns['portfolio_technologies'] = __('Technologies', 'rangin');
+    $new_columns['portfolio_links'] = __('Links', 'rangin');
     $new_columns['date'] = $columns['date'];
     
     return $new_columns;

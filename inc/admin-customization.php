@@ -102,8 +102,8 @@ add_action('get_header', 'personal_website_remove_admin_bar_margin');
  */
 function personal_website_add_theme_options_menu() {
     add_menu_page(
-        __('Theme Options', 'personal-website'),     // Page title
-        __('Theme Options', 'personal-website'),     // Menu title
+        __('Theme Options', 'rangin'),     // Page title
+        __('Theme Options', 'rangin'),     // Menu title
         'manage_options',                            // Capability
         'theme-options',                             // Menu slug
         'personal_website_theme_options_page',       // Callback function
@@ -124,7 +124,7 @@ function personal_website_theme_options_page() {
         // Site Information
         if (isset($_POST['site_title'])) {
             update_option('blogname', sanitize_text_field($_POST['site_title']));
-            $success_messages[] = __('Site title updated.', 'personal-website');
+            $success_messages[] = __('Site title updated.', 'rangin');
         }
         
         // Hero Section

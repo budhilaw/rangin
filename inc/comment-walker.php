@@ -31,9 +31,9 @@ class Personal_Website_Comment_Walker extends Walker_Comment {
         $show_pending_links = !empty($commenter['comment_author']);
 
         if ($commenter['comment_author_email']) {
-            $moderation_note = __('Your comment is awaiting moderation.', 'personal-website');
+            $moderation_note = __('Your comment is awaiting moderation.', 'rangin');
         } else {
-            $moderation_note = __('Your comment is awaiting moderation. This is a preview; your comment will be visible after it has been approved.', 'personal-website');
+            $moderation_note = __('Your comment is awaiting moderation. This is a preview; your comment will be visible after it has been approved.', 'rangin');
         }
         ?>
         <<?php echo $tag; ?> id="comment-<?php comment_ID(); ?>" <?php comment_class($this->has_children ? 'parent comment-item card p-6 mb-6' : 'comment-item card p-6 mb-6', $comment); ?>>
@@ -64,7 +64,7 @@ class Personal_Website_Comment_Walker extends Walker_Comment {
                                 <?php if (user_can($comment->user_id, 'manage_options')): ?>
                                     <span class="comment-author-badge inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-primary-100 dark:bg-primary-900 text-primary-800 dark:text-primary-200">
                                         <i class="fas fa-crown mr-1"></i>
-                                        <?php _e('Author', 'personal-website'); ?>
+                                        <?php _e('Author', 'rangin'); ?>
                                     </span>
                                 <?php endif; ?>
                             </div>
@@ -75,7 +75,7 @@ class Personal_Website_Comment_Walker extends Walker_Comment {
                                     <a href="<?php echo esc_url(get_comment_link($comment, $args)); ?>" class="hover:text-primary-600 dark:hover:text-primary-400 transition-colors">
                                         <?php
                                         /* translators: 1: Comment date, 2: Comment time. */
-                                        printf(__('%1$s at %2$s', 'personal-website'), get_comment_date('', $comment), get_comment_time());
+                                        printf(__('%1$s at %2$s', 'rangin'), get_comment_date('', $comment), get_comment_time());
                                         ?>
                                     </a>
                                 </time>
@@ -90,7 +90,7 @@ class Personal_Website_Comment_Walker extends Walker_Comment {
                                             'max_depth' => $args['max_depth'],
                                             'before'    => '<div class="reply flex items-center">',
                                             'after'     => '</div>',
-                                            'reply_text' => '<i class="fas fa-reply mr-1"></i>' . __('Reply', 'personal-website'),
+                                            'reply_text' => '<i class="fas fa-reply mr-1"></i>' . __('Reply', 'rangin'),
                                             'class'     => 'comment-reply-link text-primary-600 hover:text-primary-800 dark:text-primary-400 dark:hover:text-primary-300 transition-colors text-sm font-medium'
                                         )
                                     ),
@@ -99,7 +99,7 @@ class Personal_Website_Comment_Walker extends Walker_Comment {
                                 );
                                 ?>
                                 
-                                <?php edit_comment_link('<i class="fas fa-edit mr-1"></i>' . __('Edit', 'personal-website'), '<div class="edit-link">', '</div>', null, 'text-neutral-600 hover:text-accent-600 dark:text-neutral-400 dark:hover:text-accent-400 transition-colors text-sm font-medium'); ?>
+                                <?php edit_comment_link('<i class="fas fa-edit mr-1"></i>' . __('Edit', 'rangin'), '<div class="edit-link">', '</div>', null, 'text-neutral-600 hover:text-accent-600 dark:text-neutral-400 dark:hover:text-accent-400 transition-colors text-sm font-medium'); ?>
                             </div>
                         </div>
                         
@@ -143,29 +143,29 @@ function personal_website_comment_form_fields($fields) {
     
     $fields['author'] = sprintf(
         '<div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6"><div class="form-group"><label for="author" class="block text-sm font-medium mb-2">%s%s</label><input id="author" name="author" type="text" value="%s" size="30" maxlength="245"%s class="w-full px-4 py-3 border border-neutral-300 dark:border-neutral-600 rounded-lg bg-white dark:bg-neutral-800 text-neutral-900 dark:text-neutral-100 focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200" placeholder="%s"></div>',
-        __('Name', 'personal-website'),
+        __('Name', 'rangin'),
         ($req ? ' <span class="text-red-500">*</span>' : ''),
         esc_attr($commenter['comment_author']),
         $html_req,
-        __('Your Name', 'personal-website')
+        __('Your Name', 'rangin')
     );
     
     $fields['email'] = sprintf(
         '<div class="form-group"><label for="email" class="block text-sm font-medium mb-2">%s%s</label><input id="email" name="email" %s value="%s" size="30" maxlength="100" aria-describedby="email-notes"%s class="w-full px-4 py-3 border border-neutral-300 dark:border-neutral-600 rounded-lg bg-white dark:bg-neutral-800 text-neutral-900 dark:text-neutral-100 focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200" placeholder="%s"></div></div>',
-        __('Email', 'personal-website'),
+        __('Email', 'rangin'),
         ($req ? ' <span class="text-red-500">*</span>' : ''),
         ($html5 ? 'type="email"' : 'type="text"'),
         esc_attr($commenter['comment_author_email']),
         $html_req,
-        __('your@email.com', 'personal-website')
+        __('your@email.com', 'rangin')
     );
     
     $fields['url'] = sprintf(
         '<div class="form-group mb-6"><label for="url" class="block text-sm font-medium mb-2">%s</label><input id="url" name="url" %s value="%s" size="30" maxlength="200" class="w-full px-4 py-3 border border-neutral-300 dark:border-neutral-600 rounded-lg bg-white dark:bg-neutral-800 text-neutral-900 dark:text-neutral-100 focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200" placeholder="%s"></div>',
-        __('Website', 'personal-website'),
+        __('Website', 'rangin'),
         ($html5 ? 'type="url"' : 'type="text"'),
         esc_attr($commenter['comment_author_url']),
-        __('https://yourwebsite.com (optional)', 'personal-website')
+        __('https://yourwebsite.com (optional)', 'rangin')
     );
     
     return $fields;

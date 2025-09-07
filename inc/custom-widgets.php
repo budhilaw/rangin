@@ -21,9 +21,9 @@ class Rangin_Search_Widget extends WP_Widget {
     public function __construct() {
         parent::__construct(
             'rangin_search_widget',
-            __('Rangin - Search', 'personal-website'),
+            __('Rangin - Search', 'rangin'),
             array(
-                'description' => __('A custom search widget with modern styling.', 'personal-website'),
+                'description' => __('A custom search widget with modern styling.', 'rangin'),
             )
         );
     }
@@ -63,7 +63,7 @@ class Rangin_Search_Widget extends WP_Widget {
         <div style="padding: 15px; background: #f9f9f9; border: 1px solid #ddd; border-radius: 8px; margin: 10px 0;">
             <div>
                 <h4 style="margin: 0 0 15px 0; font-size: 14px; font-weight: 600; color: #23282d; border-bottom: 1px solid #ddd; padding-bottom: 8px;">
-                    <?php _e('Search Widget Preview:', 'personal-website'); ?>
+                    <?php _e('Search Widget Preview:', 'rangin'); ?>
                 </h4>
                 <div style="margin-bottom: 15px;">
                     <div style="position: relative; display: flex; align-items: center; width: 100%; max-width: 300px;">
@@ -79,7 +79,7 @@ class Rangin_Search_Widget extends WP_Widget {
                     </div>
                 </div>
                 <p style="margin: 0; font-size: 12px; color: #666; background: #fff; padding: 10px; border-radius: 4px; border-left: 4px solid #0073aa;">
-                    <em style="font-style: normal; color: #555;"><?php _e('This widget displays a custom search form with modern styling. No configuration needed.', 'personal-website'); ?></em>
+                    <em style="font-style: normal; color: #555;"><?php _e('This widget displays a custom search form with modern styling. No configuration needed.', 'rangin'); ?></em>
                 </p>
             </div>
         </div>
@@ -105,9 +105,9 @@ class Rangin_Recent_Posts_Widget extends WP_Widget {
     public function __construct() {
         parent::__construct(
             'rangin_recent_posts_widget',
-            __('Rangin - Recent Posts', 'personal-website'),
+            __('Rangin - Recent Posts', 'rangin'),
             array(
-                'description' => __('A custom recent posts widget with modern styling and formatted dates.', 'personal-website'),
+                'description' => __('A custom recent posts widget with modern styling and formatted dates.', 'rangin'),
             )
         );
     }
@@ -122,7 +122,7 @@ class Rangin_Recent_Posts_Widget extends WP_Widget {
         $number_of_posts = !empty($instance['number_of_posts']) ? absint($instance['number_of_posts']) : 5;
         
         // Widget title
-        $title = !empty($instance['title']) ? $instance['title'] : __('Recent Posts', 'personal-website');
+        $title = !empty($instance['title']) ? $instance['title'] : __('Recent Posts', 'rangin');
         if ($title) {
             echo $args['before_title'] . esc_html($title) . $args['after_title'];
         }
@@ -161,7 +161,7 @@ class Rangin_Recent_Posts_Widget extends WP_Widget {
             echo '</div>';
         } else {
             echo '<div class="rangin-recent-posts-widget">';
-            echo '<p class="text-neutral-600 dark:text-neutral-400 italic">' . __('No recent posts found.', 'personal-website') . '</p>';
+            echo '<p class="text-neutral-600 dark:text-neutral-400 italic">' . __('No recent posts found.', 'rangin') . '</p>';
             echo '</div>';
         }
         
@@ -172,19 +172,19 @@ class Rangin_Recent_Posts_Widget extends WP_Widget {
      * Widget backend form
      */
     public function form($instance) {
-        $title = !empty($instance['title']) ? $instance['title'] : __('Recent Posts', 'personal-website');
+        $title = !empty($instance['title']) ? $instance['title'] : __('Recent Posts', 'rangin');
         $number_of_posts = !empty($instance['number_of_posts']) ? absint($instance['number_of_posts']) : 5;
         ?>
         <div style="padding: 15px; background: #f9f9f9; border: 1px solid #ddd; border-radius: 8px; margin: 10px 0;">
             <div>
                 <h4 style="margin: 0 0 15px 0; font-size: 14px; font-weight: 600; color: #23282d; border-bottom: 1px solid #ddd; padding-bottom: 8px;">
-                    <?php _e('Recent Posts Widget Settings:', 'personal-website'); ?>
+                    <?php _e('Recent Posts Widget Settings:', 'rangin'); ?>
                 </h4>
                 
                 <!-- Title field -->
                 <div style="margin-bottom: 15px;">
                     <label for="<?php echo esc_attr($this->get_field_id('title')); ?>" style="display: block; margin-bottom: 5px; font-weight: 600; color: #23282d;">
-                        <?php _e('Title:', 'personal-website'); ?>
+                        <?php _e('Title:', 'rangin'); ?>
                     </label>
                     <input type="text" 
                            id="<?php echo esc_attr($this->get_field_id('title')); ?>" 
@@ -196,7 +196,7 @@ class Rangin_Recent_Posts_Widget extends WP_Widget {
                 <!-- Number of posts field -->
                 <div style="margin-bottom: 15px;">
                     <label for="<?php echo esc_attr($this->get_field_id('number_of_posts')); ?>" style="display: block; margin-bottom: 5px; font-weight: 600; color: #23282d;">
-                        <?php _e('Number of posts to show:', 'personal-website'); ?>
+                        <?php _e('Number of posts to show:', 'rangin'); ?>
                     </label>
                     <input type="number" 
                            id="<?php echo esc_attr($this->get_field_id('number_of_posts')); ?>" 
@@ -210,7 +210,7 @@ class Rangin_Recent_Posts_Widget extends WP_Widget {
                 <!-- Preview -->
                 <div style="margin-bottom: 15px;">
                     <h5 style="margin: 0 0 10px 0; font-size: 13px; font-weight: 600; color: #23282d;">
-                        <?php _e('Preview:', 'personal-website'); ?>
+                        <?php _e('Preview:', 'rangin'); ?>
                     </h5>
                     <div style="background: #fff; padding: 15px; border-radius: 6px; border: 1px solid #e0e0e0;">
                         <div style="margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid #e0e0e0;">
@@ -247,7 +247,7 @@ class Rangin_Recent_Posts_Widget extends WP_Widget {
                 </div>
                 
                 <p style="margin: 0; font-size: 12px; color: #666; background: #fff; padding: 10px; border-radius: 4px; border-left: 4px solid #0073aa;">
-                    <em style="font-style: normal; color: #555;"><?php _e('This widget displays recent posts with titles and formatted dates. Adjust the number of posts and title as needed.', 'personal-website'); ?></em>
+                    <em style="font-style: normal; color: #555;"><?php _e('This widget displays recent posts with titles and formatted dates. Adjust the number of posts and title as needed.', 'rangin'); ?></em>
                 </p>
             </div>
         </div>
@@ -277,9 +277,9 @@ class Rangin_Categories_Widget extends WP_Widget {
     public function __construct() {
         parent::__construct(
             'rangin_categories_widget',
-            __('Rangin - Categories', 'personal-website'),
+            __('Rangin - Categories', 'rangin'),
             array(
-                'description' => __('Display a list of categories with modern styling.', 'personal-website')
+                'description' => __('Display a list of categories with modern styling.', 'rangin')
             )
         );
     }
@@ -288,7 +288,7 @@ class Rangin_Categories_Widget extends WP_Widget {
      * Widget frontend output
      */
     public function widget($args, $instance) {
-        $title = !empty($instance['title']) ? $instance['title'] : __('Categories', 'personal-website');
+        $title = !empty($instance['title']) ? $instance['title'] : __('Categories', 'rangin');
         $show_count = !empty($instance['show_count']) ? $instance['show_count'] : false;
         
         echo $args['before_widget'];
@@ -336,7 +336,7 @@ class Rangin_Categories_Widget extends WP_Widget {
             
             echo '</ul>';
         } else {
-            echo '<p class="text-neutral-600 dark:text-neutral-400 italic text-sm">' . __('No categories found.', 'personal-website') . '</p>';
+            echo '<p class="text-neutral-600 dark:text-neutral-400 italic text-sm">' . __('No categories found.', 'rangin') . '</p>';
         }
         
         echo $args['after_widget'];
@@ -346,14 +346,14 @@ class Rangin_Categories_Widget extends WP_Widget {
      * Widget backend form
      */
     public function form($instance) {
-        $title = !empty($instance['title']) ? $instance['title'] : __('Categories', 'personal-website');
+        $title = !empty($instance['title']) ? $instance['title'] : __('Categories', 'rangin');
         $show_count = !empty($instance['show_count']) ? $instance['show_count'] : false;
         ?>
         <div style="padding: 15px; background: #f9f9f9; border: 1px solid #ddd; border-radius: 8px; margin: 10px 0;">
             <div style="margin-bottom: 15px;">
                 <label for="<?php echo esc_attr($this->get_field_id('title')); ?>" 
                        style="display: block; font-weight: 600; margin-bottom: 5px; color: #23282d;">
-                    <?php _e('Title:', 'personal-website'); ?>
+                    <?php _e('Title:', 'rangin'); ?>
                 </label>
                 <input type="text" 
                        id="<?php echo esc_attr($this->get_field_id('title')); ?>" 
@@ -370,14 +370,14 @@ class Rangin_Categories_Widget extends WP_Widget {
                            value="1" 
                            <?php checked($show_count, true); ?>
                            style="margin-right: 8px;" />
-                    <?php _e('Show post count', 'personal-website'); ?>
+                    <?php _e('Show post count', 'rangin'); ?>
                 </label>
             </div>
             
             <!-- Preview -->
             <div style="margin-bottom: 15px;">
                 <h5 style="margin: 0 0 10px 0; font-size: 13px; font-weight: 600; color: #23282d;">
-                    <?php _e('Preview:', 'personal-website'); ?>
+                    <?php _e('Preview:', 'rangin'); ?>
                 </h5>
                 <div style="background: #fff; padding: 15px; border-radius: 6px; border: 1px solid #e0e0e0;">
                     <div style="margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid #e0e0e0;">
@@ -444,9 +444,9 @@ class Rangin_Quick_Links_Widget extends WP_Widget {
     public function __construct() {
         parent::__construct(
             'rangin_quick_links',
-            __('Rangin - Quick Links', 'personal-website'),
+            __('Rangin - Quick Links', 'rangin'),
             array(
-                'description' => __('Display navigation menu links in footer.', 'personal-website'),
+                'description' => __('Display navigation menu links in footer.', 'rangin'),
                 'classname' => 'rangin-quick-links-widget',
             )
         );
@@ -456,7 +456,7 @@ class Rangin_Quick_Links_Widget extends WP_Widget {
      * Display the widget
      */
     public function widget($args, $instance) {
-        $title = !empty($instance['title']) ? $instance['title'] : __('Quick Links', 'personal-website');
+        $title = !empty($instance['title']) ? $instance['title'] : __('Quick Links', 'rangin');
         $menu_id = !empty($instance['menu']) ? $instance['menu'] : '';
         
         echo $args['before_widget'];
@@ -478,7 +478,7 @@ class Rangin_Quick_Links_Widget extends WP_Widget {
                 'walker' => new Rangin_Footer_Nav_Walker(),
             ));
         } else {
-            echo '<p class="text-neutral-400 text-sm">' . __('Please select a menu in widget settings.', 'personal-website') . '</p>';
+            echo '<p class="text-neutral-400 text-sm">' . __('Please select a menu in widget settings.', 'rangin') . '</p>';
         }
         
         echo $args['after_widget'];
@@ -488,7 +488,7 @@ class Rangin_Quick_Links_Widget extends WP_Widget {
      * Widget form in admin
      */
     public function form($instance) {
-        $title = !empty($instance['title']) ? $instance['title'] : __('Quick Links', 'personal-website');
+        $title = !empty($instance['title']) ? $instance['title'] : __('Quick Links', 'rangin');
         $menu_id = !empty($instance['menu']) ? $instance['menu'] : '';
         
         $menus = wp_get_nav_menus();
@@ -506,21 +506,21 @@ class Rangin_Quick_Links_Widget extends WP_Widget {
         </div>
         
         <p>
-            <label for="<?php echo esc_attr($this->get_field_id('title')); ?>"><?php _e('Title:', 'personal-website'); ?></label>
+            <label for="<?php echo esc_attr($this->get_field_id('title')); ?>"><?php _e('Title:', 'rangin'); ?></label>
             <input class="widefat" id="<?php echo esc_attr($this->get_field_id('title')); ?>" name="<?php echo esc_attr($this->get_field_name('title')); ?>" type="text" value="<?php echo esc_attr($title); ?>">
         </p>
         
         <p>
-            <label for="<?php echo esc_attr($this->get_field_id('menu')); ?>"><?php _e('Select Menu:', 'personal-website'); ?></label>
+            <label for="<?php echo esc_attr($this->get_field_id('menu')); ?>"><?php _e('Select Menu:', 'rangin'); ?></label>
             <select class="widefat" id="<?php echo esc_attr($this->get_field_id('menu')); ?>" name="<?php echo esc_attr($this->get_field_name('menu')); ?>">
-                <option value=""><?php _e('— Select Menu —', 'personal-website'); ?></option>
+                <option value=""><?php _e('— Select Menu —', 'rangin'); ?></option>
                 <?php foreach ($menus as $menu): ?>
                     <option value="<?php echo esc_attr($menu->term_id); ?>" <?php selected($menu_id, $menu->term_id); ?>>
                         <?php echo esc_html($menu->name); ?>
                     </option>
                 <?php endforeach; ?>
             </select>
-            <small><?php _e('Create and manage menus in Appearance > Menus', 'personal-website'); ?></small>
+            <small><?php _e('Create and manage menus in Appearance > Menus', 'rangin'); ?></small>
         </p>
         <?php
     }
@@ -546,9 +546,9 @@ class Rangin_Contact_Info_Widget extends WP_Widget {
     public function __construct() {
         parent::__construct(
             'rangin_contact_info',
-            __('Rangin - Contact Info', 'personal-website'),
+            __('Rangin - Contact Info', 'rangin'),
             array(
-                'description' => __('Display contact information with icons in footer.', 'personal-website'),
+                'description' => __('Display contact information with icons in footer.', 'rangin'),
                 'classname' => 'rangin-contact-info-widget',
             )
         );
@@ -558,7 +558,7 @@ class Rangin_Contact_Info_Widget extends WP_Widget {
      * Display the widget
      */
     public function widget($args, $instance) {
-        $title = !empty($instance['title']) ? $instance['title'] : __('Get in Touch', 'personal-website');
+        $title = !empty($instance['title']) ? $instance['title'] : __('Get in Touch', 'rangin');
         $email = !empty($instance['email']) ? $instance['email'] : '';
         $phone = !empty($instance['phone']) ? $instance['phone'] : '';
         $address = !empty($instance['address']) ? $instance['address'] : '';
@@ -605,7 +605,7 @@ class Rangin_Contact_Info_Widget extends WP_Widget {
      * Widget form in admin
      */
     public function form($instance) {
-        $title = !empty($instance['title']) ? $instance['title'] : __('Get in Touch', 'personal-website');
+        $title = !empty($instance['title']) ? $instance['title'] : __('Get in Touch', 'rangin');
         $email = !empty($instance['email']) ? $instance['email'] : '';
         $phone = !empty($instance['phone']) ? $instance['phone'] : '';
         $address = !empty($instance['address']) ? $instance['address'] : '';
@@ -623,22 +623,22 @@ class Rangin_Contact_Info_Widget extends WP_Widget {
         </div>
         
         <p>
-            <label for="<?php echo esc_attr($this->get_field_id('title')); ?>"><?php _e('Title:', 'personal-website'); ?></label>
+            <label for="<?php echo esc_attr($this->get_field_id('title')); ?>"><?php _e('Title:', 'rangin'); ?></label>
             <input class="widefat" id="<?php echo esc_attr($this->get_field_id('title')); ?>" name="<?php echo esc_attr($this->get_field_name('title')); ?>" type="text" value="<?php echo esc_attr($title); ?>">
         </p>
         
         <p>
-            <label for="<?php echo esc_attr($this->get_field_id('email')); ?>"><?php _e('Email Address:', 'personal-website'); ?></label>
+            <label for="<?php echo esc_attr($this->get_field_id('email')); ?>"><?php _e('Email Address:', 'rangin'); ?></label>
             <input class="widefat" id="<?php echo esc_attr($this->get_field_id('email')); ?>" name="<?php echo esc_attr($this->get_field_name('email')); ?>" type="email" value="<?php echo esc_attr($email); ?>" placeholder="hello@example.com">
         </p>
         
         <p>
-            <label for="<?php echo esc_attr($this->get_field_id('phone')); ?>"><?php _e('Phone Number:', 'personal-website'); ?></label>
+            <label for="<?php echo esc_attr($this->get_field_id('phone')); ?>"><?php _e('Phone Number:', 'rangin'); ?></label>
             <input class="widefat" id="<?php echo esc_attr($this->get_field_id('phone')); ?>" name="<?php echo esc_attr($this->get_field_name('phone')); ?>" type="tel" value="<?php echo esc_attr($phone); ?>" placeholder="+1 (555) 123-4567">
         </p>
         
         <p>
-            <label for="<?php echo esc_attr($this->get_field_id('address')); ?>"><?php _e('Location/Address:', 'personal-website'); ?></label>
+            <label for="<?php echo esc_attr($this->get_field_id('address')); ?>"><?php _e('Location/Address:', 'rangin'); ?></label>
             <input class="widefat" id="<?php echo esc_attr($this->get_field_id('address')); ?>" name="<?php echo esc_attr($this->get_field_name('address')); ?>" type="text" value="<?php echo esc_attr($address); ?>" placeholder="City, Country">
         </p>
         <?php

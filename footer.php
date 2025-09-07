@@ -93,9 +93,9 @@
                     <div>
                         <h4 class="text-lg font-semibold text-white mb-4">Quick Links</h4>
                         <p class="text-neutral-400 text-sm">
-                            <?php _e('Add Rangin - Quick Links widget in', 'personal-website'); ?> 
+                            <?php _e('Add Rangin - Quick Links widget in', 'rangin'); ?> 
                             <a href="<?php echo admin_url('widgets.php'); ?>" class="text-primary-400 hover:text-primary-300">
-                                <?php _e('Appearance > Widgets > Footer', 'personal-website'); ?>
+                                <?php _e('Appearance > Widgets > Footer', 'rangin'); ?>
                             </a>
                         </p>
                     </div>
@@ -103,9 +103,9 @@
                     <div>
                         <h4 class="text-lg font-semibold text-white mb-4">Get in Touch</h4>
                         <p class="text-neutral-400 text-sm">
-                            <?php _e('Add Rangin - Contact Info widget in', 'personal-website'); ?> 
+                            <?php _e('Add Rangin - Contact Info widget in', 'rangin'); ?> 
                             <a href="<?php echo admin_url('widgets.php'); ?>" class="text-primary-400 hover:text-primary-300">
-                                <?php _e('Appearance > Widgets > Footer', 'personal-website'); ?>
+                                <?php _e('Appearance > Widgets > Footer', 'rangin'); ?>
                             </a>
                         </p>
                     </div>

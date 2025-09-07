@@ -1,6 +1,15 @@
 /*
-Theme Name: Personal Website
-Description: A modern, SEO-optimized WordPress theme for Software Engineers showcasing skills, portfolio, and blog with TailwindCSS
-Version: 1.0
+Theme Name: Rangin
+Theme URI: https://github.com/budhilaw/rangin
 Author: Ericsson Budhilaw
+Author URI: https://budhilaw.com
+Description: A modern, SEO-optimized WordPress theme for Software Engineers showcasing skills, portfolio, and blog with TailwindCSS
+Requires at least: 6.8
+Tested up to: 6.8.2
+Requires PHP: 8.4
+Version: 1.0
+License: GNU General Public License v2 or later
+License URI: https://www.gnu.org/licenses/gpl-2.0.html
+Text Domain: rangin
+Tags: one-column, custom-colors, custom-menu, custom-logo, editor-style, featured-images, full-site-editing, block-patterns, sticky-post, threaded-comments, translation-ready, wide-blocks, block-styles, style-variations, accessibility-ready, blog, portfolio, news
 */

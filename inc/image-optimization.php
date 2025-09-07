@@ -189,7 +189,7 @@ function image_opt_bulk_convert_with_log($limit = 50) {
     if (!$limit || $limit > 10) { $limit = 10; }
     $result = array('count' => 0, 'logs' => array());
     if (!image_opt_enabled()) {
-        $result['logs'][] = __('Image optimization is disabled. Enable it to run conversion.', 'personal-website');
+        $result['logs'][] = __('Image optimization is disabled. Enable it to run conversion.', 'rangin');
         return $result;
     }
     $args = array(

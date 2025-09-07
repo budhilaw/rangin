@@ -48,11 +48,11 @@ function pw_ensure_page($title, $slug, $content = '') {
  */
 function pw_create_core_pages_on_activation() {
     // Create or get pages
-    $home_id      = pw_ensure_page(__('Home', 'personal-website'), 'home');
-    $blog_id      = pw_ensure_page(__('Blog', 'personal-website'), 'blog');
-    $portfolio_id = pw_ensure_page(__('Portfolio', 'personal-website'), 'portfolio');
-    $about_id     = pw_ensure_page(__('About', 'personal-website'), 'about');
-    $contact_id   = pw_ensure_page(__('Contact', 'personal-website'), 'contact');
+    $home_id      = pw_ensure_page(__('Home', 'rangin'), 'home');
+    $blog_id      = pw_ensure_page(__('Blog', 'rangin'), 'blog');
+    $portfolio_id = pw_ensure_page(__('Portfolio', 'rangin'), 'portfolio');
+    $about_id     = pw_ensure_page(__('About', 'rangin'), 'about');
+    $contact_id   = pw_ensure_page(__('Contact', 'rangin'), 'contact');
 
     // Respect existing settings; only set if not configured
     $show_on_front = get_option('show_on_front');

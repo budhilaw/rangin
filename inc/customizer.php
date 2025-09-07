@@ -25,8 +25,8 @@ function personal_website_customize_register($wp_customize) {
         'sanitize_callback' => 'sanitize_text_field',
     ));
     $wp_customize->add_control('portfolio_help', array(
-        'label'       => __('💡 How It Works', 'personal-website'),
-        'description' => __('<strong>Automatic Mode:</strong> Leave featured item IDs empty to show recent portfolio items.<br><strong>Manual Mode:</strong> Enter specific portfolio post IDs to feature those items.<br><br><strong>Finding Portfolio IDs:</strong> Go to Portfolio → All Portfolio Items, hover over an item title and look at the URL. The number after "post=" is the portfolio ID.', 'personal-website'),
+        'label'       => __('💡 How It Works', 'rangin'),
+        'description' => __('<strong>Automatic Mode:</strong> Leave featured item IDs empty to show recent portfolio items.<br><strong>Manual Mode:</strong> Enter specific portfolio post IDs to feature those items.<br><br><strong>Finding Portfolio IDs:</strong> Go to Portfolio → All Portfolio Items, hover over an item title and look at the URL. The number after "post=" is the portfolio ID.', 'rangin'),
         'section'     => 'front_page_portfolio',
         'type'        => 'hidden',
     ));
@@ -57,7 +57,7 @@ function get_contact_email() {
     if (!empty($opt)) {
         return $opt;
     }
-    return get_theme_mod('contact_email', 'hello@ericssonbudhilaw.com');
+    return get_theme_mod('contact_email', 'hello@budhilaw.com');
 }
 
 function get_contact_phone() {
@@ -65,11 +65,11 @@ function get_contact_phone() {
     if (!empty($opt)) {
         return $opt;
     }
-    return get_theme_mod('contact_phone', '+1 (555) 123-4567');
+    return get_theme_mod('contact_phone', '+62 851-8666-2077');
 }
 
 function get_contact_location() {
-    $opt = get_option('contact_location', '');
+    $opt = get_option('contact_location', 'Malang, Indonesia');
     if (!empty($opt)) {
         return $opt;
     }

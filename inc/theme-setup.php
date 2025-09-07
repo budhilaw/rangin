@@ -14,6 +14,8 @@ if (!defined('ABSPATH')) {
  * Theme setup
  */
 function personal_website_setup() {
+    // Load theme translations
+    load_theme_textdomain('rangin', get_template_directory() . '/languages');
     // Add theme support for various features
     add_theme_support('title-tag');
     add_theme_support('post-thumbnails');
@@ -34,8 +36,8 @@ function personal_website_setup() {
     
     // Register navigation menus
     register_nav_menus(array(
-        'primary' => esc_html__('Primary Menu', 'personal-website'),
-        'footer' => esc_html__('Footer Menu', 'personal-website')
+        'primary' => esc_html__('Primary Menu', 'rangin'),
+        'footer' => esc_html__('Footer Menu', 'rangin')
     ));
     
     // Add image sizes
