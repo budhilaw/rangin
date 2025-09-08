@@ -340,6 +340,8 @@
                 }
             });
         }
+        // Expose globally so other modules (e.g., comments toggle) can call it
+        window.updateTurnstileTheme = updateTurnstileTheme;
         
         // Check for saved theme preference or default to system preference
         const savedTheme = localStorage.getItem('theme');
@@ -399,6 +401,10 @@
                 setTimeout(updateTurnstileTheme, 10);
             }
         });
+        // If CF Turnstile script signals it's ready, render with current theme
+        window.cfTurnstileReady = function() {
+            setTimeout(updateTurnstileTheme, 0);
+        };
     }
     
     // Handle form submissions (if contact form is added later)
@@ -460,6 +466,10 @@
                     
                     // Initialize animations for comment elements
                     initCommentsAnimations();
+                    // Ensure Turnstile theme is correct once comments appear
+                    if (window.updateTurnstileTheme) {
+                        setTimeout(window.updateTurnstileTheme, 10);
+                    }
                 }, 50);
                 
                 // Update button

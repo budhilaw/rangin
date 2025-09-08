@@ -45,7 +45,8 @@ function personal_website_enqueue_turnstile_front() {
     if ($site_key === '' || $secret === '') { return; }
 
     if (is_singular() && comments_open()) {
-        wp_enqueue_script('cf-turnstile', 'https://challenges.cloudflare.com/turnstile/v0/api.js', array(), null, true);
+        // Add onload callback so front-end JS can sync theme after script loads
+        wp_enqueue_script('cf-turnstile', 'https://challenges.cloudflare.com/turnstile/v0/api.js?onload=cfTurnstileReady', array(), null, true);
     }
 }
 add_action('wp_enqueue_scripts', 'personal_website_enqueue_turnstile_front');
