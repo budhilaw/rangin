@@ -26,6 +26,11 @@ function personal_website_meta_tags() {
         if (empty($description)) {
             $description = wp_trim_words(strip_tags($post->post_content), 30);
         }
+
+        // Standard meta description
+        if (!empty($description)) {
+            echo '<meta name="description" content="' . esc_attr($description) . '">' . "\n";
+        }
         
         echo '<meta property="og:title" content="' . esc_attr(get_the_title()) . '">' . "\n";
         echo '<meta property="og:description" content="' . esc_attr($description) . '">' . "\n";
@@ -48,8 +53,16 @@ function personal_website_meta_tags() {
         }
     } else {
         // Homepage meta tags
-        echo '<meta property="og:title" content="' . esc_attr(get_bloginfo('name')) . '">' . "\n";
-        echo '<meta property="og:description" content="' . esc_attr(get_bloginfo('description')) . '">' . "\n";
+        $site_name = get_bloginfo('name');
+        $tagline   = get_bloginfo('description');
+        
+        // Standard meta description (fallback to tagline)
+        if (!empty($tagline)) {
+            echo '<meta name="description" content="' . esc_attr($tagline) . '">' . "\n";
+        }
+
+        echo '<meta property="og:title" content="' . esc_attr($site_name) . '">' . "\n";
+        echo '<meta property="og:description" content="' . esc_attr($tagline) . '">' . "\n";
         echo '<meta property="og:type" content="website">' . "\n";
         echo '<meta property="og:url" content="' . esc_url(home_url()) . '">' . "\n";
         echo '<meta property="og:site_name" content="' . esc_attr(get_bloginfo('name')) . '">' . "\n";

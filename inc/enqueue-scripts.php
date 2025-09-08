@@ -27,6 +27,9 @@ function personal_website_scripts() {
     // Override Font Awesome @font-face to set font-display: swap
     wp_enqueue_style('fa-font-display', THEME_URL . '/assets/css/fa-font-display.css', array('font-awesome'), THEME_VERSION);
     
+    // Provide explicit heading sizes to avoid UA deprecated adjustments
+    wp_enqueue_style('ua-headings-fallback', THEME_URL . '/assets/css/ua-headings.css', array('personal-website-style'), THEME_VERSION);
+    
     // Custom JavaScript
     wp_enqueue_script('personal-website-main', THEME_URL . '/assets/js/main.js', array('jquery'), THEME_VERSION, true);
     
