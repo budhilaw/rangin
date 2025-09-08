@@ -338,6 +338,19 @@ function personal_website_theme_options_page() {
             update_option('cloudflare_image_quality', absint($_POST['cloudflare_image_quality']));
         }
 
+        // Security - Cloudflare Turnstile
+        if (isset($_POST['enable_turnstile'])) {
+            update_option('enable_turnstile', wp_validate_boolean($_POST['enable_turnstile']));
+        } else {
+            update_option('enable_turnstile', false);
+        }
+        if (isset($_POST['turnstile_site_key'])) {
+            update_option('turnstile_site_key', sanitize_text_field($_POST['turnstile_site_key']));
+        }
+        if (isset($_POST['turnstile_secret_key'])) {
+            update_option('turnstile_secret_key', sanitize_text_field($_POST['turnstile_secret_key']));
+        }
+
         if (isset($_POST['image_opt_force_modern_only'])) {
             update_option('image_opt_force_modern_only', wp_validate_boolean($_POST['image_opt_force_modern_only']));
         } else {
@@ -459,6 +472,11 @@ function personal_website_theme_options_page() {
     $front_contact_phone = get_option('front_contact_phone', '');
     $front_contact_location = get_option('front_contact_location', '');
     $contact_cta_message = get_option('contact_cta_message', 'I\'m currently available for freelance work and new opportunities. Whether you need a complete web application, mobile app, or just want to discuss your ideas, I\'d love to hear from you.');
+
+    // Security - Cloudflare Turnstile
+    $enable_turnstile   = (bool) get_option('enable_turnstile', false);
+    $turnstile_site_key = get_option('turnstile_site_key', '');
+    $turnstile_secret   = get_option('turnstile_secret_key', '');
     ?>
     <div class="theme-options-wrap">
         <div class="theme-options-header">
@@ -491,6 +509,10 @@ function personal_website_theme_options_page() {
             <button type="button" class="theme-options-tab" data-tab="asset-optimization">
                 <span class="dashicons dashicons-performance"></span>
                 <?php _e('Asset Optimization', 'personal-website'); ?>
+            </button>
+            <button type="button" class="theme-options-tab" data-tab="security">
+                <span class="dashicons dashicons-shield"></span>
+                <?php _e('Security', 'personal-website'); ?>
             </button>
         </div>
 
@@ -1241,6 +1263,43 @@ function personal_website_theme_options_page() {
                             <label for="footer_made_with_text"><?php _e('Made With Text', 'personal-website'); ?></label>
                             <input type="text" id="footer_made_with_text" name="footer_made_with_text" value="<?php echo esc_attr($footer_made_with_text); ?>" class="theme-options-input" placeholder="<?php _e('Made with ❤️ by Your Name', 'personal-website'); ?>" />
                             <p class="theme-options-help"><?php _e('Short signature line shown at the very bottom.', 'personal-website'); ?></p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Security Tab -->
+                <div class="theme-options-tab-content" id="tab-security">
+                    <!-- Cloudflare Turnstile Section -->
+                    <div class="theme-options-section">
+                        <div class="theme-options-section-header">
+                            <h2><span class="dashicons dashicons-shield"></span><?php _e('Cloudflare Turnstile', 'personal-website'); ?></h2>
+                        </div>
+                        <p class="theme-options-help" style="margin-top:0;">
+                            <?php echo esc_html__('Cloudflare Turnstile is a simple and free CAPTCHA replacement solution that delivers better experiences and greater security for your users.', 'personal-website'); ?>
+                        </p>
+
+                        <div class="theme-options-field">
+                            <label for="enable_turnstile">
+                                <input type="checkbox" id="enable_turnstile" name="enable_turnstile" value="1" <?php checked($enable_turnstile); ?> />
+                                <?php _e('Enable Cloudflare Turnstile (login and comments)', 'personal-website'); ?>
+                            </label>
+                            <p class="theme-options-help"><?php _e('When enabled, a Turnstile challenge is shown on the WordPress login form and on comment forms to prevent spam and abuse.', 'personal-website'); ?></p>
+                        </div>
+
+                        <div class="theme-options-field">
+                            <label for="turnstile_site_key"><?php _e('Site Key', 'personal-website'); ?></label>
+                            <input type="text" id="turnstile_site_key" name="turnstile_site_key" value="<?php echo esc_attr($turnstile_site_key); ?>" class="theme-options-input" placeholder="<?php esc_attr_e('0x00000000000000000000000000000000AA', 'personal-website'); ?>" />
+                            <p class="theme-options-help"><?php _e('Get your Site Key from Cloudflare Turnstile dashboard.', 'personal-website'); ?></p>
+                        </div>
+
+                        <div class="theme-options-field">
+                            <label for="turnstile_secret_key"><?php _e('Secret Key', 'personal-website'); ?></label>
+                            <input type="text" id="turnstile_secret_key" name="turnstile_secret_key" value="<?php echo esc_attr($turnstile_secret); ?>" class="theme-options-input" placeholder="<?php esc_attr_e('0x00000000000000000000000000000000BB', 'personal-website'); ?>" />
+                            <p class="theme-options-help"><?php _e('Your server-side verification key. Keep this private.', 'personal-website'); ?></p>
+                        </div>
+
+                        <div class="theme-options-notice" style="margin-top:16px;">
+                            <p><?php _e('Note: If enabled but keys are missing, Turnstile will not be enforced.', 'personal-website'); ?></p>
                         </div>
                     </div>
                 </div>

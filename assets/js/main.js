@@ -303,6 +303,44 @@
         const $html = $('html');
         const $themeToggle = $('#theme-toggle, #mobile-theme-toggle');
         
+        // Update Cloudflare Turnstile widget theme to match site
+        function updateTurnstileTheme() {
+            const isDark = $html.hasClass('dark');
+            const theme = isDark ? 'dark' : 'light';
+            const $widgets = $('.cf-turnstile');
+            if (!$widgets.length) return;
+
+            $widgets.each(function() {
+                const $old = $(this);
+                const sitekey = $old.attr('data-sitekey') || $old.data('sitekey');
+                const action = $old.attr('data-action') || $old.data('action');
+                const callback = $old.attr('data-callback') || $old.data('callback');
+
+                // Create a fresh placeholder with the desired theme
+                const $placeholder = $('<div class="cf-turnstile" />');
+                if (sitekey) $placeholder.attr('data-sitekey', sitekey);
+                if (action) $placeholder.attr('data-action', action);
+                if (callback) $placeholder.attr('data-callback', callback);
+                $placeholder.attr('data-theme', theme);
+
+                $old.replaceWith($placeholder);
+
+                // If the Turnstile API is ready, explicitly render; otherwise
+                // the auto-render will pick it up using data-* attributes.
+                if (window.turnstile && typeof window.turnstile.render === 'function') {
+                    try {
+                        window.turnstile.render($placeholder[0], {
+                            sitekey: sitekey,
+                            theme: theme,
+                            action: action || undefined
+                        });
+                    } catch (e) {
+                        // Fail silently; auto-render will still apply.
+                    }
+                }
+            });
+        }
+        
         // Check for saved theme preference or default to system preference
         const savedTheme = localStorage.getItem('theme');
         const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
@@ -313,6 +351,8 @@
         } else if (systemPrefersDark) {
             $html.addClass('dark');
         }
+        // Ensure Turnstile matches the initial theme
+        setTimeout(updateTurnstileTheme, 0);
         
         // Function to update navigation background based on current theme
         function updateNavBackground() {
@@ -340,6 +380,8 @@
             
             // Update navigation background for new theme
             setTimeout(updateNavBackground, 50);
+            // Re-render Turnstile to match new theme
+            setTimeout(updateTurnstileTheme, 10);
             
             // Add a subtle animation effect
             $('body').addClass('theme-transitioning');
@@ -354,6 +396,7 @@
                 $html.toggleClass('dark', e.matches);
                 // Update navigation background for system theme change
                 setTimeout(updateNavBackground, 50);
+                setTimeout(updateTurnstileTheme, 10);
             }
         });
     }

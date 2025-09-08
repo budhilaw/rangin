@@ -1,0 +1,20 @@
+/* Center Cloudflare Turnstile on the WP Login form */
+.login form .cf-turnstile {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 12px 0 14px;
+}
+
+/* Make sure the container doesn't introduce unexpected spacing */
+.login form .cf-turnstile > div,
+.login form .cf-turnstile iframe {
+  margin: 0 !important;
+}
+
+/* Optional: match WP login input width constraints */
+.login form .cf-turnstile {
+  max-width: 320px; /* similar to input width inside the form */
+  margin-left: auto;
+  margin-right: auto;
+}

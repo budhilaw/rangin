@@ -35,3 +35,4 @@ require_once THEME_DIR . '/inc/image-optimization.php';
 require_once THEME_DIR . '/inc/asset-optimization.php';
 require_once THEME_DIR . '/inc/auto-pages.php';
 require_once THEME_DIR . '/inc/demo-content.php';
+require_once THEME_DIR . '/inc/security.php';
