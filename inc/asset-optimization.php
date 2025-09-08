@@ -122,9 +122,14 @@ function asset_opt_minify_and_cache($src, $type) {
         $min_candidate_url = preg_replace('/\.js$/', '.min.js', $no_query);
         $min_candidate_path = str_replace(THEME_URL, THEME_DIR, $min_candidate_url);
         if ($min_candidate_url && file_exists($min_candidate_path)) {
-            // Append original query string if any
-            $query = parse_url($src, PHP_URL_QUERY);
-            return $min_candidate_url . ($query ? ('?' . $query) : '');
+            // Only use the prebuilt .min.js if it is at least as new as the source
+            $src_path = str_replace(THEME_URL, THEME_DIR, $no_query);
+            $is_fresh = @filemtime($min_candidate_path) >= @filemtime($src_path);
+            if ($is_fresh) {
+                $query = parse_url($src, PHP_URL_QUERY);
+                return $min_candidate_url . ($query ? ('?' . $query) : '');
+            }
+            // Otherwise fall through and generate a cached minified copy from the source
         }
         // No prebuilt min file — generate cached .min.js using a safe packer
         $path = str_replace(THEME_URL, THEME_DIR, $no_query);
