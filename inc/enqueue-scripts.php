@@ -49,16 +49,60 @@ function personal_website_script_attributes($tag, $handle, $src) {
     if ($handle === 'personal-website-main') {
         return str_replace('<script ', '<script async ', $tag);
     }
+    // Defer jQuery core and migrate to avoid render blocking
+    if ($handle === 'jquery-core' || $handle === 'jquery-migrate') {
+        // Ensure we don't add both async+defer. Use defer for safe ordering.
+        if (strpos($tag, 'defer') === false) {
+            $tag = str_replace('<script ', '<script defer ', $tag);
+        }
+        return $tag;
+    }
     return $tag;
 }
 add_filter('script_loader_tag', 'personal_website_script_attributes', 10, 3);
 
 /**
+ * Move jQuery to footer on the front-end to avoid blocking render in <head>.
+ */
+function personal_website_move_jquery_to_footer($scripts) {
+    if (is_admin()) { return; }
+    $scripts->add_data('jquery', 'group', 1);
+    $scripts->add_data('jquery-core', 'group', 1);
+    $scripts->add_data('jquery-migrate', 'group', 1);
+}
+add_action('wp_default_scripts', 'personal_website_move_jquery_to_footer');
+
+/**
+ * Convert selected stylesheets to preload + onload to reduce render blocking.
+ * Adds a <noscript> fallback in personal_website_preload_resources.
+ */
+function personal_website_style_attributes($html, $handle, $href) {
+    $handles = array(
+        'personal-website-style',
+        'font-awesome',
+        'wp-block-library',
+        'wp-block-library-theme',
+        'global-styles',
+        'classic-theme-styles',
+    );
+    if (in_array($handle, $handles, true)) {
+        // Transform rel=stylesheet to rel=preload and re-apply stylesheet after load
+        $html = str_replace("rel='stylesheet'", "rel='preload' as='style' onload=\"this.onload=null;this.rel='stylesheet'\"", $html);
+    }
+    return $html;
+}
+add_filter('style_loader_tag', 'personal_website_style_attributes', 10, 3);
+
+/**
  * Add preload for critical resources
  */
 function personal_website_preload_resources() {
-    // Preload main stylesheet
-    echo '<link rel="preload" href="' . get_stylesheet_uri() . '" as="style" onload="this.onload=null;this.rel=\'stylesheet\'">' . "\n";
+    // Noscript fallback for main stylesheet (in case preload isn't supported)
+    $style_path_min = THEME_DIR . '/assets/css/style.min.css';
+    $style_url_min  = THEME_URL . '/assets/css/style.min.css';
+    $style_url      = THEME_URL . '/assets/css/style.css';
+    $main_css_url   = file_exists($style_path_min) ? $style_url_min : $style_url;
+    echo '<noscript><link rel="stylesheet" href="' . esc_url($main_css_url) . '"></noscript>' . "\n";
     
     // Preload Font Awesome
     echo '<link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>' . "\n";
