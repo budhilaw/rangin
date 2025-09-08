@@ -122,6 +122,9 @@ function personal_website_preload_resources() {
     // Preconnect to external origins used early (fonts & Turnstile)
     echo '<link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>' . "\n";
     echo '<link rel="preconnect" href="https://challenges.cloudflare.com" crossorigin>' . "\n";
+    // Preload Font Awesome fonts to break CSS→font chain (match version)
+    echo '<link rel="preload" as="font" type="font/woff2" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/webfonts/fa-solid-900.woff2" crossorigin>' . "\n";
+    echo '<link rel="preload" as="font" type="font/woff2" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/webfonts/fa-brands-400.woff2" crossorigin>' . "\n";
     
     // Preload fonts (uncomment if using custom fonts)
     // echo '<link rel="preload" href="' . THEME_URL . '/assets/fonts/font.woff2" as="font" type="font/woff2" crossorigin>' . "\n";

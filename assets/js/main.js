@@ -63,19 +63,17 @@
             $mobileMenuButton.attr('aria-expanded', 'false');
         });
         
-        // Smooth scrolling for anchor links
+        // Smooth scrolling for anchor links (native smooth scroll to reduce layout work)
         $('a[href^="#"]').on('click', function(e) {
+            const href = this.getAttribute('href');
+            if (!href || href === '#') { return; }
+            const $tgt = $(href);
+            if (!$tgt.length) { return; }
             e.preventDefault();
-            
-            const target = $(this.getAttribute('href'));
-            if (target.length) {
-                const headerHeight = $nav.outerHeight();
-                const targetPosition = target.offset().top - headerHeight;
-                
-                $('html, body').animate({
-                    scrollTop: targetPosition
-                }, 800, 'easeInOutCubic');
-            }
+            const headerHeight = $nav[0] ? $nav[0].offsetHeight : 0; // read once
+            const rect = $tgt[0].getBoundingClientRect();
+            const y = (window.pageYOffset || document.documentElement.scrollTop || 0) + rect.top - headerHeight;
+            window.scrollTo({ top: Math.max(0, y), behavior: 'smooth' });
         });
         
         // Navigation scroll effects (passive + rAF to avoid layout thrash)
@@ -500,10 +498,9 @@
                 commentsVisible = true;
                 
                 // Scroll to comments if they're not in view
-                const commentsOffset = $commentsContent.offset().top - 100;
-                $('html, body').animate({
-                    scrollTop: commentsOffset
-                }, 500);
+                const rect = $commentsContent[0].getBoundingClientRect();
+                const y = (window.pageYOffset || document.documentElement.scrollTop || 0) + rect.top - 100;
+                window.scrollTo({ top: Math.max(0, y), behavior: 'smooth' });
             }
         });
         
