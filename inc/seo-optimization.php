@@ -14,61 +14,60 @@ if (!defined('ABSPATH')) {
  * Add custom meta tags for SEO
  */
 function personal_website_meta_tags() {
-    global $post;
-    
-    // Basic meta tags
-    echo '<meta name="viewport" content="width=device-width, initial-scale=1.0">' . "\n";
+    // Basic meta tags (viewport is already set in header.php)
     echo '<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">' . "\n";
-    
-    // Open Graph meta tags
-    if (is_single() || is_page()) {
-        $description = get_the_excerpt($post->ID);
-        if (empty($description)) {
-            $description = wp_trim_words(strip_tags($post->post_content), 30);
-        }
 
-        // Standard meta description
-        if (!empty($description)) {
-            echo '<meta name="description" content="' . esc_attr($description) . '">' . "\n";
+    // Build a robust meta description
+    $description = '';
+    if (is_singular()) {
+        $qid = get_queried_object_id();
+        $excerpt = $qid ? get_post_field('post_excerpt', $qid, 'raw') : '';
+        if (!empty($excerpt)) {
+            $description = $excerpt;
+        } else {
+            $content = $qid ? get_post_field('post_content', $qid, 'raw') : '';
+            $description = wp_strip_all_tags($content);
         }
-        
+    } else {
+        $description = get_bloginfo('description');
+    }
+    if (empty($description)) {
+        $description = get_bloginfo('name');
+    }
+    $description = wp_html_excerpt($description, 160, '…');
+
+    // Standard meta description
+    echo '<meta name="description" content="' . esc_attr($description) . '">' . "\n";
+
+    // Open Graph + Twitter
+    if (is_singular()) {
         echo '<meta property="og:title" content="' . esc_attr(get_the_title()) . '">' . "\n";
         echo '<meta property="og:description" content="' . esc_attr($description) . '">' . "\n";
         echo '<meta property="og:type" content="article">' . "\n";
         echo '<meta property="og:url" content="' . esc_url(get_permalink()) . '">' . "\n";
         echo '<meta property="og:site_name" content="' . esc_attr(get_bloginfo('name')) . '">' . "\n";
-        
         if (has_post_thumbnail()) {
-            $thumbnail_url = get_the_post_thumbnail_url($post->ID, 'large');
-            echo '<meta property="og:image" content="' . esc_url($thumbnail_url) . '">' . "\n";
+            $thumbnail_url = get_the_post_thumbnail_url(get_queried_object_id(), 'large');
+            if ($thumbnail_url) {
+                echo '<meta property="og:image" content="' . esc_url($thumbnail_url) . '">' . "\n";
+            }
         }
-        
-        // Twitter Card
         echo '<meta name="twitter:card" content="summary_large_image">' . "\n";
         echo '<meta name="twitter:title" content="' . esc_attr(get_the_title()) . '">' . "\n";
         echo '<meta name="twitter:description" content="' . esc_attr($description) . '">' . "\n";
-        
-        if (has_post_thumbnail()) {
+        if (!empty($thumbnail_url)) {
             echo '<meta name="twitter:image" content="' . esc_url($thumbnail_url) . '">' . "\n";
         }
     } else {
-        // Homepage meta tags
         $site_name = get_bloginfo('name');
-        $tagline   = get_bloginfo('description');
-        
-        // Standard meta description (fallback to tagline)
-        if (!empty($tagline)) {
-            echo '<meta name="description" content="' . esc_attr($tagline) . '">' . "\n";
-        }
-
         echo '<meta property="og:title" content="' . esc_attr($site_name) . '">' . "\n";
-        echo '<meta property="og:description" content="' . esc_attr($tagline) . '">' . "\n";
+        echo '<meta property="og:description" content="' . esc_attr($description) . '">' . "\n";
         echo '<meta property="og:type" content="website">' . "\n";
         echo '<meta property="og:url" content="' . esc_url(home_url()) . '">' . "\n";
-        echo '<meta property="og:site_name" content="' . esc_attr(get_bloginfo('name')) . '">' . "\n";
+        echo '<meta property="og:site_name" content="' . esc_attr($site_name) . '">' . "\n";
     }
 }
-add_action('wp_head', 'personal_website_meta_tags');
+add_action('wp_head', 'personal_website_meta_tags', 5);
 
 /**
  * Add structured data for SEO

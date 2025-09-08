@@ -24,11 +24,19 @@ function personal_website_scripts() {
     $main_css_url   = file_exists($style_path_min) ? $style_url_min : $style_url;
     wp_enqueue_style('personal-website-style', $main_css_url, array('font-awesome'), THEME_VERSION);
     
-    // Override Font Awesome @font-face to set font-display: swap
-    wp_enqueue_style('fa-font-display', THEME_URL . '/assets/css/fa-font-display.css', array('font-awesome'), THEME_VERSION);
-    
-    // Provide explicit heading sizes to avoid UA deprecated adjustments
-    wp_enqueue_style('ua-headings-fallback', THEME_URL . '/assets/css/ua-headings.css', array('personal-website-style'), THEME_VERSION);
+    // Inline tiny CSS to avoid extra render-blocking requests
+    $fa_fd_path = THEME_DIR . '/assets/css/fa-font-display.css';
+    $ua_head_path = THEME_DIR . '/assets/css/ua-headings.css';
+    $inline_css = '';
+    if (file_exists($fa_fd_path)) {
+        $inline_css .= file_get_contents($fa_fd_path) . "\n";
+    }
+    if (file_exists($ua_head_path)) {
+        $inline_css .= file_get_contents($ua_head_path) . "\n";
+    }
+    if ($inline_css !== '') {
+        wp_add_inline_style('personal-website-style', $inline_css);
+    }
     
     // Custom JavaScript
     wp_enqueue_script('personal-website-main', THEME_URL . '/assets/js/main.js', array('jquery'), THEME_VERSION, true);
