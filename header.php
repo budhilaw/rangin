@@ -15,47 +15,7 @@
                 document.documentElement.classList.add('dark');
             }
         })();
-        
-        // Prevent overscroll/bounce behavior - Simple approach
-        (function() {
-            function applyOverscrollPrevention() {
-                // Apply CSS properties via JavaScript to ensure they take effect
-                const html = document.documentElement;
-                const body = document.body;
-                
-                html.style.overscrollBehavior = 'none';
-                html.style.overscrollBehaviorY = 'none';
-                html.style.webkitOverscrollBehavior = 'none';
-                
-                body.style.overscrollBehavior = 'none';
-                body.style.overscrollBehaviorY = 'none';
-                body.style.webkitOverscrollBehavior = 'none';
-                body.style.touchAction = 'pan-x pan-y';
-                
-                // Prevent pull-to-refresh on touch devices
-                let preventPullToRefresh = false;
-                let startY = 0;
-                
-                body.addEventListener('touchstart', function(e) {
-                    startY = e.touches[0].clientY;
-                    preventPullToRefresh = (window.pageYOffset === 0);
-                }, { passive: false });
-                
-                body.addEventListener('touchmove', function(e) {
-                    const currentY = e.touches[0].clientY;
-                    if (preventPullToRefresh && currentY > startY) {
-                        e.preventDefault();
-                    }
-                }, { passive: false });
-            }
-            
-            // Apply immediately if DOM is ready, otherwise wait
-            if (document.readyState === 'loading') {
-                document.addEventListener('DOMContentLoaded', applyOverscrollPrevention);
-            } else {
-                applyOverscrollPrevention();
-            }
-        })();
+        // Overscroll preferences handled by CSS (see inline styles)
     </script>
     <meta charset="<?php bloginfo('charset'); ?>">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
@@ -72,6 +32,10 @@
     
     <!-- Critical CSS will be inlined here for faster loading -->
     <style>
+        /* Critical CSS + overscroll preferences */
+        html, body { overscroll-behavior: none; overscroll-behavior-y: none; }
+        body { touch-action: pan-x pan-y; }
+        
         /* Critical CSS for above-the-fold content */
         .hero-section { min-height: 100vh; }
         .animate-fade-in-up { opacity: 0; transform: translateY(30px); animation: fadeInUp 1s ease forwards; }
