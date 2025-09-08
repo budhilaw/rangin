@@ -118,8 +118,9 @@
         refreshDims();
         window.addEventListener('scroll', throttle(function() {
             const scrollTop = window.pageYOffset || document.documentElement.scrollTop || 0;
-            const percent = (scrollTop / Math.max(1, (docH - winH))) * 100;
-            $progressBar.css('width', Math.min(percent, 100) + '%');
+            const ratio = Math.min((scrollTop / Math.max(1, (docH - winH))), 1);
+            // Use transform for GPU compositing to avoid layout
+            $progressBar.css('transform', 'scaleX(' + ratio + ')');
         }, 50), { passive: true });
         
         // Initialize animation elements

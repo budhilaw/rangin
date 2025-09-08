@@ -168,5 +168,5 @@
     
     <!-- Progress bar for scroll progress -->
     <div class="fixed top-16 left-0 right-0 z-40">
-        <div class="scroll-progress h-1 bg-gradient-to-r from-primary-500 to-secondary-500 transition-all duration-300" style="width: 0%"></div>
+        <div class="scroll-progress h-1 bg-gradient-to-r from-primary-500 to-secondary-500" style="width:100%;transform:scaleX(0);transform-origin:left;will-change:transform;transition:transform 0.2s ease-out"></div>
     </div>
