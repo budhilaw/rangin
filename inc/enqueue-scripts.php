@@ -108,10 +108,28 @@ function personal_website_preload_resources() {
     $main_css_url   = file_exists($style_path_min) ? $style_url_min : $style_url;
     echo '<noscript><link rel="stylesheet" href="' . esc_url($main_css_url) . '"></noscript>' . "\n";
     
-    // Preload Font Awesome
+    // Preconnect to external origins used early (fonts & Turnstile)
     echo '<link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>' . "\n";
+    echo '<link rel="preconnect" href="https://challenges.cloudflare.com" crossorigin>' . "\n";
     
     // Preload fonts (uncomment if using custom fonts)
     // echo '<link rel="preload" href="' . THEME_URL . '/assets/fonts/font.woff2" as="font" type="font/woff2" crossorigin>' . "\n";
 }
 add_action('wp_head', 'personal_website_preload_resources', 1);
+
+// Add resource hints for DNS-prefetch & preconnect (WordPress-managed)
+function personal_website_resource_hints($hints, $relation_type) {
+    $origins = array(
+        'https://cdnjs.cloudflare.com',
+        'https://challenges.cloudflare.com',
+    );
+    if ($relation_type === 'preconnect' || $relation_type === 'dns-prefetch') {
+        foreach ($origins as $o) {
+            if (!in_array($o, $hints, true)) {
+                $hints[] = $o;
+            }
+        }
+    }
+    return $hints;
+}
+add_filter('wp_resource_hints', 'personal_website_resource_hints', 10, 2);

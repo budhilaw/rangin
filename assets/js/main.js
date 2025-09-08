@@ -250,15 +250,16 @@
                     if (entry.isIntersecting) {
                         const $skillBar = $(entry.target);
                         const $progressBar = $skillBar.find('.bg-blue-600, .bg-green-600, .bg-purple-600, .bg-yellow-600');
-                        
-                        // Get the width from the style attribute
-                        const targetWidth = $progressBar.css('width');
-                        
-                        // Reset and animate
+                        // Read width from inline style (no layout) or data attribute
+                        const el = $progressBar.get(0);
+                        const targetWidth = (el && el.style && el.style.width) ? el.style.width : ($progressBar.attr('data-target-width') || '0%');
+                        // Reset and animate in next frame to avoid forced reflow
                         $progressBar.css('width', '0%');
-                        setTimeout(function() {
-                            $progressBar.css('width', targetWidth);
-                        }, 200);
+                        requestAnimationFrame(function(){
+                            setTimeout(function() {
+                                $progressBar.css('width', targetWidth);
+                            }, 120);
+                        });
                         
                         observer.unobserve(entry.target);
                     }
