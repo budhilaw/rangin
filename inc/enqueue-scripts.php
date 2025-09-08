@@ -45,9 +45,12 @@ add_action('wp_enqueue_scripts', 'personal_website_scripts');
  * Add async/defer attributes to scripts for better performance
  */
 function personal_website_script_attributes($tag, $handle, $src) {
-    // Add async to main.js for better performance
+    // Defer main.js (keeps dependency order with jQuery)
     if ($handle === 'personal-website-main') {
-        return str_replace('<script ', '<script async ', $tag);
+        if (strpos($tag, 'defer') === false) {
+            $tag = str_replace('<script ', '<script defer ', $tag);
+        }
+        return $tag;
     }
     // Defer jQuery core and migrate to avoid render blocking
     if ($handle === 'jquery-core' || $handle === 'jquery-migrate') {
@@ -80,14 +83,11 @@ function personal_website_style_attributes($html, $handle, $href) {
     $handles = array(
         'personal-website-style',
         'font-awesome',
-        'wp-block-library',
-        'wp-block-library-theme',
-        'global-styles',
-        'classic-theme-styles',
     );
     if (in_array($handle, $handles, true)) {
-        // Transform rel=stylesheet to rel=preload and re-apply stylesheet after load
-        $html = str_replace("rel='stylesheet'", "rel='preload' as='style' onload=\"this.onload=null;this.rel='stylesheet'\"", $html);
+        // Safer non-blocking pattern compatible across browsers
+        // rel=stylesheet, but load with media=print and switch to all onload
+        $html = str_replace("rel='stylesheet'", "rel='stylesheet' media='print' onload=\"this.media='all'\"", $html);
     }
     return $html;
 }
