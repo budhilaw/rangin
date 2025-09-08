@@ -50,6 +50,29 @@ function personal_website_add_lazy_loading($content) {
 add_filter('the_content', 'personal_website_add_lazy_loading');
 
 /**
+ * Tweak default WP image attributes to better defer offscreen images.
+ * - Force loading="lazy" and decoding="async" for small/list thumbnails.
+ * - Remove browser-assigned fetchpriority for non-LCP sizes to avoid eagerly
+ *   loading offscreen images.
+ */
+function personal_website_image_attrs($attr, $attachment, $size) {
+    // Sizes considered non-critical (lists, cards, sidebars)
+    $non_critical_sizes = array('thumbnail', 'blog-thumb', 'portfolio-thumb', 'sidebar-thumb', 'blog-list');
+    $is_non_critical = is_string($size) && in_array($size, $non_critical_sizes, true);
+
+    if ($is_non_critical || is_home() || is_archive() || is_front_page()) {
+        $attr['loading'] = 'lazy';
+        $attr['decoding'] = 'async';
+        // Let the browser decide priority; do not force high for list items
+        if (isset($attr['fetchpriority'])) {
+            unset($attr['fetchpriority']);
+        }
+    }
+    return $attr;
+}
+add_filter('wp_get_attachment_image_attributes', 'personal_website_image_attrs', 20, 3);
+
+/**
  * Optimize WordPress queries
  */
 function personal_website_optimize_queries($query) {

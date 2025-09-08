@@ -147,3 +147,16 @@ function personal_website_resource_hints($hints, $relation_type) {
     return $hints;
 }
 add_filter('wp_resource_hints', 'personal_website_resource_hints', 10, 2);
+
+/**
+ * Trim Gutenberg block styles on the frontend to reduce unused CSS.
+ * If a specific page relies on block styles, you can comment this out
+ * or add conditional checks around it.
+ */
+function personal_website_trim_block_styles() {
+    if (is_admin()) { return; }
+    wp_dequeue_style('wp-block-library');
+    wp_dequeue_style('wp-block-library-theme');
+    wp_dequeue_style('global-styles');
+}
+add_action('wp_enqueue_scripts', 'personal_website_trim_block_styles', 100);
