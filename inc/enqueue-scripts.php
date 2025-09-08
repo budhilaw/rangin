@@ -24,6 +24,9 @@ function personal_website_scripts() {
     $main_css_url   = file_exists($style_path_min) ? $style_url_min : $style_url;
     wp_enqueue_style('personal-website-style', $main_css_url, array('font-awesome'), THEME_VERSION);
     
+    // Override Font Awesome @font-face to set font-display: swap
+    wp_enqueue_style('fa-font-display', THEME_URL . '/assets/css/fa-font-display.css', array('font-awesome'), THEME_VERSION);
+    
     // Custom JavaScript
     wp_enqueue_script('personal-website-main', THEME_URL . '/assets/js/main.js', array('jquery'), THEME_VERSION, true);
     
@@ -83,6 +86,7 @@ function personal_website_style_attributes($html, $handle, $href) {
     $handles = array(
         'personal-website-style',
         'font-awesome',
+        'wp-block-library',
     );
     if (in_array($handle, $handles, true)) {
         // Safer non-blocking pattern compatible across browsers

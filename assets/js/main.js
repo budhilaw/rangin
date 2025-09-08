@@ -78,27 +78,29 @@
             }
         });
         
-        // Navigation scroll effects
-        $(window).on('scroll', function() {
-            const scrollTop = $(this).scrollTop();
-            const isDarkMode = $('html').hasClass('dark');
-            
-            // Add completely solid background and shadow when scrolling, remove when at top
-            if (scrollTop > 50) {
-                // Scrolled down - add SOLID background and shadow (no transparency, no blur)
+        // Navigation scroll effects (passive + rAF to avoid layout thrash)
+        let lastKnownScrollY = window.scrollY || window.pageYOffset;
+        let ticking = false;
+        function updateNavOnScroll() {
+            ticking = false;
+            const isDarkMode = document.documentElement.classList.contains('dark');
+            if (lastKnownScrollY > 50) {
                 $nav.removeClass('bg-transparent backdrop-blur-none bg-white bg-neutral-900');
-                
-                if (isDarkMode) {
-                    $nav.addClass('bg-neutral-900 shadow-lg');
-                } else {
-                    $nav.addClass('bg-white shadow-lg');
-                }
+                $nav.addClass(isDarkMode ? 'bg-neutral-900 shadow-lg' : 'bg-white shadow-lg');
             } else {
-                // At top - transparent background, no shadow
                 $nav.removeClass('bg-white bg-neutral-900 shadow-lg');
                 $nav.addClass('bg-transparent backdrop-blur-none');
             }
-        });
+        }
+        window.addEventListener('scroll', function() {
+            lastKnownScrollY = window.scrollY || window.pageYOffset;
+            if (!ticking) {
+                window.requestAnimationFrame(updateNavOnScroll);
+                ticking = true;
+            }
+        }, { passive: true });
+        // Initial state
+        updateNavOnScroll();
     }
     
     /**
@@ -107,15 +109,20 @@
     function initScrollEffects() {
         const $progressBar = $('.scroll-progress');
         
-        // Update scroll progress
-        $(window).on('scroll', throttle(function() {
-            const windowHeight = $(window).height();
-            const documentHeight = $(document).height();
-            const scrollTop = $(window).scrollTop();
-            const scrollPercent = (scrollTop / (documentHeight - windowHeight)) * 100;
-            
-            $progressBar.css('width', Math.min(scrollPercent, 100) + '%');
-        }, 16));
+        // Update scroll progress (cache doc height; update on resize)
+        let winH = window.innerHeight;
+        let docH = document.documentElement.scrollHeight;
+        function refreshDims() {
+            winH = window.innerHeight;
+            docH = document.documentElement.scrollHeight;
+        }
+        window.addEventListener('resize', debounce(refreshDims, 150), { passive: true });
+        refreshDims();
+        window.addEventListener('scroll', throttle(function() {
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop || 0;
+            const percent = (scrollTop / Math.max(1, (docH - winH))) * 100;
+            $progressBar.css('width', Math.min(percent, 100) + '%');
+        }, 50), { passive: true });
         
         // Initialize animation elements
         const $animateElements = $('.animate-on-scroll');
@@ -203,18 +210,32 @@
             setTimeout(typeWriter, 1000);
         }
         
-        // Parallax effect for hero section
-        $(window).on('scroll', function() {
-            const scrolled = $(window).scrollTop();
-            const parallaxElements = $('.parallax');
-            
-            parallaxElements.each(function() {
-                const $element = $(this);
-                const speed = $element.data('speed') || 0.5;
-                const yPos = -(scrolled * speed);
-                $element.css('transform', 'translateY(' + yPos + 'px)');
-            });
-        });
+        // Parallax effect for hero section (passive + rAF batch updates)
+        const parallaxElements = $('.parallax');
+        if (parallaxElements.length) {
+            let lastY = window.scrollY || window.pageYOffset;
+            let ticking = false;
+            function applyParallax() {
+                ticking = false;
+                // Read once, write many (batch)
+                const y = lastY;
+                parallaxElements.each(function() {
+                    const $el = $(this);
+                    const speed = $el.data('speed') || 0.5;
+                    const translateY = -(y * speed);
+                    this.style.transform = 'translateY(' + translateY + 'px)';
+                });
+            }
+            window.addEventListener('scroll', function() {
+                lastY = window.scrollY || window.pageYOffset;
+                if (!ticking) {
+                    window.requestAnimationFrame(applyParallax);
+                    ticking = true;
+                }
+            }, { passive: true });
+            // Initial position
+            applyParallax();
+        }
     }
     
     /**
