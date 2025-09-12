@@ -149,7 +149,7 @@ class Rangin_Recent_Posts_Widget extends WP_Widget {
                 echo $post_title;
                 echo '</a>';
                 echo '</h4>';
-                echo '<time class="recent-post-date text-xs text-neutral-600 dark:text-neutral-400 flex items-center">';
+                echo '<time class="recent-post-date text-xs text-neutral-700 dark:text-neutral-300 flex items-center">';
                 echo '<i class="far fa-calendar-alt mr-1.5 text-primary-500 dark:text-primary-400 text-xs" aria-hidden="true"></i>';
                 echo $post_date;
                 echo '</time>';
@@ -161,7 +161,7 @@ class Rangin_Recent_Posts_Widget extends WP_Widget {
             echo '</div>';
         } else {
             echo '<div class="rangin-recent-posts-widget">';
-            echo '<p class="text-neutral-600 dark:text-neutral-400 italic">' . __('No recent posts found.', 'rangin') . '</p>';
+            echo '<p class="text-neutral-700 dark:text-neutral-300 italic">' . __('No recent posts found.', 'rangin') . '</p>';
             echo '</div>';
         }
         
@@ -336,7 +336,7 @@ class Rangin_Categories_Widget extends WP_Widget {
             
             echo '</ul>';
         } else {
-            echo '<p class="text-neutral-600 dark:text-neutral-400 italic text-sm">' . __('No categories found.', 'rangin') . '</p>';
+            echo '<p class="text-neutral-700 dark:text-neutral-300 italic text-sm">' . __('No categories found.', 'rangin') . '</p>';
         }
         
         echo $args['after_widget'];

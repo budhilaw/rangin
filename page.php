@@ -8,7 +8,7 @@
                 <header class="text-center mb-12 animate-on-scroll">
                     <h1 class="text-4xl md:text-5xl font-bold mb-6"><?php the_title(); ?></h1>
                     <?php if (get_the_excerpt()): ?>
-                        <p class="text-xl text-neutral-600 dark:text-neutral-400 max-w-3xl mx-auto">
+                        <p class="text-xl text-neutral-700 dark:text-neutral-300 max-w-3xl mx-auto">
                             <?php echo get_the_excerpt(); ?>
                         </p>
                     <?php endif; ?>

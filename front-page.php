@@ -102,11 +102,11 @@ get_header(); ?>
                                 <div class="grid grid-cols-2 gap-4 mt-8">
                                     <div class="text-center p-4 card">
                                         <div class="text-3xl font-bold text-primary-600"><?php echo esc_html(get_years_experience()); ?>+</div>
-                                        <div class="text-neutral-600 dark:text-neutral-400">Years Experience</div>
+                                        <div class="text-neutral-700 dark:text-neutral-300">Years Experience</div>
                                     </div>
                                     <div class="text-center p-4 card">
                                         <div class="text-3xl font-bold text-accent-600"><?php echo esc_html(get_projects_completed()); ?>+</div>
-                                        <div class="text-neutral-600 dark:text-neutral-400">Projects Completed</div>
+                                        <div class="text-neutral-700 dark:text-neutral-300">Projects Completed</div>
                                     </div>
                                 </div>
                                 
@@ -140,11 +140,11 @@ get_header(); ?>
                             <div class="grid grid-cols-2 gap-4 max-w-md mx-auto mb-8">
                                 <div class="text-center p-4 card">
                                     <div class="text-3xl font-bold text-primary-600"><?php echo esc_html(get_years_experience()); ?>+</div>
-                                    <div class="text-neutral-600 dark:text-neutral-400">Years Experience</div>
+                                    <div class="text-neutral-700 dark:text-neutral-300">Years Experience</div>
                                 </div>
                                 <div class="text-center p-4 card">
                                     <div class="text-3xl font-bold text-accent-600"><?php echo esc_html(get_projects_completed()); ?>+</div>
-                                    <div class="text-neutral-600 dark:text-neutral-400">Projects Completed</div>
+                                    <div class="text-neutral-700 dark:text-neutral-300">Projects Completed</div>
                                 </div>
                             </div>
                         </div>
@@ -160,7 +160,7 @@ get_header(); ?>
         <div class="container mx-auto px-4">
             <div class="text-center mb-16">
                 <h2 class="text-4xl font-bold mb-4"><?php echo esc_html(get_services_section_title()); ?></h2>
-                <p class="text-neutral-600 dark:text-neutral-400 max-w-2xl mx-auto">
+                <p class="text-neutral-700 dark:text-neutral-300 max-w-2xl mx-auto">
                     <?php echo esc_html(get_services_section_subtitle()); ?>
                 </p>
                 <div class="w-24 h-1 bg-gradient-to-r from-primary-500 to-secondary-500 mx-auto mt-4"></div>
@@ -185,7 +185,7 @@ get_header(); ?>
                         <i class="<?php echo esc_attr($service['icon'] ?? 'fas fa-cog'); ?> text-2xl" style="color: <?php echo esc_attr($service['background'] ?? '#7c3aed'); ?>;"></i>
                     </div>
                     <h3 class="text-xl font-semibold mb-4"><?php echo esc_html($service['title'] ?? ''); ?></h3>
-                    <p class="text-neutral-600 dark:text-neutral-400 mb-4">
+                    <p class="text-neutral-700 dark:text-neutral-300 mb-4">
                         <?php echo esc_html($service['description'] ?? ''); ?>
                     </p>
                     <?php if (!empty($service['features']) && is_array($service['features'])): ?>
@@ -208,7 +208,7 @@ get_header(); ?>
         <div class="container mx-auto px-4">
             <div class="text-center mb-16">
                 <h2 class="text-4xl font-bold mb-4"><?php echo esc_html(get_portfolio_section_title()); ?></h2>
-                <p class="text-neutral-600 dark:text-neutral-400 max-w-2xl mx-auto">
+                <p class="text-neutral-700 dark:text-neutral-300 max-w-2xl mx-auto">
                     <?php echo esc_html(get_portfolio_section_description()); ?>
                 </p>
                 <div class="w-24 h-1 bg-gradient-to-r from-primary-500 to-secondary-500 mx-auto mt-4"></div>
@@ -312,7 +312,7 @@ get_header(); ?>
                             </a>
                         </h3>
                         
-                        <p class="text-neutral-600 dark:text-neutral-400 mb-4 line-clamp-3">
+                        <p class="text-neutral-700 dark:text-neutral-300 mb-4 line-clamp-3">
                             <?php echo esc_html($excerpt); ?>
                         </p>
                         
@@ -341,7 +341,7 @@ get_header(); ?>
                                 
                                 <?php if ($github_link): ?>
                                 <a href="<?php echo esc_url($github_link); ?>" target="_blank" rel="noopener noreferrer" 
-                                   class="text-neutral-600 dark:text-neutral-400 hover:text-neutral-800 dark:hover:text-neutral-300 font-medium text-sm inline-flex items-center">
+                                   class="text-neutral-700 dark:text-neutral-300 hover:text-neutral-800 dark:hover:text-neutral-200 font-medium text-sm inline-flex items-center">
                                     <i class="fab fa-github mr-1"></i>
                                     Code
                                 </a>
@@ -373,7 +373,7 @@ get_header(); ?>
         <div class="container mx-auto px-4">
             <div class="text-center mb-16">
                 <h2 class="text-4xl font-bold mb-4"><?php echo esc_html(get_portfolio_section_title()); ?></h2>
-                <p class="text-neutral-600 dark:text-neutral-400 max-w-2xl mx-auto">
+                <p class="text-neutral-700 dark:text-neutral-300 max-w-2xl mx-auto">
                     <?php echo esc_html(get_portfolio_section_description()); ?>
                 </p>
                 <div class="w-24 h-1 bg-gradient-to-r from-primary-500 to-secondary-500 mx-auto mt-4"></div>
@@ -382,7 +382,7 @@ get_header(); ?>
             <div class="text-center">
                 <div class="mb-8">
                     <i class="fas fa-folder-open text-6xl text-neutral-400 dark:text-neutral-500 mb-4"></i>
-                    <p class="text-xl text-neutral-600 dark:text-neutral-400 mb-2">No portfolio items yet</p>
+                    <p class="text-xl text-neutral-700 dark:text-neutral-300 mb-2">No portfolio items yet</p>
                     <p class="text-neutral-500 dark:text-neutral-400">
                         Add your first portfolio project to showcase your work!
                     </p>
@@ -405,7 +405,7 @@ get_header(); ?>
         <div class="container mx-auto px-4">
             <div class="text-center mb-16">
                 <h2 class="text-4xl font-bold mb-4"><?php echo esc_html(get_blog_section_title()); ?></h2>
-                <p class="text-neutral-600 dark:text-neutral-400 max-w-2xl mx-auto">
+                <p class="text-neutral-700 dark:text-neutral-300 max-w-2xl mx-auto">
                     <?php echo esc_html(get_blog_section_description()); ?>
                 </p>
                 <div class="w-24 h-1 bg-gradient-to-r from-primary-500 to-secondary-500 mx-auto mt-4"></div>
@@ -444,7 +444,7 @@ get_header(); ?>
                                     <?php echo $post['post_title']; ?>
                                 </a>
                             </h3>
-                            <p class="text-neutral-600 dark:text-neutral-400 mb-4 line-clamp-3"><?php echo $excerpt; ?></p>
+                            <p class="text-neutral-700 dark:text-neutral-300 mb-4 line-clamp-3"><?php echo $excerpt; ?></p>
                             <a href="<?php echo $permalink; ?>" class="text-primary-600 hover:text-primary-800 dark:text-primary-400 dark:hover:text-primary-300 font-medium inline-flex items-center">
                                 Read More
                                 <i class="fas fa-arrow-right ml-2"></i>
@@ -455,7 +455,7 @@ get_header(); ?>
                 </div>
             <?php else: ?>
                 <div class="text-center">
-                    <p class="text-neutral-600 dark:text-neutral-400">No blog posts yet. Stay tuned for updates!</p>
+                    <p class="text-neutral-700 dark:text-neutral-300">No blog posts yet. Stay tuned for updates!</p>
                 </div>
             <?php endif; ?>
             <div class="text-center mt-12">

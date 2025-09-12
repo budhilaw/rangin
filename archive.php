@@ -26,7 +26,7 @@
                 ?>
             </h1>
             <?php if (is_category() && category_description()): ?>
-                <p class="text-xl text-neutral-600 dark:text-neutral-400 max-w-3xl mx-auto">
+                <p class="text-xl text-neutral-700 dark:text-neutral-300 max-w-3xl mx-auto">
                     <?php echo category_description(); ?>
                 </p>
             <?php endif; ?>
@@ -57,7 +57,7 @@
                                 </a>
                             </h2>
                             
-                            <p class="text-neutral-600 dark:text-neutral-400 mb-4 line-clamp-3">
+                            <p class="text-neutral-700 dark:text-neutral-300 mb-4 line-clamp-3">
                                 <?php echo get_the_excerpt(); ?>
                             </p>
                             
@@ -101,7 +101,7 @@
             <?php else: ?>
                 <div class="col-span-full text-center py-16">
                     <h2 class="text-2xl font-semibold mb-4">No posts found</h2>
-                    <p class="text-neutral-600 dark:text-neutral-400 mb-8">Sorry, no posts were found for this archive.</p>
+                    <p class="text-neutral-700 dark:text-neutral-300 mb-8">Sorry, no posts were found for this archive.</p>
                     <a href="<?php echo home_url(); ?>" class="btn btn-primary">Back to Home</a>
                 </div>
             <?php endif; ?>

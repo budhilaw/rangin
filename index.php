@@ -28,7 +28,7 @@
                     }
                     ?>
                 </h1>
-                <p class="text-xl text-neutral-600 dark:text-neutral-400 max-w-3xl mx-auto">
+                <p class="text-xl text-neutral-700 dark:text-neutral-300 max-w-3xl mx-auto">
                     Insights, tutorials, and thoughts about software development and technology
                 </p>
                 <div class="w-24 h-1 bg-gradient-to-r from-primary-500 to-secondary-500 mx-auto mt-6"></div>
@@ -143,7 +143,7 @@
                                 <i class="fas fa-search text-2xl text-neutral-400"></i>
                             </div>
                             <h2 class="text-2xl font-bold mb-4">No posts found</h2>
-                            <p class="text-neutral-600 dark:text-neutral-400 mb-8">
+                            <p class="text-neutral-700 dark:text-neutral-300 mb-8">
                                 Sorry, no posts were found. Check back later for new content!
                             </p>
                             <a href="<?php echo home_url(); ?>" class="btn btn-primary">Back to Home</a>
@@ -199,7 +199,7 @@
                                         endforeach;
                                     else:
                                     ?>
-                                        <p class="text-neutral-600 dark:text-neutral-400 text-sm">No recent posts available.</p>
+                                        <p class="text-neutral-700 dark:text-neutral-300 text-sm">No recent posts available.</p>
                                     <?php endif; ?>
                                 </div>
                             </div>

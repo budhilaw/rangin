@@ -16,7 +16,7 @@ get_header(); ?>
             <div class="text-center animate-on-scroll">
                 <h1 class="text-4xl md:text-5xl font-bold mb-4"><?php echo esc_html(get_portfolio_section_title()); ?></h1>
                 <?php if (get_portfolio_section_description()): ?>
-                    <p class="text-xl text-neutral-600 dark:text-neutral-400 max-w-3xl mx-auto mb-8">
+                    <p class="text-xl text-neutral-700 dark:text-neutral-300 max-w-3xl mx-auto mb-8">
                         <?php echo esc_html(get_portfolio_section_description()); ?>
                     </p>
                 <?php endif; ?>
@@ -154,7 +154,7 @@ get_header(); ?>
                             </h3>
                             
                             <!-- Description -->
-                            <p class="text-neutral-600 dark:text-neutral-400 mb-4 line-clamp-3">
+                            <p class="text-neutral-700 dark:text-neutral-300 mb-4 line-clamp-3">
                                 <?php echo get_the_excerpt() ?: wp_trim_words(get_the_content(), 20, '...'); ?>
                             </p>
                             
@@ -209,7 +209,7 @@ get_header(); ?>
                     <div class="max-w-md mx-auto">
                         <i class="fas fa-folder-open text-6xl text-neutral-400 mb-6"></i>
                         <h3 class="text-2xl font-bold text-neutral-900 dark:text-neutral-100 mb-4">No Portfolio Items Yet</h3>
-                        <p class="text-neutral-600 dark:text-neutral-400 mb-6">
+                        <p class="text-neutral-700 dark:text-neutral-300 mb-6">
                             Portfolio items will appear here once they are added from the WordPress admin.
                         </p>
                         <?php if (current_user_can('edit_posts')): ?>

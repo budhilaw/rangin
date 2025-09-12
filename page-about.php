@@ -16,7 +16,7 @@ get_header(); ?>
             <div class="text-center animate-on-scroll">
                 <h1 class="text-4xl md:text-5xl font-bold mb-4"><?php echo esc_html(get_about_page_title()); ?></h1>
                 <?php if (has_about_page_subtitle()): ?>
-                    <p class="text-xl text-neutral-600 dark:text-neutral-400 max-w-3xl mx-auto mb-8">
+                    <p class="text-xl text-neutral-700 dark:text-neutral-300 max-w-3xl mx-auto mb-8">
                         <?php echo esc_html(get_about_page_subtitle()); ?>
                     </p>
                 <?php endif; ?>

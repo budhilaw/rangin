@@ -10,7 +10,7 @@
                         <?php the_category(); ?>
                     </div>
                     <h1 class="text-4xl md:text-5xl font-bold mb-6"><?php the_title(); ?></h1>
-                    <div class="flex flex-wrap justify-center items-center gap-4 text-neutral-600 dark:text-neutral-400">
+                    <div class="flex flex-wrap justify-center items-center gap-4 text-neutral-700 dark:text-neutral-300">
                         <time datetime="<?php echo get_the_date('c'); ?>">
                             <i class="fas fa-calendar-alt mr-2"></i>
                             <?php echo get_the_date(); ?>
@@ -56,7 +56,7 @@
                              class="w-20 h-20 rounded-full">
                         <div>
                             <h3 class="text-xl font-semibold mb-2"><?php echo get_the_author(); ?></h3>
-                            <p class="text-neutral-600 dark:text-neutral-400 mb-4">
+                            <p class="text-neutral-700 dark:text-neutral-300 mb-4">
                                 <?php echo get_the_author_meta('description') ?: 'Software Engineer passionate about creating innovative digital solutions.'; ?>
                             </p>
                             <div class="flex space-x-4">

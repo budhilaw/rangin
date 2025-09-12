@@ -61,7 +61,7 @@ get_header(); ?>
                     
                     <!-- Excerpt -->
                     <?php if (get_the_excerpt()): ?>
-                        <p class="text-xl text-neutral-600 dark:text-neutral-400 max-w-3xl mx-auto mb-8">
+                        <p class="text-xl text-neutral-700 dark:text-neutral-300 max-w-3xl mx-auto mb-8">
                             <?php echo get_the_excerpt(); ?>
                         </p>
                     <?php endif; ?>
@@ -149,7 +149,7 @@ get_header(); ?>
                                     <i class="fas fa-external-link-alt text-primary-600 mr-3"></i>
                                     <div>
                                         <div class="font-medium text-neutral-900 dark:text-neutral-100">Live Demo</div>
-                                        <div class="text-sm text-neutral-600 dark:text-neutral-400 group-hover:text-primary-600 dark:group-hover:text-primary-400">View the live application</div>
+                                        <div class="text-sm text-neutral-700 dark:text-neutral-300 group-hover:text-primary-600 dark:group-hover:text-primary-400">View the live application</div>
                                     </div>
                                 </a>
                                 <?php endif; ?>
@@ -160,7 +160,7 @@ get_header(); ?>
                                     <i class="fab fa-github text-neutral-700 dark:text-neutral-300 mr-3"></i>
                                     <div>
                                         <div class="font-medium text-neutral-900 dark:text-neutral-100">Source Code</div>
-                                        <div class="text-sm text-neutral-600 dark:text-neutral-400 group-hover:text-neutral-700 dark:group-hover:text-neutral-300">View on GitHub</div>
+                                        <div class="text-sm text-neutral-700 dark:text-neutral-300 group-hover:text-neutral-800 dark:group-hover:text-neutral-200">View on GitHub</div>
                                     </div>
                                 </a>
                                 <?php endif; ?>
@@ -177,7 +177,7 @@ get_header(); ?>
                             <div class="space-y-3">
                                 <?php if ($category): ?>
                                 <div class="flex justify-between items-center">
-                                    <span class="text-neutral-600 dark:text-neutral-400">Category:</span>
+                                    <span class="text-neutral-700 dark:text-neutral-300">Category:</span>
                                     <span class="font-medium text-neutral-900 dark:text-neutral-100">
                                         <?php echo esc_html(get_portfolio_category_name($category)); ?>
                                     </span>
@@ -185,7 +185,7 @@ get_header(); ?>
                                 <?php endif; ?>
                                 
                                 <div class="flex justify-between items-center">
-                                    <span class="text-neutral-600 dark:text-neutral-400">Published:</span>
+                                    <span class="text-neutral-700 dark:text-neutral-300">Published:</span>
                                     <span class="font-medium text-neutral-900 dark:text-neutral-100">
                                         <?php echo get_the_date(); ?>
                                     </span>
@@ -193,7 +193,7 @@ get_header(); ?>
                                 
                                 <?php if ($demo_link): ?>
                                 <div class="flex justify-between items-center">
-                                    <span class="text-neutral-600 dark:text-neutral-400">Status:</span>
+                                    <span class="text-neutral-700 dark:text-neutral-300">Status:</span>
                                     <span class="inline-flex items-center px-2 py-1 bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300 text-sm rounded-full">
                                         <i class="fas fa-check-circle mr-1"></i>
                                         Live
@@ -221,7 +221,7 @@ get_header(); ?>
             <div class="max-w-6xl mx-auto">
                 <div class="text-center mb-12">
                     <h2 class="text-3xl font-bold mb-4">More Projects</h2>
-                    <p class="text-neutral-600 dark:text-neutral-400">
+                    <p class="text-neutral-700 dark:text-neutral-300">
                         Check out some of my other work
                     </p>
                 </div>
@@ -272,7 +272,7 @@ get_header(); ?>
                                 </a>
                             </h3>
                             
-                            <p class="text-neutral-600 dark:text-neutral-400 text-sm line-clamp-2 mb-4">
+                            <p class="text-neutral-700 dark:text-neutral-300 text-sm line-clamp-2 mb-4">
                                 <?php echo get_the_excerpt() ?: wp_trim_words(get_the_content(), 15, '...'); ?>
                             </p>
                             

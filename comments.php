@@ -106,7 +106,7 @@ $comment_count = get_comments_number();
                                             </div>',
                 'must_log_in'           => '<p class="must-log-in bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg p-4 mb-6">' . sprintf(__('You must be <a href="%s" class="text-primary-600 hover:text-primary-800 underline">logged in</a> to post a comment.', 'rangin'), wp_login_url(apply_filters('the_permalink', get_permalink($post->ID)))) . '</p>',
                 'logged_in_as'          => '<p class="logged-in-as bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg p-4 mb-6">' . sprintf(__('Logged in as <a href="%1$s" class="text-primary-600 hover:text-primary-800 underline font-medium">%2$s</a>. <a href="%3$s" title="Log out of this account" class="text-red-600 hover:text-red-800 underline">Log out?</a>', 'rangin'), get_edit_user_link(), $user_identity, wp_logout_url(apply_filters('the_permalink', get_permalink($post->ID)))) . '</p>',
-                'comment_notes_before'  => '<p class="comment-notes text-sm text-neutral-600 dark:text-neutral-400 mb-6">' . __('Your email address will not be published. Required fields are marked *', 'rangin') . '</p>',
+                'comment_notes_before'  => '<p class="comment-notes text-sm text-neutral-700 dark:text-neutral-300 mb-6">' . __('Your email address will not be published. Required fields are marked *', 'rangin') . '</p>',
                 'comment_notes_after'   => '',
                 'id_form'               => 'commentform',
                 'id_submit'             => 'submit',

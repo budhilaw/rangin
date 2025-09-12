@@ -15,7 +15,7 @@ get_header(); ?>
             <div class="text-center animate-on-scroll">
                 <h1 class="text-4xl md:text-5xl font-bold mb-4">Contact</h1>
                 <?php if (has_contact_section_description()): ?>
-                    <p class="text-xl text-neutral-600 dark:text-neutral-400 max-w-3xl mx-auto mb-8">
+                    <p class="text-xl text-neutral-700 dark:text-neutral-300 max-w-3xl mx-auto mb-8">
                         <?php echo esc_html(get_contact_section_description()); ?>
                     </p>
                 <?php endif; ?>
@@ -129,4 +129,3 @@ get_header(); ?>
 </main>
 
 <?php get_footer();
-
