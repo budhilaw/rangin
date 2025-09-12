@@ -14,20 +14,21 @@ if (!defined('ABSPATH')) {
  * Enqueue scripts and styles
  */
 function personal_website_scripts() {
-    // Font Awesome (smaller set): base + solid + brands
-    wp_enqueue_style('fa-base', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/fontawesome.min.css', array(), '6.5.1');
-    wp_enqueue_style('fa-solid', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/solid.min.css', array('fa-base'), '6.5.1');
-    wp_enqueue_style('fa-brands', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/brands.min.css', array('fa-base'), '6.5.1');
+    // Font Awesome: load only style sets actually needed (solid + brands).
+    // We avoid loading the 14KB base CSS and inline a tiny core in fa-font-display.css.
+    wp_enqueue_style('fa-solid', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/solid.min.css', array(), '6.5.1');
+    wp_enqueue_style('fa-brands', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/brands.min.css', array(), '6.5.1');
     
     // Main stylesheet (compiled TailwindCSS)
     $style_path_min = THEME_DIR . '/assets/css/style.min.css';
     $style_url_min  = THEME_URL . '/assets/css/style.min.css';
     $style_url      = THEME_URL . '/assets/css/style.css';
     $main_css_url   = file_exists($style_path_min) ? $style_url_min : $style_url;
-    wp_enqueue_style('personal-website-style', $main_css_url, array('fa-base','fa-solid','fa-brands'), THEME_VERSION);
+    wp_enqueue_style('personal-website-style', $main_css_url, array('fa-solid','fa-brands'), THEME_VERSION);
     
     // Inline tiny CSS to avoid extra render-blocking requests
     $fa_fd_path = THEME_DIR . '/assets/css/fa-font-display.css';
+    $fa_core_path = THEME_DIR . '/assets/css/fa-core-lite.css';
     $ua_head_path = THEME_DIR . '/assets/css/ua-headings.css';
     $inline_css = '';
     if (file_exists($fa_fd_path)) {
@@ -35,6 +36,9 @@ function personal_website_scripts() {
     }
     if (file_exists($ua_head_path)) {
         $inline_css .= file_get_contents($ua_head_path) . "\n";
+    }
+    if (file_exists($fa_core_path)) {
+        $inline_css .= file_get_contents($fa_core_path) . "\n";
     }
     if ($inline_css !== '') {
         wp_add_inline_style('personal-website-style', $inline_css);
@@ -121,13 +125,29 @@ function personal_website_move_jquery_to_footer($scripts) {
 add_action('wp_default_scripts', 'personal_website_move_jquery_to_footer');
 
 /**
+ * Drop jquery-migrate on the frontend to reduce unused JS payload (~7KB gzipped).
+ * The theme does not rely on deprecated APIs provided by migrate.
+ */
+function personal_website_remove_jquery_migrate($scripts) {
+    if (is_admin()) { return; }
+    if (!empty($scripts->registered['jquery']) && !empty($scripts->registered['jquery-core'])) {
+        // Re-register jquery to depend only on jquery-core
+        $scripts->remove('jquery');
+        $scripts->add('jquery', false, array('jquery-core'), '3.7.1');
+    }
+    // Ensure migrate does not get printed by other dependencies
+    $scripts->remove('jquery-migrate');
+}
+add_action('wp_default_scripts', 'personal_website_remove_jquery_migrate', 11);
+
+/**
  * Convert selected stylesheets to preload + onload to reduce render blocking.
  * Adds a <noscript> fallback in personal_website_preload_resources.
  */
 function personal_website_style_attributes($html, $handle, $href) {
     $handles = array(
         'personal-website-style',
-        'fa-base','fa-solid','fa-brands','font-awesome',
+        'fa-solid','fa-brands','font-awesome',
         'wp-block-library',
     );
     if (in_array($handle, $handles, true)) {
