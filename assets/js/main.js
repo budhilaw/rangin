@@ -514,9 +514,10 @@
             setTimeout(() => {
                 const target = $(window.location.hash);
                 if (target.length) {
-                    $('html, body').animate({
-                        scrollTop: target.offset().top - 100
-                    }, 500);
+                    const rect = target[0].getBoundingClientRect();
+                    const y = (window.pageYOffset || document.documentElement.scrollTop || 0) + rect.top - 100;
+                    // Use native smooth scroll to avoid jQuery animate layout thrash
+                    window.scrollTo({ top: Math.max(0, y), behavior: 'smooth' });
                 }
             }, 600);
         }
