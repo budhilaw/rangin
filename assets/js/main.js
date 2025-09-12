@@ -7,30 +7,55 @@
 (function($) {
     'use strict';
     
-    // DOM Ready
+    // DOM Ready - Use native DOMContentLoaded for critical operations to reduce jQuery dependency
+    document.addEventListener('DOMContentLoaded', function() {
+        // Add JS class to html element immediately using native DOM
+        document.documentElement.classList.remove('no-js');
+        document.documentElement.classList.add('js');
+    });
+    
+    // Use jQuery ready for non-critical component initialization
     $(document).ready(function() {
-        // Add JS class to html element for styling
-        $('html').removeClass('no-js').addClass('js');
-        
-        // Initialize all components
-        initNavigation();
-        initScrollEffects();
-        initAnimations();
-        initSkillBars();
-        initThemeToggle();
-        initCommentsToggle();
-        
+        // Initialize all components with idle callback when possible
+        if (window.requestIdleCallback) {
+            window.requestIdleCallback(function() {
+                initNavigation();
+                initScrollEffects();
+                initAnimations();
+                initSkillBars();
+                initThemeToggle();
+                initCommentsToggle();
+            });
+        } else {
+            // Fallback with delayed initialization
+            setTimeout(function() {
+                initNavigation();
+                initScrollEffects();
+                initAnimations();
+                initSkillBars();
+                initThemeToggle();
+                initCommentsToggle();
+            }, 0);
+        }
     });
     
     // Window Load
     $(window).on('load', function() {
-        // Hide loading screen if exists - use opacity transition to avoid layout calculations
-        const $loadingScreen = $('.loading-screen');
-        if ($loadingScreen.length) {
-            $loadingScreen.addClass('opacity-0');
-            setTimeout(function() {
-                $loadingScreen.remove();
-            }, 300);
+        // Hide loading screen if exists - use native DOM to avoid jQuery overhead
+        const loadingScreen = document.querySelector('.loading-screen');
+        if (loadingScreen) {
+            // Use idle callback for non-critical loading screen removal
+            if (window.requestIdleCallback) {
+                window.requestIdleCallback(() => {
+                    loadingScreen.classList.add('opacity-0');
+                    setTimeout(() => loadingScreen.remove(), 300);
+                });
+            } else {
+                requestAnimationFrame(() => {
+                    loadingScreen.classList.add('opacity-0');
+                    setTimeout(() => loadingScreen.remove(), 300);
+                });
+            }
         }
     });
     
@@ -83,14 +108,24 @@
         function updateNavHeight() {
             if (navHeightTimeout) return; // throttle updates
             navHeightTimeout = setTimeout(() => {
-                // Ensure no other DOM operations in this frame by using double rAF
-                requestAnimationFrame(() => {
-                    requestAnimationFrame(() => {
+                // Use idle callback if available, otherwise triple rAF for maximum isolation
+                if (window.requestIdleCallback) {
+                    window.requestIdleCallback(() => {
                         cachedNavHeight = $nav[0] ? $nav[0].offsetHeight : 0;
                         navHeightTimeout = null;
                     });
-                });
-            }, 100);
+                } else {
+                    // Triple rAF to ensure complete DOM settlement
+                    requestAnimationFrame(() => {
+                        requestAnimationFrame(() => {
+                            requestAnimationFrame(() => {
+                                cachedNavHeight = $nav[0] ? $nav[0].offsetHeight : 0;
+                                navHeightTimeout = null;
+                            });
+                        });
+                    });
+                }
+            }, 150); // Increased delay
         }
         
         // Update nav height on resize
@@ -108,20 +143,34 @@
             e.preventDefault();
             
             // Ensure nav height is current before scroll calculation
-            // Use double rAF to ensure DOM operations are fully settled
-            requestAnimationFrame(function(){
-                requestAnimationFrame(function(){
-                    // Batch all DOM reads together after DOM is settled
-                    const rect = $tgt[0].getBoundingClientRect();
-                    const currentScrollY = window.pageYOffset || document.documentElement.scrollTop || 0;
-                    const targetY = currentScrollY + rect.top - cachedNavHeight;
-                    
-                    // Execute scroll in next frame to avoid conflicts
-                    requestAnimationFrame(function(){
-                        window.scrollTo({ top: Math.max(0, targetY), behavior: 'smooth' });
-                    });
+        // Use idle callback or triple rAF to ensure complete DOM settlement
+        const performScroll = () => {
+            // Batch all DOM reads together after DOM is completely settled
+            const rect = $tgt[0].getBoundingClientRect();
+            const currentScrollY = window.pageYOffset || document.documentElement.scrollTop || 0;
+            const targetY = currentScrollY + rect.top - cachedNavHeight;
+            
+            // Execute scroll in idle time if possible
+            if (window.requestIdleCallback) {
+                window.requestIdleCallback(() => {
+                    window.scrollTo({ top: Math.max(0, targetY), behavior: 'smooth' });
+                });
+            } else {
+                requestAnimationFrame(() => {
+                    window.scrollTo({ top: Math.max(0, targetY), behavior: 'smooth' });
+                });
+            }
+        };
+        
+        if (window.requestIdleCallback) {
+            window.requestIdleCallback(performScroll);
+        } else {
+            requestAnimationFrame(() => {
+                requestAnimationFrame(() => {
+                    requestAnimationFrame(performScroll);
                 });
             });
+        }
         });
         
         // Navigation scroll effects (passive + rAF to avoid layout thrash)
@@ -134,12 +183,30 @@
             const makeSolid = lastKnownScrollY > 50;
             if (navIsSolid === makeSolid) return; // no-op if state unchanged
             navIsSolid = makeSolid;
-            if (makeSolid) {
-                $nav.removeClass('bg-transparent backdrop-blur-none bg-white bg-neutral-900');
-                $nav.addClass(isDarkMode ? 'bg-neutral-900 shadow-lg' : 'bg-white shadow-lg');
+            
+            // Use native DOM and batch class updates to avoid jQuery overhead
+            const navElement = $nav[0];
+            if (!navElement) return;
+            
+            // Use idle callback or multiple rAF to avoid forced reflows
+            const updateClasses = () => {
+                if (makeSolid) {
+                    navElement.className = navElement.className
+                        .replace(/bg-transparent|backdrop-blur-none|bg-white|bg-neutral-900/g, '')
+                        .trim() + ' ' + (isDarkMode ? 'bg-neutral-900 shadow-lg' : 'bg-white shadow-lg');
+                } else {
+                    navElement.className = navElement.className
+                        .replace(/bg-white|bg-neutral-900|shadow-lg/g, '')
+                        .trim() + ' bg-transparent backdrop-blur-none';
+                }
+            };
+            
+            if (window.requestIdleCallback) {
+                window.requestIdleCallback(updateClasses);
             } else {
-                $nav.removeClass('bg-white bg-neutral-900 shadow-lg');
-                $nav.addClass('bg-transparent backdrop-blur-none');
+                requestAnimationFrame(() => {
+                    requestAnimationFrame(updateClasses);
+                });
             }
         }
         window.addEventListener('scroll', function() {
@@ -182,14 +249,22 @@
         
         // Hero section elements should be visible immediately with staggered animation
         $heroElements.each(function(index) {
-            const $element = $(this);
-            const delay = $element.hasClass('animation-delay-200') ? 200 : 
-                         $element.hasClass('animation-delay-400') ? 400 : 
-                         $element.hasClass('animation-delay-600') ? 600 : 0;
+            const element = this;
+            const delay = element.classList.contains('animation-delay-200') ? 200 : 
+                         element.classList.contains('animation-delay-400') ? 400 : 
+                         element.classList.contains('animation-delay-600') ? 600 : 0;
             
-            // Show hero elements immediately with their respective delays
-            setTimeout(function() {
-                $element.addClass('visible');
+            // Show hero elements immediately with their respective delays using idle callback
+            setTimeout(() => {
+                if (window.requestIdleCallback) {
+                    window.requestIdleCallback(() => {
+                        element.classList.add('visible');
+                    });
+                } else {
+                    requestAnimationFrame(() => {
+                        element.classList.add('visible');
+                    });
+                }
             }, delay);
         });
         
@@ -205,11 +280,14 @@
             const observer = new IntersectionObserver(function(entries) {
                 entries.forEach(function(entry) {
                     if (entry.isIntersecting) {
-                        const $element = $(entry.target);
-                        // Add a small delay to ensure smooth animation
-                        setTimeout(function() {
-                            $element.addClass('visible');
-                        }, 100);
+                        const element = entry.target;
+                        // Use double rAF to completely avoid any potential reflow
+                        requestAnimationFrame(() => {
+                            requestAnimationFrame(() => {
+                                // Use native DOM manipulation to avoid jQuery overhead
+                                element.classList.add('visible');
+                            });
+                        });
                         observer.unobserve(entry.target);
                     }
                 });
@@ -292,18 +370,30 @@
             const observer = new IntersectionObserver(function(entries) {
                 entries.forEach(function(entry) {
                     if (entry.isIntersecting) {
-                        const $skillBar = $(entry.target);
-                        const $progressBar = $skillBar.find('.bg-blue-600, .bg-green-600, .bg-purple-600, .bg-yellow-600');
-                        // Read width from inline style (no layout) or data attribute
-                        const el = $progressBar.get(0);
-                        const targetWidth = (el && el.style && el.style.width) ? el.style.width : ($progressBar.attr('data-target-width') || '0%');
-                        // Reset and animate in next frame to avoid forced reflow
-                        $progressBar.css('width', '0%');
-                        requestAnimationFrame(function(){
-                            setTimeout(function() {
-                                $progressBar.css('width', targetWidth);
-                            }, 120);
-                        });
+                        const skillBar = entry.target;
+                        const progressBar = skillBar.querySelector('.bg-blue-600, .bg-green-600, .bg-purple-600, .bg-yellow-600');
+                        
+                        if (progressBar) {
+                            // Read target width from data attribute to avoid any DOM style reads
+                            const targetWidth = progressBar.getAttribute('data-target-width') || 
+                                              skillBar.getAttribute('data-target-width') || '0%';
+                            
+                            // Use triple rAF to ensure complete isolation from any other DOM operations
+                            requestAnimationFrame(() => {
+                                requestAnimationFrame(() => {
+                                    requestAnimationFrame(() => {
+                                        // Set initial state
+                                        progressBar.style.width = '0%';
+                                        // Animate after a delay in separate frame
+                                        setTimeout(() => {
+                                            requestAnimationFrame(() => {
+                                                progressBar.style.width = targetWidth;
+                                            });
+                                        }, 120);
+                                    });
+                                });
+                            });
+                        }
                         
                         observer.unobserve(entry.target);
                     }
@@ -419,24 +509,29 @@
         
         // Function to update navigation background based on current theme
         function updateNavBackground() {
-            const $nav = $('#main-nav');
-            const isDarkMode = $html.hasClass('dark');
+            const navElement = document.getElementById('main-nav');
+            const isDarkMode = document.documentElement.classList.contains('dark');
             
-            // Use the same cached scroll position from the scroll handler to avoid extra reads
-            requestAnimationFrame(function(){
+            if (!navElement) return;
+            
+            // Use idle callback for non-critical theme updates
+            const updateTheme = () => {
                 const scrollTop = window.pageYOffset || document.documentElement.scrollTop || 0;
                 if (scrollTop > 50) {
-                    // Batch DOM writes together to minimize layout impact
-                    requestAnimationFrame(function(){
-                        $nav.removeClass('bg-white bg-neutral-900');
-                        if (isDarkMode) {
-                            $nav.addClass('bg-neutral-900');
-                        } else {
-                            $nav.addClass('bg-white');
-                        }
-                    });
+                    // Use native className manipulation to avoid jQuery overhead
+                    navElement.className = navElement.className
+                        .replace(/bg-white|bg-neutral-900/g, '')
+                        .trim() + ' ' + (isDarkMode ? 'bg-neutral-900' : 'bg-white');
                 }
-            });
+            };
+            
+            if (window.requestIdleCallback) {
+                window.requestIdleCallback(updateTheme);
+            } else {
+                requestAnimationFrame(() => {
+                    requestAnimationFrame(updateTheme);
+                });
+            }
         }
         
         // Theme toggle handlers
@@ -601,7 +696,12 @@
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
-                        $(entry.target).addClass('animate-fade-in-up');
+                        // Use native DOM to avoid jQuery overhead and double rAF for safety
+                        requestAnimationFrame(() => {
+                            requestAnimationFrame(() => {
+                                entry.target.classList.add('animate-fade-in-up');
+                            });
+                        });
                         observer.unobserve(entry.target);
                     }
                 });

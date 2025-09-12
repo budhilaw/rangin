@@ -63,9 +63,18 @@ function personal_website_scripts() {
         'homeUrl' => home_url()
     ));
     
-    // Load comment reply script if needed
+    // Load comment reply script if needed with defer to avoid blocking
     if (is_singular() && comments_open() && get_option('thread_comments')) {
         wp_enqueue_script('comment-reply');
+        // Ensure comment-reply script is deferred to avoid blocking
+        add_filter('script_loader_tag', function($tag, $handle) {
+            if ($handle === 'comment-reply') {
+                if (strpos($tag, 'defer') === false) {
+                    $tag = str_replace('<script ', '<script defer ', $tag);
+                }
+            }
+            return $tag;
+        }, 10, 2);
     }
 }
 add_action('wp_enqueue_scripts', 'personal_website_scripts');
@@ -84,6 +93,13 @@ function personal_website_script_attributes($tag, $handle, $src) {
     // Defer jQuery core and migrate to avoid render blocking
     if ($handle === 'jquery-core' || $handle === 'jquery-migrate') {
         // Ensure we don't add both async+defer. Use defer for safe ordering.
+        if (strpos($tag, 'defer') === false) {
+            $tag = str_replace('<script ', '<script defer ', $tag);
+        }
+        return $tag;
+    }
+    // Also defer WordPress comment-reply script to prevent reflows
+    if ($handle === 'comment-reply') {
         if (strpos($tag, 'defer') === false) {
             $tag = str_replace('<script ', '<script defer ', $tag);
         }
