@@ -53,6 +53,11 @@
 
 /* Custom Components */
 @layer components {
+  /* Defer rendering work for below-the-fold sections */
+  .cv-auto {
+    content-visibility: auto;
+    contain-intrinsic-size: 1000px 800px;
+  }
   .container {
     @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
   }

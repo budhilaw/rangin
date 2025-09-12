@@ -168,7 +168,14 @@
   }
 
   function ready(fn){ if (document.readyState !== 'loading') fn(); else document.addEventListener('DOMContentLoaded', fn); }
-  ready(function(){ initNavigation(); initScrollEffects(); initThemeToggle(); initCommentsToggle(); });
+  // Initialize minimal critical JS immediately; defer the rest to idle time
+  ready(function(){
+    initNavigation();
+    if (window.requestIdleCallback) {
+      requestIdleCallback(function(){ initScrollEffects(); initThemeToggle(); initCommentsToggle(); });
+    } else {
+      setTimeout(function(){ initScrollEffects(); initThemeToggle(); initCommentsToggle(); }, 0);
+    }
+  });
   window.addEventListener('load', function(){ const ls = document.querySelector('.loading-screen'); if (ls && ls.parentNode) ls.parentNode.removeChild(ls); });
 })();
-

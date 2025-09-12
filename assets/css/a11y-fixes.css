@@ -1,0 +1,17 @@
+/* Accessibility overrides loaded after Tailwind to guarantee contrast. */
+
+/* Primary buttons: ensure WCAG AA contrast against light/dark backgrounds */
+.btn.btn-primary {
+  background-color: #4f46e5 !important; /* primary-600 */
+  color: #ffffff !important;
+}
+.btn.btn-primary:hover {
+  background-color: #4338ca !important; /* primary-700 */
+}
+html.dark .btn.btn-primary {
+  background-color: #6366f1 !important; /* primary-500 for dark surfaces */
+}
+html.dark .btn.btn-primary:hover {
+  background-color: #4f46e5 !important; /* primary-600 */
+}
+

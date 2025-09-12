@@ -31,12 +31,16 @@ function personal_website_scripts() {
     $fa_fd_path = THEME_DIR . '/assets/css/fa-font-display.css';
     $fa_core_path = THEME_DIR . '/assets/css/fa-core-lite.css';
     $ua_head_path = THEME_DIR . '/assets/css/ua-headings.css';
+    $a11y_fixes_path = THEME_DIR . '/assets/css/a11y-fixes.css';
     $inline_css = '';
     if (file_exists($fa_fd_path)) {
         $inline_css .= file_get_contents($fa_fd_path) . "\n";
     }
     if (file_exists($ua_head_path)) {
         $inline_css .= file_get_contents($ua_head_path) . "\n";
+    }
+    if (file_exists($a11y_fixes_path)) {
+        $inline_css .= file_get_contents($a11y_fixes_path) . "\n";
     }
     if (file_exists($fa_core_path)) {
         $inline_css .= file_get_contents($fa_core_path) . "\n";

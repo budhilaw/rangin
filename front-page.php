@@ -156,7 +156,7 @@ get_header(); ?>
 
     <!-- Services Section -->
     <?php if (has_services()): ?>
-    <section id="services" class="py-20 bg-accent-25 dark:bg-primary-950">
+    <section id="services" class="py-20 bg-accent-25 dark:bg-primary-950 cv-auto">
         <div class="container mx-auto px-4">
             <div class="text-center mb-16">
                 <h2 class="text-4xl font-bold mb-4"><?php echo esc_html(get_services_section_title()); ?></h2>
@@ -204,7 +204,7 @@ get_header(); ?>
 
     <!-- Portfolio Section -->
     <?php if (get_portfolio_section_show() && has_portfolio_posts()): ?>
-    <section id="portfolio" class="py-20 bg-neutral-50 dark:bg-neutral-850">
+    <section id="portfolio" class="py-20 bg-neutral-50 dark:bg-neutral-850 cv-auto">
         <div class="container mx-auto px-4">
             <div class="text-center mb-16">
                 <h2 class="text-4xl font-bold mb-4"><?php echo esc_html(get_portfolio_section_title()); ?></h2>
@@ -369,7 +369,7 @@ get_header(); ?>
     </section>
     <?php elseif (get_portfolio_section_show() && !has_portfolio_posts()): ?>
     <!-- Portfolio Section - Empty State -->
-    <section id="portfolio" class="py-20 bg-neutral-50 dark:bg-neutral-850">
+    <section id="portfolio" class="py-20 bg-neutral-50 dark:bg-neutral-850 cv-auto">
         <div class="container mx-auto px-4">
             <div class="text-center mb-16">
                 <h2 class="text-4xl font-bold mb-4"><?php echo esc_html(get_portfolio_section_title()); ?></h2>
@@ -401,7 +401,7 @@ get_header(); ?>
     <?php endif; ?>
 
     <!-- Blog Section -->
-    <section id="blog" class="py-20 bg-accent-25 dark:bg-primary-950">
+    <section id="blog" class="py-20 bg-accent-25 dark:bg-primary-950 cv-auto">
         <div class="container mx-auto px-4">
             <div class="text-center mb-16">
                 <h2 class="text-4xl font-bold mb-4"><?php echo esc_html(get_blog_section_title()); ?></h2>
