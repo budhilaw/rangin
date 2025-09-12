@@ -147,7 +147,7 @@
         const performScroll = () => {
             // Batch all DOM reads together after DOM is completely settled
             const rect = $tgt[0].getBoundingClientRect();
-            const currentScrollY = window.pageYOffset || document.documentElement.scrollTop || 0;
+            const currentScrollY = (window.scrollY || window.pageYOffset || 0);
             const targetY = currentScrollY + rect.top - cachedNavHeight;
             
             // Execute scroll in idle time if possible
@@ -230,18 +230,33 @@
         let winH = window.innerHeight;
         let docH = document.documentElement.scrollHeight;
         function refreshDims() {
-            winH = window.innerHeight;
-            docH = document.documentElement.scrollHeight;
+            // Read in idle time to avoid contention with layout
+            const read = () => {
+                winH = window.innerHeight;
+                docH = document.documentElement.scrollHeight;
+                // Also update progress once after dimension changes
+                requestAnimationFrame(updateProgress);
+            };
+            if (window.requestIdleCallback) { window.requestIdleCallback(read); } else { setTimeout(read, 0); }
         }
         window.addEventListener('resize', debounce(refreshDims, 150), { passive: true });
         refreshDims();
-        window.addEventListener('scroll', throttle(function() {
-            const scrollTop = window.pageYOffset || document.documentElement.scrollTop || 0;
-            const ratio = Math.min((scrollTop / Math.max(1, (docH - winH))), 1);
-            // Use transform for GPU compositing and set style directly (avoid jQuery .css reads)
+
+        // rAF-driven progress update to avoid read-after-write in the same task
+        let lastY = window.scrollY || window.pageYOffset || 0;
+        let progressRaf = false;
+        function updateProgress() {
+            progressRaf = false;
+            const ratio = Math.min((lastY / Math.max(1, (docH - winH))), 1);
             const el = $progressBar[0];
             if (el) { el.style.transform = 'scaleX(' + ratio + ')'; }
-        }, 50), { passive: true });
+        }
+        window.addEventListener('scroll', function(){
+            lastY = window.scrollY || window.pageYOffset || 0;
+            if (!progressRaf) { progressRaf = true; requestAnimationFrame(updateProgress); }
+        }, { passive: true });
+        // Initial
+        requestAnimationFrame(updateProgress);
         
         // Initialize animation elements
         const $animateElements = $('.animate-on-scroll');
@@ -516,7 +531,7 @@
             
             // Use idle callback for non-critical theme updates
             const updateTheme = () => {
-                const scrollTop = window.pageYOffset || document.documentElement.scrollTop || 0;
+                const scrollTop = (window.scrollY || window.pageYOffset || 0);
                 if (scrollTop > 50) {
                     // Use native className manipulation to avoid jQuery overhead
                     navElement.className = navElement.className
@@ -645,7 +660,7 @@
                         requestAnimationFrame(function(){
                             // All DOM changes should be settled by now
                             const rect = $commentsContent[0].getBoundingClientRect();
-                            const currentScrollY = window.pageYOffset || document.documentElement.scrollTop || 0;
+                            const currentScrollY = (window.scrollY || window.pageYOffset || 0);
                             const targetY = currentScrollY + rect.top - 100;
                             
                             // Execute scroll in separate frame
@@ -672,7 +687,7 @@
                         requestAnimationFrame(function(){
                             // Double rAF to ensure DOM operations are settled
                             const rect = target[0].getBoundingClientRect();
-                            const currentScrollY = window.pageYOffset || document.documentElement.scrollTop || 0;
+                            const currentScrollY = (window.scrollY || window.pageYOffset || 0);
                             const targetY = currentScrollY + rect.top - 100;
                             
                             // Execute scroll in separate frame
