@@ -24,8 +24,14 @@
     
     // Window Load
     $(window).on('load', function() {
-        // Hide loading screen if exists
-        $('.loading-screen').fadeOut();
+        // Hide loading screen if exists - use opacity transition to avoid layout calculations
+        const $loadingScreen = $('.loading-screen');
+        if ($loadingScreen.length) {
+            $loadingScreen.addClass('opacity-0');
+            setTimeout(function() {
+                $loadingScreen.remove();
+            }, 300);
+        }
     });
     
     /**
@@ -77,8 +83,13 @@
         function updateNavHeight() {
             if (navHeightTimeout) return; // throttle updates
             navHeightTimeout = setTimeout(() => {
-                cachedNavHeight = $nav[0] ? $nav[0].offsetHeight : 0;
-                navHeightTimeout = null;
+                // Ensure no other DOM operations in this frame by using double rAF
+                requestAnimationFrame(() => {
+                    requestAnimationFrame(() => {
+                        cachedNavHeight = $nav[0] ? $nav[0].offsetHeight : 0;
+                        navHeightTimeout = null;
+                    });
+                });
             }, 100);
         }
         
@@ -97,13 +108,19 @@
             e.preventDefault();
             
             // Ensure nav height is current before scroll calculation
+            // Use double rAF to ensure DOM operations are fully settled
             requestAnimationFrame(function(){
-                // Batch all DOM reads together
-                const rect = $tgt[0].getBoundingClientRect();
-                const currentScrollY = window.pageYOffset || document.documentElement.scrollTop || 0;
-                const targetY = currentScrollY + rect.top - cachedNavHeight;
-                
-                window.scrollTo({ top: Math.max(0, targetY), behavior: 'smooth' });
+                requestAnimationFrame(function(){
+                    // Batch all DOM reads together after DOM is settled
+                    const rect = $tgt[0].getBoundingClientRect();
+                    const currentScrollY = window.pageYOffset || document.documentElement.scrollTop || 0;
+                    const targetY = currentScrollY + rect.top - cachedNavHeight;
+                    
+                    // Execute scroll in next frame to avoid conflicts
+                    requestAnimationFrame(function(){
+                        window.scrollTo({ top: Math.max(0, targetY), behavior: 'smooth' });
+                    });
+                });
             });
         });
         
@@ -226,7 +243,9 @@
             let i = 0;
             const typeWriter = function() {
                 if (i < text.length) {
-                    $typingText.text($typingText.text() + text.charAt(i));
+                    // Use textContent instead of jQuery .text() to avoid potential reflows
+                    const currentText = $typingText[0].textContent || '';
+                    $typingText[0].textContent = currentText + text.charAt(i);
                     i++;
                     setTimeout(typeWriter, 100);
                 }
@@ -524,18 +543,23 @@
                 $toggleIcon.removeClass('fa-chevron-down').addClass('fa-chevron-up');
                 commentsVisible = true;
                 
-                // Scroll to comments if they're not in view; batch DOM reads to avoid forced reflow
-                requestAnimationFrame(function(){
-                    // Batch all DOM reads together before any scroll action
-                    const rect = $commentsContent[0].getBoundingClientRect();
-                    const currentScrollY = window.pageYOffset || document.documentElement.scrollTop || 0;
-                    const targetY = currentScrollY + rect.top - 100;
-                    
-                    // Separate the scroll action in next frame to avoid layout conflicts
+                // Scroll to comments if they're not in view; use delayed DOM read to avoid forced reflow
+                // Add delay to ensure comment reveal animation has completed
+                setTimeout(function(){
                     requestAnimationFrame(function(){
-                        window.scrollTo({ top: Math.max(0, targetY), behavior: 'smooth' });
+                        requestAnimationFrame(function(){
+                            // All DOM changes should be settled by now
+                            const rect = $commentsContent[0].getBoundingClientRect();
+                            const currentScrollY = window.pageYOffset || document.documentElement.scrollTop || 0;
+                            const targetY = currentScrollY + rect.top - 100;
+                            
+                            // Execute scroll in separate frame
+                            requestAnimationFrame(function(){
+                                window.scrollTo({ top: Math.max(0, targetY), behavior: 'smooth' });
+                            });
+                        });
                     });
-                });
+                }, 100);
             }
         });
         
@@ -548,14 +572,19 @@
             setTimeout(() => {
                 const target = $(window.location.hash);
                 if (target.length) {
-                    // Batch DOM reads to avoid forced reflow during comment navigation
+                    // Ensure all comment animations and DOM changes are complete before measuring
                     requestAnimationFrame(function(){
-                        const rect = target[0].getBoundingClientRect();
-                        const currentScrollY = window.pageYOffset || document.documentElement.scrollTop || 0;
-                        const targetY = currentScrollY + rect.top - 100;
-                        
-                        // Use native smooth scroll to avoid jQuery animate layout thrash
-                        window.scrollTo({ top: Math.max(0, targetY), behavior: 'smooth' });
+                        requestAnimationFrame(function(){
+                            // Double rAF to ensure DOM operations are settled
+                            const rect = target[0].getBoundingClientRect();
+                            const currentScrollY = window.pageYOffset || document.documentElement.scrollTop || 0;
+                            const targetY = currentScrollY + rect.top - 100;
+                            
+                            // Execute scroll in separate frame
+                            requestAnimationFrame(function(){
+                                window.scrollTo({ top: Math.max(0, targetY), behavior: 'smooth' });
+                            });
+                        });
                     });
                 }
             }, 600);
