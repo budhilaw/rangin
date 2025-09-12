@@ -85,9 +85,7 @@
                 $(this).attr('aria-expanded', 'true');
             }
             
-            // Update cached navigation height after mobile menu state change
-            // Delay to allow CSS transitions to complete
-            setTimeout(updateNavHeight, 100);
+            // No layout reads needed; CSS scroll-margin handles offsets
         });
         
         // Close mobile menu when clicking on links
@@ -97,80 +95,24 @@
             $closeIcon.addClass('hidden');
             $mobileMenuButton.attr('aria-expanded', 'false');
             
-            // Update cached navigation height after mobile menu closure
-            setTimeout(updateNavHeight, 100);
+            // No layout reads needed; CSS scroll-margin handles offsets
         });
         
-        // Cache navigation height to avoid reading offsetHeight repeatedly
-        let cachedNavHeight = 0;
-        let navHeightTimeout = null;
-        
-        function updateNavHeight() {
-            if (navHeightTimeout) return; // throttle updates
-            navHeightTimeout = setTimeout(() => {
-                // Use idle callback if available, otherwise triple rAF for maximum isolation
-                if (window.requestIdleCallback) {
-                    window.requestIdleCallback(() => {
-                        cachedNavHeight = $nav[0] ? $nav[0].offsetHeight : 0;
-                        navHeightTimeout = null;
-                    });
-                } else {
-                    // Triple rAF to ensure complete DOM settlement
-                    requestAnimationFrame(() => {
-                        requestAnimationFrame(() => {
-                            requestAnimationFrame(() => {
-                                cachedNavHeight = $nav[0] ? $nav[0].offsetHeight : 0;
-                                navHeightTimeout = null;
-                            });
-                        });
-                    });
-                }
-            }, 150); // Increased delay
-        }
-        
-        // Update nav height on resize
-        window.addEventListener('resize', updateNavHeight, { passive: true });
-        // Initial nav height calculation after potential mobile menu changes
-        updateNavHeight();
-        
-        // Smooth scrolling for anchor links (native smooth scroll).
-        // Use cached nav height and defer all DOM reads to avoid forced reflow.
+        // Smooth scrolling for anchor links (native smooth scroll + CSS scroll-margin-top).
         $('a[href^="#"]').on('click', function(e) {
             const href = this.getAttribute('href');
             if (!href || href === '#') { return; }
             const $tgt = $(href);
             if (!$tgt.length) { return; }
             e.preventDefault();
-            
-            // Ensure nav height is current before scroll calculation
-        // Use idle callback or triple rAF to ensure complete DOM settlement
-        const performScroll = () => {
-            // Batch all DOM reads together after DOM is completely settled
-            const rect = $tgt[0].getBoundingClientRect();
-            const currentScrollY = (window.scrollY || window.pageYOffset || 0);
-            const targetY = currentScrollY + rect.top - cachedNavHeight;
-            
-            // Execute scroll in idle time if possible
-            if (window.requestIdleCallback) {
-                window.requestIdleCallback(() => {
-                    window.scrollTo({ top: Math.max(0, targetY), behavior: 'smooth' });
-                });
+            // Let CSS handle the fixed-header offset via scroll-margin-top
+            const el = $tgt[0];
+            if (el && typeof el.scrollIntoView === 'function') {
+                el.scrollIntoView({ behavior: 'smooth', block: 'start' });
             } else {
-                requestAnimationFrame(() => {
-                    window.scrollTo({ top: Math.max(0, targetY), behavior: 'smooth' });
-                });
+                // Fallback
+                window.location.hash = href;
             }
-        };
-        
-        if (window.requestIdleCallback) {
-            window.requestIdleCallback(performScroll);
-        } else {
-            requestAnimationFrame(() => {
-                requestAnimationFrame(() => {
-                    requestAnimationFrame(performScroll);
-                });
-            });
-        }
         });
         
         // Navigation scroll effects (passive + rAF to avoid layout thrash)
@@ -239,7 +181,8 @@
             };
             if (window.requestIdleCallback) { window.requestIdleCallback(read); } else { setTimeout(read, 0); }
         }
-        window.addEventListener('resize', debounce(refreshDims, 150), { passive: true });
+        // Avoid reacting to address-bar resize churn on mobile; recalc only on orientation changes
+        window.addEventListener('orientationchange', debounce(refreshDims, 300), { passive: true });
         refreshDims();
 
         // rAF-driven progress update to avoid read-after-write in the same task
@@ -653,21 +596,15 @@
                 $toggleIcon.removeClass('fa-chevron-down').addClass('fa-chevron-up');
                 commentsVisible = true;
                 
-                // Scroll to comments if they're not in view; use delayed DOM read to avoid forced reflow
-                // Add delay to ensure comment reveal animation has completed
+                // Scroll to comments without geometry reads; rely on CSS scroll-margin-top
                 setTimeout(function(){
                     requestAnimationFrame(function(){
-                        requestAnimationFrame(function(){
-                            // All DOM changes should be settled by now
-                            const rect = $commentsContent[0].getBoundingClientRect();
-                            const currentScrollY = (window.scrollY || window.pageYOffset || 0);
-                            const targetY = currentScrollY + rect.top - 100;
-                            
-                            // Execute scroll in separate frame
-                            requestAnimationFrame(function(){
-                                window.scrollTo({ top: Math.max(0, targetY), behavior: 'smooth' });
-                            });
-                        });
+                        const el = $commentsContent[0];
+                        if (el && el.scrollIntoView) {
+                            el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        }
+                        // Update progress denominator because page height increased
+                        if (typeof refreshDims === 'function') { refreshDims(); }
                     });
                 }, 100);
             }
@@ -682,19 +619,11 @@
             setTimeout(() => {
                 const target = $(window.location.hash);
                 if (target.length) {
-                    // Ensure all comment animations and DOM changes are complete before measuring
                     requestAnimationFrame(function(){
-                        requestAnimationFrame(function(){
-                            // Double rAF to ensure DOM operations are settled
-                            const rect = target[0].getBoundingClientRect();
-                            const currentScrollY = (window.scrollY || window.pageYOffset || 0);
-                            const targetY = currentScrollY + rect.top - 100;
-                            
-                            // Execute scroll in separate frame
-                            requestAnimationFrame(function(){
-                                window.scrollTo({ top: Math.max(0, targetY), behavior: 'smooth' });
-                            });
-                        });
+                        const el = target[0];
+                        if (el && el.scrollIntoView) {
+                            el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        }
                     });
                 }
             }, 600);

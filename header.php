@@ -32,6 +32,9 @@
     
     <!-- Critical CSS will be inlined here for faster loading -->
     <style>
+        :root { --nav-h: 64px; }
+        /* Offset anchor targets to account for fixed header without JS */
+        [id] { scroll-margin-top: var(--nav-h); }
         /* Critical CSS + overscroll preferences */
         html, body { overscroll-behavior: none; overscroll-behavior-y: none; }
         body { touch-action: pan-x pan-y; }
