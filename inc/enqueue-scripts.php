@@ -44,21 +44,12 @@ function personal_website_scripts() {
         wp_add_inline_style('personal-website-style', $inline_css);
     }
     
-    // Custom JavaScript (use minified version if available)
-    $main_js_path_min = THEME_DIR . '/assets/js/main.min.js';
-    $main_js_url_min  = THEME_URL . '/assets/js/main.min.js';
-    $main_js_url      = THEME_URL . '/assets/js/main.js';
-    $main_js_url_final = file_exists($main_js_path_min) ? $main_js_url_min : $main_js_url;
-    
-    // Add file modification time for cache busting to ensure updated JS is loaded
-    $js_version = THEME_VERSION;
-    if (file_exists($main_js_path_min)) {
-        $js_version = THEME_VERSION . '.' . filemtime($main_js_path_min);
-    } elseif (file_exists(THEME_DIR . '/assets/js/main.js')) {
-        $js_version = THEME_VERSION . '.' . filemtime(THEME_DIR . '/assets/js/main.js');
-    }
-    
-    wp_enqueue_script('personal-website-main', $main_js_url_final, array('jquery'), $js_version, true);
+    // Custom JavaScript (vanilla; no jQuery dependency)
+    $app_js_path = THEME_DIR . '/assets/js/app.js';
+    $app_js_url  = THEME_URL . '/assets/js/app.js';
+    $js_version  = THEME_VERSION;
+    if (file_exists($app_js_path)) { $js_version .= '.' . filemtime($app_js_path); }
+    wp_enqueue_script('personal-website-main', $app_js_url, array(), $js_version, true);
     
     // Localize script for AJAX
     wp_localize_script('personal-website-main', 'personalWebsite', array(
@@ -87,16 +78,15 @@ add_action('wp_enqueue_scripts', 'personal_website_scripts');
  * Add async/defer attributes to scripts for better performance
  */
 function personal_website_script_attributes($tag, $handle, $src) {
-    // Defer main.js (keeps dependency order with jQuery)
+    // Defer main app script
     if ($handle === 'personal-website-main') {
         if (strpos($tag, 'defer') === false) {
             $tag = str_replace('<script ', '<script defer ', $tag);
         }
         return $tag;
     }
-    // Defer jQuery core and migrate to avoid render blocking
-    if ($handle === 'jquery-core' || $handle === 'jquery-migrate') {
-        // Ensure we don't add both async+defer. Use defer for safe ordering.
+    // If plugins enqueue jQuery, defer it too
+    if ($handle === 'jquery-core' || $handle === 'jquery') {
         if (strpos($tag, 'defer') === false) {
             $tag = str_replace('<script ', '<script defer ', $tag);
         }
