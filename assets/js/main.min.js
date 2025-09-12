@@ -83,10 +83,14 @@
         // Navigation scroll effects (passive + rAF to avoid layout thrash)
         let lastKnownScrollY = window.scrollY || window.pageYOffset;
         let ticking = false;
+        let navIsSolid = null; // unknown
         function updateNavOnScroll() {
             ticking = false;
             const isDarkMode = document.documentElement.classList.contains('dark');
-            if (lastKnownScrollY > 50) {
+            const makeSolid = lastKnownScrollY > 50;
+            if (navIsSolid === makeSolid) return; // no-op if state unchanged
+            navIsSolid = makeSolid;
+            if (makeSolid) {
                 $nav.removeClass('bg-transparent backdrop-blur-none bg-white bg-neutral-900');
                 $nav.addClass(isDarkMode ? 'bg-neutral-900 shadow-lg' : 'bg-white shadow-lg');
             } else {
@@ -123,8 +127,9 @@
         window.addEventListener('scroll', throttle(function() {
             const scrollTop = window.pageYOffset || document.documentElement.scrollTop || 0;
             const ratio = Math.min((scrollTop / Math.max(1, (docH - winH))), 1);
-            // Use transform for GPU compositing to avoid layout
-            $progressBar.css('transform', 'scaleX(' + ratio + ')');
+            // Use transform for GPU compositing and set style directly (avoid jQuery .css reads)
+            const el = $progressBar[0];
+            if (el) { el.style.transform = 'scaleX(' + ratio + ')'; }
         }, 50), { passive: true });
         
         // Initialize animation elements
@@ -166,19 +171,9 @@
                 });
             }, observerOptions);
             
-            // Check which elements are already in view and show them immediately
+            // Observe all; IO will immediately fire for in-view elements without manual sync reads
             $scrollAnimateElements.each(function() {
-                const element = this;
-                const rect = element.getBoundingClientRect();
-                const windowHeight = window.innerHeight;
-                
-                // If element is in view on page load, show it immediately
-                if (rect.top < windowHeight - 100 && rect.bottom > 0) {
-                    $(element).addClass('visible');
-                } else {
-                    // Otherwise, observe it for when it comes into view
-                    observer.observe(element);
-                }
+                observer.observe(this);
             });
         } else {
             // Fallback for older browsers - show all elements with staggered animation
@@ -314,12 +309,7 @@
         };
     }
     
-    // Add custom easing
-    $.extend($.easing, {
-        easeInOutCubic: function(x) {
-            return x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2;
-        }
-    });
+    // No jQuery easing needed since we use native smooth scroll
     
     /**
      * Theme toggle functionality
