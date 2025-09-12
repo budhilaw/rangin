@@ -53,6 +53,10 @@
                 $closeIcon.removeClass('hidden');
                 $(this).attr('aria-expanded', 'true');
             }
+            
+            // Update cached navigation height after mobile menu state change
+            // Delay to allow CSS transitions to complete
+            setTimeout(updateNavHeight, 100);
         });
         
         // Close mobile menu when clicking on links
@@ -61,22 +65,45 @@
             $hamburgerIcon.removeClass('hidden');
             $closeIcon.addClass('hidden');
             $mobileMenuButton.attr('aria-expanded', 'false');
+            
+            // Update cached navigation height after mobile menu closure
+            setTimeout(updateNavHeight, 100);
         });
         
+        // Cache navigation height to avoid reading offsetHeight repeatedly
+        let cachedNavHeight = 0;
+        let navHeightTimeout = null;
+        
+        function updateNavHeight() {
+            if (navHeightTimeout) return; // throttle updates
+            navHeightTimeout = setTimeout(() => {
+                cachedNavHeight = $nav[0] ? $nav[0].offsetHeight : 0;
+                navHeightTimeout = null;
+            }, 100);
+        }
+        
+        // Update nav height on resize
+        window.addEventListener('resize', updateNavHeight, { passive: true });
+        // Initial nav height calculation after potential mobile menu changes
+        updateNavHeight();
+        
         // Smooth scrolling for anchor links (native smooth scroll).
-        // Defer measurements to next frame to avoid reading layout
-        // in the same tick as menu state changes (prevents forced reflow).
+        // Use cached nav height and defer all DOM reads to avoid forced reflow.
         $('a[href^="#"]').on('click', function(e) {
             const href = this.getAttribute('href');
             if (!href || href === '#') { return; }
             const $tgt = $(href);
             if (!$tgt.length) { return; }
             e.preventDefault();
+            
+            // Ensure nav height is current before scroll calculation
             requestAnimationFrame(function(){
-                const headerHeight = $nav[0] ? $nav[0].offsetHeight : 0; // read once
+                // Batch all DOM reads together
                 const rect = $tgt[0].getBoundingClientRect();
-                const y = (window.pageYOffset || document.documentElement.scrollTop || 0) + rect.top - headerHeight;
-                window.scrollTo({ top: Math.max(0, y), behavior: 'smooth' });
+                const currentScrollY = window.pageYOffset || document.documentElement.scrollTop || 0;
+                const targetY = currentScrollY + rect.top - cachedNavHeight;
+                
+                window.scrollTo({ top: Math.max(0, targetY), behavior: 'smooth' });
             });
         });
         
@@ -375,20 +402,21 @@
         function updateNavBackground() {
             const $nav = $('#main-nav');
             const isDarkMode = $html.hasClass('dark');
-            const apply = function(scrollTop){
-                if (scrollTop > 50) {
-                    $nav.removeClass('bg-white bg-neutral-900');
-                    if (isDarkMode) {
-                        $nav.addClass('bg-neutral-900');
-                    } else {
-                        $nav.addClass('bg-white');
-                    }
-                }
-            };
-            // Read scroll position in the next frame to avoid sync reflow
+            
+            // Use the same cached scroll position from the scroll handler to avoid extra reads
             requestAnimationFrame(function(){
                 const scrollTop = window.pageYOffset || document.documentElement.scrollTop || 0;
-                apply(scrollTop);
+                if (scrollTop > 50) {
+                    // Batch DOM writes together to minimize layout impact
+                    requestAnimationFrame(function(){
+                        $nav.removeClass('bg-white bg-neutral-900');
+                        if (isDarkMode) {
+                            $nav.addClass('bg-neutral-900');
+                        } else {
+                            $nav.addClass('bg-white');
+                        }
+                    });
+                }
             });
         }
         
@@ -496,11 +524,17 @@
                 $toggleIcon.removeClass('fa-chevron-down').addClass('fa-chevron-up');
                 commentsVisible = true;
                 
-                // Scroll to comments if they're not in view; measure next frame
+                // Scroll to comments if they're not in view; batch DOM reads to avoid forced reflow
                 requestAnimationFrame(function(){
+                    // Batch all DOM reads together before any scroll action
                     const rect = $commentsContent[0].getBoundingClientRect();
-                    const y = (window.pageYOffset || document.documentElement.scrollTop || 0) + rect.top - 100;
-                    window.scrollTo({ top: Math.max(0, y), behavior: 'smooth' });
+                    const currentScrollY = window.pageYOffset || document.documentElement.scrollTop || 0;
+                    const targetY = currentScrollY + rect.top - 100;
+                    
+                    // Separate the scroll action in next frame to avoid layout conflicts
+                    requestAnimationFrame(function(){
+                        window.scrollTo({ top: Math.max(0, targetY), behavior: 'smooth' });
+                    });
                 });
             }
         });
@@ -510,14 +544,19 @@
             // Auto-open comments if user navigated directly to a comment
             $commentsToggle.trigger('click');
             
-            // Focus on specific comment if hash is present
+            // Focus on specific comment if hash is present  
             setTimeout(() => {
                 const target = $(window.location.hash);
                 if (target.length) {
-                    const rect = target[0].getBoundingClientRect();
-                    const y = (window.pageYOffset || document.documentElement.scrollTop || 0) + rect.top - 100;
-                    // Use native smooth scroll to avoid jQuery animate layout thrash
-                    window.scrollTo({ top: Math.max(0, y), behavior: 'smooth' });
+                    // Batch DOM reads to avoid forced reflow during comment navigation
+                    requestAnimationFrame(function(){
+                        const rect = target[0].getBoundingClientRect();
+                        const currentScrollY = window.pageYOffset || document.documentElement.scrollTop || 0;
+                        const targetY = currentScrollY + rect.top - 100;
+                        
+                        // Use native smooth scroll to avoid jQuery animate layout thrash
+                        window.scrollTo({ top: Math.max(0, targetY), behavior: 'smooth' });
+                    });
                 }
             }, 600);
         }

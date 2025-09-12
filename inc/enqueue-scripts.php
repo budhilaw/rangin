@@ -40,8 +40,12 @@ function personal_website_scripts() {
         wp_add_inline_style('personal-website-style', $inline_css);
     }
     
-    // Custom JavaScript
-    wp_enqueue_script('personal-website-main', THEME_URL . '/assets/js/main.js', array('jquery'), THEME_VERSION, true);
+    // Custom JavaScript (use minified version if available)
+    $main_js_path_min = THEME_DIR . '/assets/js/main.min.js';
+    $main_js_url_min  = THEME_URL . '/assets/js/main.min.js';
+    $main_js_url      = THEME_URL . '/assets/js/main.js';
+    $main_js_url_final = file_exists($main_js_path_min) ? $main_js_url_min : $main_js_url;
+    wp_enqueue_script('personal-website-main', $main_js_url_final, array('jquery'), THEME_VERSION, true);
     
     // Localize script for AJAX
     wp_localize_script('personal-website-main', 'personalWebsite', array(
