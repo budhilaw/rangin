@@ -125,7 +125,30 @@ function asset_opt_minify_and_cache($src, $type) {
             // Only use the prebuilt .min.js if it is at least as new as the source
             $src_path = str_replace(THEME_URL, THEME_DIR, $no_query);
             $is_fresh = @filemtime($min_candidate_path) >= @filemtime($src_path);
-            if ($is_fresh) {
+
+            // Additionally, verify the prebuilt file looks actually minified.
+            // Heuristics: newlines are very low and size has a reasonable reduction.
+            $use_prebuilt = $is_fresh;
+            if ($use_prebuilt) {
+                $src_size = @filesize($src_path);
+                $min_size = @filesize($min_candidate_path);
+                $ratio = ($src_size > 0 && $min_size > 0) ? ($min_size / $src_size) : 1.0;
+                $newline_count = 0;
+                // Only read small files for the newline heuristic (avoid large memory use)
+                if ($min_size > 0 && $min_size <= 512000) {
+                    $code = @file_get_contents($min_candidate_path);
+                    if (is_string($code)) {
+                        $newline_count = substr_count($code, "\n");
+                    }
+                }
+                // If the supposed ".min.js" is almost the same size as source or
+                // clearly multi-line, treat it as not really minified and fall through
+                if ($ratio > 0.95 || $newline_count > 10) {
+                    $use_prebuilt = false;
+                }
+            }
+
+            if ($use_prebuilt) {
                 $query = parse_url($src, PHP_URL_QUERY);
                 return $min_candidate_url . ($query ? ('?' . $query) : '');
             }
