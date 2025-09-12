@@ -63,17 +63,21 @@
             $mobileMenuButton.attr('aria-expanded', 'false');
         });
         
-        // Smooth scrolling for anchor links (native smooth scroll to reduce layout work)
+        // Smooth scrolling for anchor links (native smooth scroll).
+        // Defer measurements to next frame to avoid reading layout
+        // in the same tick as menu state changes (prevents forced reflow).
         $('a[href^="#"]').on('click', function(e) {
             const href = this.getAttribute('href');
             if (!href || href === '#') { return; }
             const $tgt = $(href);
             if (!$tgt.length) { return; }
             e.preventDefault();
-            const headerHeight = $nav[0] ? $nav[0].offsetHeight : 0; // read once
-            const rect = $tgt[0].getBoundingClientRect();
-            const y = (window.pageYOffset || document.documentElement.scrollTop || 0) + rect.top - headerHeight;
-            window.scrollTo({ top: Math.max(0, y), behavior: 'smooth' });
+            requestAnimationFrame(function(){
+                const headerHeight = $nav[0] ? $nav[0].offsetHeight : 0; // read once
+                const rect = $tgt[0].getBoundingClientRect();
+                const y = (window.pageYOffset || document.documentElement.scrollTop || 0) + rect.top - headerHeight;
+                window.scrollTo({ top: Math.max(0, y), behavior: 'smooth' });
+            });
         });
         
         // Navigation scroll effects (passive + rAF to avoid layout thrash)
@@ -380,18 +384,22 @@
         // Function to update navigation background based on current theme
         function updateNavBackground() {
             const $nav = $('#main-nav');
-            const scrollTop = $(window).scrollTop();
             const isDarkMode = $html.hasClass('dark');
-            
-            // Only update if navigation should have solid background (scrolled down)
-            if (scrollTop > 50) {
-                $nav.removeClass('bg-white bg-neutral-900');
-                if (isDarkMode) {
-                    $nav.addClass('bg-neutral-900');
-                } else {
-                    $nav.addClass('bg-white');
+            const apply = function(scrollTop){
+                if (scrollTop > 50) {
+                    $nav.removeClass('bg-white bg-neutral-900');
+                    if (isDarkMode) {
+                        $nav.addClass('bg-neutral-900');
+                    } else {
+                        $nav.addClass('bg-white');
+                    }
                 }
-            }
+            };
+            // Read scroll position in the next frame to avoid sync reflow
+            requestAnimationFrame(function(){
+                const scrollTop = window.pageYOffset || document.documentElement.scrollTop || 0;
+                apply(scrollTop);
+            });
         }
         
         // Theme toggle handlers
@@ -472,7 +480,7 @@
                 // Hide comments
                 $commentsContent.removeClass('visible').addClass('opacity-0');
                 setTimeout(() => {
-                    $commentsContent.hide();
+                    $commentsContent.addClass('hidden').attr('aria-hidden','true');
                 }, 300);
                 
                 // Update button
@@ -481,7 +489,7 @@
                 commentsVisible = false;
             } else {
                 // Show comments
-                $commentsContent.show();
+                $commentsContent.removeClass('hidden').attr('aria-hidden','false');
                 setTimeout(() => {
                     $commentsContent.addClass('visible').removeClass('opacity-0');
                     
@@ -498,10 +506,12 @@
                 $toggleIcon.removeClass('fa-chevron-down').addClass('fa-chevron-up');
                 commentsVisible = true;
                 
-                // Scroll to comments if they're not in view
-                const rect = $commentsContent[0].getBoundingClientRect();
-                const y = (window.pageYOffset || document.documentElement.scrollTop || 0) + rect.top - 100;
-                window.scrollTo({ top: Math.max(0, y), behavior: 'smooth' });
+                // Scroll to comments if they're not in view; measure next frame
+                requestAnimationFrame(function(){
+                    const rect = $commentsContent[0].getBoundingClientRect();
+                    const y = (window.pageYOffset || document.documentElement.scrollTop || 0) + rect.top - 100;
+                    window.scrollTo({ top: Math.max(0, y), behavior: 'smooth' });
+                });
             }
         });
         
