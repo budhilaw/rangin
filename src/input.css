@@ -309,15 +309,32 @@
     @apply transform scale-105;
   }
   
-  /* Theme Toggle Button */
+  /* Theme Toggle Button - Sliding Switch */
   .theme-toggle {
-    @apply relative inline-flex h-10 w-18 items-center rounded-full;
+    @apply relative inline-flex h-10 w-20 items-center rounded-full;
     @apply bg-neutral-200 dark:bg-neutral-700 transition-colors duration-300;
   }
   
   .theme-toggle-slider {
-    @apply inline-block h-8 w-8 transform rounded-full bg-white shadow-lg transition-transform duration-300;
-    @apply dark:bg-neutral-300 dark:translate-x-8;
+    @apply inline-flex h-8 w-8 items-center justify-center transform rounded-full bg-white shadow-lg transition-transform duration-300;
+    @apply dark:bg-neutral-800 dark:translate-x-10;
+  }
+
+  /* Ensure icons are properly hidden/shown based on theme */
+  .theme-toggle-slider .fa-sun {
+    display: block !important;
+  }
+
+  .theme-toggle-slider .fa-moon {
+    display: none !important;
+  }
+
+  :is(.dark *) .theme-toggle-slider .fa-sun {
+    display: none !important;
+  }
+
+  :is(.dark *) .theme-toggle-slider .fa-moon {
+    display: block !important;
   }
   
   /* Gradient Backgrounds */

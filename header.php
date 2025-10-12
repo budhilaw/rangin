@@ -123,8 +123,8 @@
                     <!-- Theme Toggle -->
                     <button id="theme-toggle" class="theme-toggle p-1 focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2" aria-label="Toggle theme">
                         <div class="theme-toggle-slider flex items-center justify-center">
-                            <i class="fas fa-sun text-yellow-500 dark:hidden text-sm"></i>
-                            <i class="fas fa-moon text-indigo-400 hidden dark:block text-sm"></i>
+                            <i class="fas fa-sun text-yellow-500 text-sm"></i>
+                            <i class="fas fa-moon text-indigo-400 text-sm"></i>
                         </div>
                     </button>
                 </div>
@@ -134,8 +134,8 @@
                     <!-- Mobile Theme Toggle -->
                     <button id="mobile-theme-toggle" class="theme-toggle p-1 focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2" aria-label="Toggle theme">
                         <div class="theme-toggle-slider flex items-center justify-center">
-                            <i class="fas fa-sun text-yellow-500 dark:hidden text-xs"></i>
-                            <i class="fas fa-moon text-indigo-400 hidden dark:block text-xs"></i>
+                            <i class="fas fa-sun text-yellow-500 text-xs"></i>
+                            <i class="fas fa-moon text-indigo-400 text-xs"></i>
                         </div>
                     </button>
                     
