@@ -5,6 +5,42 @@ Rangin is a modern, performance‑minded WordPress theme designed to help softwa
 This theme is intended for standard WordPress installations (no special tooling required).
 
 
+## Performance Scores
+
+Rangin is built with performance as a top priority. Here are the latest benchmark results:
+
+### GTMetrix Grade: **A**
+![GTMetrix Performance Report](assets/img/GTMetrix.png)
+
+- **Performance:** 100%
+- **Structure:** 100%
+- **LCP (Largest Contentful Paint):** 579ms
+- **TBT (Total Blocking Time):** 51ms
+- **CLS (Cumulative Layout Shift):** 0.01
+
+### PageSpeed Insights (Lighthouse)
+
+**Desktop Performance:**
+![PageSpeed Desktop](assets/img/PageSpeed-Desktop.png)
+
+**Mobile Performance:**
+![PageSpeed Mobile](assets/img/PageSpeed-Mobile.png)
+
+- **Performance:** 99/100 (Desktop) | 99/100 (Mobile)
+- **Accessibility:** 100/100
+- **Best Practices:** 100/100
+- **SEO:** 100/100
+
+**Key Performance Features:**
+- Optimized Font Awesome subset (2.5KB vs 500KB+ full library)
+- Efficient browser caching with immutable cache headers
+- Minified CSS and JavaScript assets
+- Optional AVIF/WebP image conversion
+- Modern lazy-loading and responsive images
+- Minimal render-blocking resources
+- Optimized critical rendering path
+
+
 ## Highlights
 
 - Elegant landing experience with a focused content hierarchy
