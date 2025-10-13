@@ -14,36 +14,29 @@ if (!defined('ABSPATH')) {
  * Enqueue scripts and styles
  */
 function personal_website_scripts() {
-    // Font Awesome: base + solid + brands
-    // Re-enable base to restore complete icon class support.
-    wp_enqueue_style('fa-base', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/fontawesome.min.css', array(), '6.5.1');
-    wp_enqueue_style('fa-solid', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/solid.min.css', array('fa-base'), '6.5.1');
-    wp_enqueue_style('fa-brands', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/brands.min.css', array('fa-base'), '6.5.1');
+    // Font Awesome Subset - Optimized (only 48 icons, ~2.4KB CSS)
+    $fa_subset_path = THEME_DIR . '/assets/css/fontawesome-subset.min.css';
+    $fa_subset_url  = THEME_URL . '/assets/css/fontawesome-subset.min.css';
+    if (file_exists($fa_subset_path)) {
+        wp_enqueue_style('fontawesome-subset', $fa_subset_url, array(), '7.1.0');
+    }
     
     // Main stylesheet (compiled TailwindCSS)
     $style_path_min = THEME_DIR . '/assets/css/style.min.css';
     $style_url_min  = THEME_URL . '/assets/css/style.min.css';
     $style_url      = THEME_URL . '/assets/css/style.css';
     $main_css_url   = file_exists($style_path_min) ? $style_url_min : $style_url;
-    wp_enqueue_style('personal-website-style', $main_css_url, array('fa-base','fa-solid','fa-brands'), THEME_VERSION);
+    wp_enqueue_style('personal-website-style', $main_css_url, array('fontawesome-subset'), THEME_VERSION);
     
     // Inline tiny CSS to avoid extra render-blocking requests
-    $fa_fd_path = THEME_DIR . '/assets/css/fa-font-display.css';
-    $fa_core_path = THEME_DIR . '/assets/css/fa-core-lite.css';
     $ua_head_path = THEME_DIR . '/assets/css/ua-headings.css';
     $a11y_fixes_path = THEME_DIR . '/assets/css/a11y-fixes.css';
     $inline_css = '';
-    if (file_exists($fa_fd_path)) {
-        $inline_css .= file_get_contents($fa_fd_path) . "\n";
-    }
     if (file_exists($ua_head_path)) {
         $inline_css .= file_get_contents($ua_head_path) . "\n";
     }
     if (file_exists($a11y_fixes_path)) {
         $inline_css .= file_get_contents($a11y_fixes_path) . "\n";
-    }
-    if (file_exists($fa_core_path)) {
-        $inline_css .= file_get_contents($fa_core_path) . "\n";
     }
     if ($inline_css !== '') {
         wp_add_inline_style('personal-website-style', $inline_css);
@@ -142,7 +135,7 @@ add_action('wp_default_scripts', 'personal_website_remove_jquery_migrate', 11);
 function personal_website_style_attributes($html, $handle, $href) {
     $handles = array(
         'personal-website-style',
-        'fa-base','fa-solid','fa-brands','font-awesome',
+        'fontawesome-subset',
         'wp-block-library',
     );
     if (in_array($handle, $handles, true)) {
@@ -165,22 +158,18 @@ function personal_website_preload_resources() {
     $main_css_url   = file_exists($style_path_min) ? $style_url_min : $style_url;
     echo '<noscript><link rel="stylesheet" href="' . esc_url($main_css_url) . '"></noscript>' . "\n";
     
-    // Preconnect to external origins used early (fonts & Turnstile)
-    echo '<link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>' . "\n";
+    // Preconnect to external origins used early (Turnstile)
     echo '<link rel="preconnect" href="https://challenges.cloudflare.com" crossorigin>' . "\n";
-    // Preload Font Awesome fonts to break CSS→font chain (match version)
-    echo '<link rel="preload" as="font" type="font/woff2" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/webfonts/fa-solid-900.woff2" crossorigin>' . "\n";
-    echo '<link rel="preload" as="font" type="font/woff2" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/webfonts/fa-brands-400.woff2" crossorigin>' . "\n";
     
-    // Preload fonts (uncomment if using custom fonts)
-    // echo '<link rel="preload" href="' . THEME_URL . '/assets/fonts/font.woff2" as="font" type="font/woff2" crossorigin>' . "\n";
+    // Preload local Font Awesome subset fonts to break CSS→font chain
+    echo '<link rel="preload" as="font" type="font/woff2" href="' . THEME_URL . '/assets/fonts/fa-solid-900.woff2" crossorigin>' . "\n";
+    echo '<link rel="preload" as="font" type="font/woff2" href="' . THEME_URL . '/assets/fonts/fa-brands-400.woff2" crossorigin>' . "\n";
 }
 add_action('wp_head', 'personal_website_preload_resources', 1);
 
 // Add resource hints for DNS-prefetch & preconnect (WordPress-managed)
 function personal_website_resource_hints($hints, $relation_type) {
     $origins = array(
-        'https://cdnjs.cloudflare.com',
         'https://challenges.cloudflare.com',
     );
     if ($relation_type === 'preconnect' || $relation_type === 'dns-prefetch') {

@@ -73,7 +73,7 @@
                                                     if ($categories) {
                                                         $category_links = array();
                                                         foreach ($categories as $category) {
-                                                            $category_links[] = '<a href="' . esc_url(get_category_link($category->term_id)) . '" class="inline-flex items-center pr-2 py-1 rounded text-xs hover:bg-secondary-200 dark:hover:bg-secondary-800 transition-colors duration-200 font-medium">' . esc_html($category->name) . '</a>';
+                                                            $category_links[] = '<a href="' . esc_url(get_category_link($category->term_id)) . '" class="inline-flex items-center rounded text-xs dark:hover:text-primary-400 hover:text-primary-600 transition-colors duration-200 font-medium">' . esc_html($category->name) . '</a>';
                                                         }
                                                         echo implode(' ', $category_links);
                                                     }
