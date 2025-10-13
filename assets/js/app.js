@@ -153,7 +153,16 @@
         visible = false;
       } else {
         content.classList.remove('hidden'); content.setAttribute('aria-hidden','false');
-        setTimeout(function(){ content.classList.add('visible'); content.classList.remove('opacity-0'); if (window.updateTurnstileTheme) setTimeout(window.updateTurnstileTheme,10); },50);
+        setTimeout(function(){ 
+          content.classList.add('visible'); 
+          content.classList.remove('opacity-0'); 
+          // Animate comment items
+          const items = content.querySelectorAll('.comment-item, .comment-respond');
+          items.forEach(function(item, idx){
+            setTimeout(function(){ item.classList.add('animate-fade-in-up'); }, idx * 100);
+          });
+          if (window.updateTurnstileTheme) setTimeout(window.updateTurnstileTheme,10);
+        },50);
         if (txt) txt.textContent = 'Hide Comments';
         if (icon){ icon.classList.remove('fa-chevron-down'); icon.classList.add('fa-chevron-up'); }
         visible = true;

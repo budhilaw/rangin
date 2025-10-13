@@ -625,6 +625,7 @@
 
 .comments-content.visible {
   @apply opacity-100;
+  display: block;
 }
 
 .comments-content .comment-item,

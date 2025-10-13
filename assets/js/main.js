@@ -636,36 +636,14 @@
     function initCommentsAnimations() {
         const commentElements = $('.comment-item, .comment-respond');
         
-        if ('IntersectionObserver' in window) {
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        // Use native DOM to avoid jQuery overhead and double rAF for safety
-                        requestAnimationFrame(() => {
-                            requestAnimationFrame(() => {
-                                entry.target.classList.add('animate-fade-in-up');
-                            });
-                        });
-                        observer.unobserve(entry.target);
-                    }
-                });
-            }, {
-                threshold: 0.1,
-                rootMargin: '0px 0px -50px 0px'
-            });
-            
-            commentElements.each(function() {
-                observer.observe(this);
-            });
-        } else {
-            // Fallback for older browsers
-            commentElements.each(function(index) {
-                const $element = $(this);
-                setTimeout(() => {
-                    $element.addClass('animate-fade-in-up');
-                }, index * 100);
-            });
-        }
+        // Directly animate comments when shown (no IntersectionObserver needed)
+        // This ensures immediate visibility when toggle is clicked
+        commentElements.each(function(index) {
+            const $element = $(this);
+            setTimeout(() => {
+                $element.addClass('animate-fade-in-up');
+            }, index * 100);
+        });
     }
     
 })(jQuery);
