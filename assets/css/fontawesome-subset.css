@@ -72,6 +72,7 @@
 .fa-calendar-alt { --fa: "\f073"; }
 .fa-check { --fa: "\f00c"; }
 .fa-check-circle { --fa: "\f058"; }
+.fa-chalkboard-teacher { --fa: "\f51c"; }
 .fa-chevron-down { --fa: "\f078"; }
 .fa-chevron-left { --fa: "\f053"; }
 .fa-chevron-right { --fa: "\f054"; }
@@ -100,6 +101,7 @@
 .fa-sun { --fa: "\f185"; }
 .fa-tools { --fa: "\f7d9"; }
 .fa-user { --fa: "\f007"; }
+.fa-robot { --fa: "\f544"; }
 .fa-cog { --fa: "\f013"; }
 
 /* Regular Icons (1 icon) - Note: uses same class names as solid */
@@ -120,4 +122,3 @@
 .fa-threads { --fa: "\e618"; }
 .fa-twitter { --fa: "\f099"; }
 .fa-x-twitter { --fa: "\e61b"; }
-

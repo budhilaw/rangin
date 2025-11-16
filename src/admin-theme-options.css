@@ -1,5 +1,7 @@
 /* Theme Options Admin Page Styles */
 /* Using TailwindCSS utility classes with some custom CSS for WordPress admin specificity */
+@config "../tailwind.config.js";
+@import "tailwindcss";
 
 /* Container and Layout */
 .theme-options-wrap {

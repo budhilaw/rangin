@@ -1,10 +1,8 @@
-/* TailwindCSS Base */
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
+/* TailwindCSS v4 setup */
+@config "../tailwind.config.js";
 /* Google Fonts */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+@import "tailwindcss";
 
 /* Custom Base Styles */
 @layer base {
@@ -166,7 +164,6 @@
   /* Specific Widget Type Styling with Icons */
   
   /* Recent Posts Widget */
-  .widget h3:contains("Recent Posts")::before,
   .sidebar .card:nth-child(2) h3::before {
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%236366f1'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253'/%3E%3C/svg%3E");
     background-size: 16px;
@@ -184,7 +181,6 @@
   }
   
   /* Categories Widget */
-  .widget h3:contains("Categories")::before,
   .sidebar .card:nth-child(3) h3::before {
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%236366f1'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z'/%3E%3C/svg%3E");
     background-size: 16px;
@@ -356,7 +352,8 @@
       #f0fdf9 100%);
   }
   
-  .hero-gradient-dark {
+  .hero-gradient-dark,
+  .dark .dark\:hero-gradient-dark {
     background: linear-gradient(135deg, 
       #1a1a1a 0%, 
       #2d3134 25%, 
